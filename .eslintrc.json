@@ -1,4 +1,15 @@
 {
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "project": "./tsconfig.base.json"
+  },
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "prettier"
+  ],
   "root": true,
   "overrides": [
     {
@@ -16,7 +27,7 @@
       }
     },
     {
-      "files": ["apps/backend/**/*.ts", "libs/**/*.ts"],
+      "files": ["apps/backend/**/*.ts"],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
