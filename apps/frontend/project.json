@@ -90,6 +90,14 @@
       "options": {
         "buildTarget": "frontend:build"
       }
+    },
+    "stylelint": {
+      "executor": "nx-stylelint:lint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/frontend/**/*.css"],
+        "formatter": "compact"
+      }
     }
   }
 }

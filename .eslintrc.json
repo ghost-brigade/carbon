@@ -63,6 +63,7 @@
         "plugin:tailwindcss/recommended"
       ],
       "rules": {
+        "tailwindcss/no-custom-classname": 0,
         "prettier/prettier": [
           "error",
           {
