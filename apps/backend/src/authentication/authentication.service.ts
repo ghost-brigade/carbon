@@ -3,6 +3,7 @@ import {
   JwtResponseType,
   LoginResponseType,
   LoginType,
+  LoginResponseSchema,
 } from "@carbon/zod";
 import {
   Injectable,
@@ -57,6 +58,12 @@ export class AuthenticationService {
 
   async jwtLogin(access_token: string): Promise<UserType> {
     try {
+      const parsed = LoginResponseSchema.safeParse(access_token);
+
+      if (parsed.success === false) {
+        new UnauthorizedException("Token is invalid or expired");
+      }
+
       const data: JwtResponseType = await this.jwtService.verifyAsync(
         access_token,
         {
