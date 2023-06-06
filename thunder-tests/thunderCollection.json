@@ -1,0 +1,17 @@
+[
+  {
+    "_id": "afb096c6-74bb-4ef5-a278-8e6f8d45332d",
+    "colName": "carbon",
+    "created": "2023-06-06T14:38:58.038Z",
+    "sortNum": 10000,
+    "folders": [
+      {
+        "_id": "d7672cc7-d45c-49a3-b876-b11382125c71",
+        "name": "skills",
+        "containerId": "",
+        "created": "2023-06-06T14:39:04.235Z",
+        "sortNum": 10000
+      }
+    ]
+  }
+]

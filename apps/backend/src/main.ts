@@ -1,6 +1,6 @@
 import { Logger, VERSION_NEUTRAL, VersioningType } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
-import { AppModule } from "./app/app.module";
+import { AppModule } from "./app.module";
 import helmet from "helmet";
 
 async function bootstrap() {
