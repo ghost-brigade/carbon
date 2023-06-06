@@ -8,18 +8,17 @@ import {
   Injectable,
   UnauthorizedException,
   UnprocessableEntityException,
-  UseGuards,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
 import { compare } from "bcryptjs";
-import { PrismaService } from "../prisma.service";
 import { JWT_SECRET } from "../core/constants/jwt.constant";
+import { UserService } from "../user/user.service";
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly prisma: PrismaService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private readonly userService: UserService
   ) {}
 
   async login(payload: LoginType): Promise<LoginResponseType> {
@@ -28,7 +27,9 @@ export class AuthenticationService {
     }
 
     try {
-      const user: UserType = {}; // TODO recover user from user service
+      const user: UserType = await this.userService.findUserByEmail(
+        payload.email
+      );
 
       if (!user) {
         new UnauthorizedException("Email or password is incorrect");
@@ -54,14 +55,16 @@ export class AuthenticationService {
     }
   }
 
-  async jwtLogin(access_token: string): Promise<JwtResponseType> {
+  async jwtLogin(access_token: string): Promise<UserType> {
     try {
-      await this.jwtService.verifyAsync(access_token, {
-        secret: JWT_SECRET,
-      });
+      const data: JwtResponseType = await this.jwtService.verifyAsync(
+        access_token,
+        {
+          secret: JWT_SECRET,
+        }
+      );
 
-      const user: UserType = {}; // TODO recover user from user service
-      return user;
+      return await this.userService.findUserByEmail(data.email);
     } catch {
       new UnauthorizedException("Token is invalid or expired");
     }
@@ -72,5 +75,27 @@ export class AuthenticationService {
     password: string
   ): Promise<boolean> {
     return await compare(plainPassword, password);
+  }
+
+  async validateUser({
+    email,
+    plainPassword,
+  }: {
+    email: string;
+    plainPassword: string;
+  }): Promise<UserType | null> {
+    const user = await this.userService.findUserByEmail(email);
+
+    if (
+      user &&
+      (await this.userService.comparePassword({
+        password: user.password,
+        plainPassword,
+      }))
+    ) {
+      return user;
+    }
+
+    return null;
   }
 }

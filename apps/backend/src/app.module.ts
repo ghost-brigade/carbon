@@ -3,9 +3,10 @@ import { AuthGuard } from "@nestjs/passport";
 import { Module } from "@nestjs/common";
 import { SkillModule } from "./skills/skill.module";
 import { APP_GUARD } from "@nestjs/core";
+import { UserModule } from "./user/user.module";
 
 @Module({
-  imports: [AuthenticationModule, SkillModule],
+  imports: [UserModule, AuthenticationModule, SkillModule],
   providers: [
     {
       provide: APP_GUARD,
