@@ -1,5 +1,8 @@
 db:
-	@npx npx prisma migrate dev --name init
+	@npx prisma migrate dev --name init
+
+migrate:
+	@npx prisma migrate
 
 seed:
-	@npx npx prisma db seed
+	@npx prisma db seed
