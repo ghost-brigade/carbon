@@ -5,7 +5,8 @@
   "scripts": {
     "format": "nx run-many -t lint --fix",
     "format:frontend": "nx lint frontend --fix",
-    "format:backend": "nx lint backend --fix"
+    "format:backend": "nx lint backend --fix",
+    "build:ios": "nx build frontend && cap sync ios && cap open ios"
   },
   "private": true,
   "devDependencies": {
@@ -21,6 +22,8 @@
     "@babel/core": "^7.22.1",
     "@babel/eslint-parser": "^7.21.8",
     "@babel/eslint-plugin": "^7.19.1",
+    "@capacitor/assets": "^2.0.4",
+    "@capacitor/cli": "^5.0.4",
     "@nestjs/schematics": "^9.1.0",
     "@nestjs/testing": "^9.1.1",
     "@nrwl/angular": "^16.3.2",
@@ -74,6 +77,10 @@
     "@angular/platform-browser": "~16.0.0",
     "@angular/platform-browser-dynamic": "~16.0.0",
     "@angular/router": "~16.0.0",
+    "@capacitor/android": "^5.0.4",
+    "@capacitor/core": "^5.0.4",
+    "@capacitor/ios": "^5.0.4",
+    "@capacitor/splash-screen": "^5.0.2",
     "@nestjs/common": "^9.1.1",
     "@nestjs/core": "^9.1.1",
     "@nestjs/platform-express": "^9.1.1",
