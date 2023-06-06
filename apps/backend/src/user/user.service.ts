@@ -55,7 +55,7 @@ export class UserService {
       return await this.prisma.user.update({
         where: { id },
         data: updateUser,
-      });
+      }) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while updating user");
     }

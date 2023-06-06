@@ -91,3 +91,13 @@ model Society {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 }
+
+model File {
+  id        String    @id @default(uuid())
+  name      String
+  description String
+  tags      String[]
+  path      String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
