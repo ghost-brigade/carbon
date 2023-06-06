@@ -1,0 +1,37 @@
+version: "3"
+
+services:
+  # proxy:
+  #   image: caddy:latest
+  #   restart: unless-stopped
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile
+  #   ports:
+  #     - 80:80
+  #     - 443:443
+
+  # api:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   restart: unless-stopped
+  #   environment:
+  #     - DEV_PLATFORM=DOCKER
+  #   volumes:
+  #     - ./:/app
+  #   command: npx nx serve backend
+
+  database:
+    image: postgres:13.2-alpine
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=carbon
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres-data:
