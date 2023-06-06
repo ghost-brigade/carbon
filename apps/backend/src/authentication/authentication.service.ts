@@ -1,4 +1,9 @@
-import { UserType, JwtSchema, JwtResponseType, LoginResponseType, LoginType, LoginSchema } from '@carbon/zod';
+import {
+  UserType,
+  JwtResponseType,
+  LoginResponseType,
+  LoginType,
+} from "@carbon/zod";
 import {
   Injectable,
   UnauthorizedException,
@@ -6,10 +11,9 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { JwtService } from "@nestjs/jwt";
+import { compare } from "bcryptjs";
 import { PrismaService } from "../prisma.service";
 import { JWT_SECRET } from "../core/constants/jwt.constant";
-import { compare } from "bcryptjs";
-import { ZodGuard } from "../core/guard/zod/zod.guard";
 
 @Injectable()
 export class AuthenticationService {
@@ -18,14 +22,13 @@ export class AuthenticationService {
     private jwtService: JwtService
   ) {}
 
-  @UseGuards(new ZodGuard('body', LoginSchema))
   async login(payload: LoginType): Promise<LoginResponseType> {
     if (!payload.email || !payload.password) {
       new UnprocessableEntityException("Email and password are required");
     }
 
     try {
-      const user: UserType = {};  // TODO recover user from user service
+      const user: UserType = {}; // TODO recover user from user service
 
       if (!user) {
         new UnauthorizedException("Email or password is incorrect");
@@ -51,10 +54,7 @@ export class AuthenticationService {
     }
   }
 
-  @UseGuards(new ZodGuard('body', JwtSchema))
-  async JwtLogin(
-    access_token: string
-  ): Promise<JwtResponseType> {
+  async jwtLogin(access_token: string): Promise<JwtResponseType> {
     try {
       await this.jwtService.verifyAsync(access_token, {
         secret: JWT_SECRET,

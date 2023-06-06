@@ -1,7 +1,16 @@
+import { AuthenticationModule } from "./authentication/authentication.module";
+import { AuthGuard } from "@nestjs/passport";
 import { Module } from "@nestjs/common";
-import { SkillModule } from "./skill/skill.module";
+import { SkillModule } from "./skills/skill.module";
+import { APP_GUARD } from "@nestjs/core";
 
 @Module({
-  imports: [SkillModule],
+  imports: [AuthenticationModule, SkillModule],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class AppModule {}
