@@ -36,6 +36,7 @@
     "@nx/webpack": "16.3.1",
     "@nx/workspace": "16.3.2",
     "@schematics/angular": "~16.0.0",
+    "@types/bcryptjs": "^2.4.2",
     "@types/jest": "^29.4.0",
     "@types/node": "~18.7.1",
     "@types/passport-local": "^1.0.35",
