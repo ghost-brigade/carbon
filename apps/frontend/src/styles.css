@@ -6,3 +6,9 @@ body {
   margin-top: env(safe-area-inset-top);
   margin-bottom: env(safe-area-inset-bottom);
 }
+
+html,
+body {
+  min-height: 100%;
+  min-width: 100%;
+}
