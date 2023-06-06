@@ -11,7 +11,7 @@ datasource db {
 }
 
 model User {
-  id         Int            @id @default(autoincrement())
+  id         String         @id @default(uuid())
   email      String         @unique
   password   String
   entryDate  DateTime
@@ -19,61 +19,75 @@ model User {
   skills     UserSkill[]
   taskLists  UserTaskList[]
   missions   Mission[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
 }
 
 model Skill {
-  id         Int         @id @default(autoincrement())
+  id         String      @id @default(uuid())
   name       String
   language   String
   userSkills UserSkill[]
   taskLists  TaskList[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model UserSkill {
-  userId  Int
-  skillId Int
-  level   Int
-  user    User  @relation(fields: [userId], references: [id])
-  skill   Skill @relation(fields: [skillId], references: [id])
+  userId    String
+  skillId   String
+  level     Int
+  user      User     @relation(fields: [userId], references: [id])
+  skill     Skill    @relation(fields: [skillId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([userId, skillId])
 }
 
 model TaskList {
-  id            Int            @id @default(autoincrement())
+  id            String         @id @default(uuid())
   name          String
   level         Int
   description   String
-  skillId       Int
+  skillId       String
   required      Boolean
   skill         Skill          @relation(fields: [skillId], references: [id])
   userTaskLists UserTaskList[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }
 
 model UserTaskList {
-  id         Int      @id @default(autoincrement())
-  taskListId Int
-  userId     Int
+  id         String   @id @default(uuid())
+  taskListId String
+  userId     String
   taskList   TaskList @relation(fields: [taskListId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 }
 
 model Mission {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   name        String
   description String
   dateStart   DateTime
   dateEnd     DateTime
   rating      Int
   feedback    String?
-  societyId   Int
-  userId      Int
+  societyId   String
+  userId      String
   society     Society  @relation(fields: [societyId], references: [id])
   user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Society {
-  id       Int       @id @default(autoincrement())
-  name     String
-  missions Mission[]
+  id        String    @id @default(uuid())
+  name      String
+  missions  Mission[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
