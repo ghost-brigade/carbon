@@ -35,7 +35,7 @@ services:
 
   pgadmin:
     image: dpage/pgadmin4
-    restart: unless-stopeed
+    restart: unless-stopped
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@localhost
       PGADMIN_DEFAULT_PASSWORD: root
