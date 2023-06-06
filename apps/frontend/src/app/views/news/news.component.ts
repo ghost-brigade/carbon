@@ -2,10 +2,10 @@ import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: "carbon-home",
+  selector: "carbon-news",
   standalone: true,
   imports: [CommonModule],
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"],
+  templateUrl: "./news.component.html",
+  styleUrls: ["./news.component.css"],
 })
-export class HomeComponent {}
+export class NewsComponent {}
