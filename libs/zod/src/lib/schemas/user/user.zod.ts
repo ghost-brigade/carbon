@@ -6,6 +6,9 @@ export const UserSchema = z
     id: z.string(),
     email: z.string().email(),
     password: z.string().min(8),
+    firstName: z.string(),
+    lastName: z.string(),
+    birthDate: z.date(),
     entryDate: z.date(),
     experience: z.number(),
     /** TODO here */
@@ -19,10 +22,20 @@ export const UserSchema = z
 export const UserCreateSchema = UserSchema.pick({
   email: true,
   password: true,
+  firstName: true,
+  lastName: true,
+  birthDate: true,
 });
 
 export const UserUpdateSchema = UserSchema.pick({
   password: true,
+  firstName: true,
+  lastName: true,
+  birthDate: true,
+  experience: true,
+  skills: true,
+  taskLists: true,
+  missions: true,
 });
 
 export type UserType = z.infer<typeof UserSchema>;

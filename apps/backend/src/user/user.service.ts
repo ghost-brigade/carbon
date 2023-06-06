@@ -52,10 +52,14 @@ export class UserService {
 
   async update(id: string, updateUser: UserUpdateType): Promise<UserType> {
     try {
-      return await this.prisma.user.update({
+      if (updateUser.password) {
+        updateUser.password = await this.hashPassword(updateUser.password);
+      }
+
+      return (await this.prisma.user.update({
         where: { id },
         data: updateUser,
-      }) as UserType;
+      })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while updating user");
     }

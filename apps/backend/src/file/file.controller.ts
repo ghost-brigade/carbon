@@ -19,7 +19,6 @@ import { FileInterceptor } from "@nestjs/platform-express";
 import { Multer } from "multer";
 import { FileService } from "./file.service";
 import { FileCreateType } from "libs/zod/src/lib/schemas/file/file.zod";
-import { Public } from "../core/decorators/public.decorator";
 
 @Controller("file")
 export class FileController {
@@ -50,7 +49,6 @@ export class FileController {
   )
   @Post()
   @HttpCode(201)
-  @Public()
   async create(
     @UploadedFile() file: Express.Multer.File,
     @Body() fileCreate: FileCreateType
@@ -60,21 +58,18 @@ export class FileController {
 
   @Get()
   @HttpCode(200)
-  @Public()
   async findAll() {
     return await this.fileService.findAll();
   }
 
   @Get(":id")
   @HttpCode(200)
-  @Public()
   async findOne(@Param("id") id: string) {
     return await this.fileService.findOne(id);
   }
 
   @Delete(":id")
   @HttpCode(204)
-  @Public()
   async remove(@Param("id") id: string) {
     return await this.fileService.remove(id);
   }
