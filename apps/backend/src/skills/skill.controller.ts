@@ -8,14 +8,14 @@ import {
   Delete,
 } from "@nestjs/common";
 import { SkillService } from "./skill.service";
-import { abc } from "@carbon/zod";
+import { SkillCreateType } from "@carbon/zod";
 
 @Controller("skill")
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
   @Post()
-  create(@Body() createSkill) {
+  create(@Body() createSkill: SkillCreateType) {
     return this.skillService.create(createSkill);
   }
 

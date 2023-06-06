@@ -1,1 +1,1 @@
-export * from "./schemas/skill/skill.zod";
+export * from "./schemas/skill/index";
