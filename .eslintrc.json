@@ -16,7 +16,7 @@
       }
     },
     {
-      "files": ["apps/backend/**/*.ts", "**/*.ts"],
+      "files": ["apps/backend/**/*.ts", "libs/**/*.ts"],
       "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
