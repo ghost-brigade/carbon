@@ -1,0 +1,93 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String         @id @default(uuid())
+  email      String         @unique
+  password   String
+  entryDate  DateTime
+  experience Int
+  skills     UserSkill[]
+  taskLists  UserTaskList[]
+  missions   Mission[]
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+}
+
+model Skill {
+  id         String      @id @default(uuid())
+  name       String
+  language   String
+  userSkills UserSkill[]
+  taskLists  TaskList[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+}
+
+model UserSkill {
+  userId    String
+  skillId   String
+  level     Int
+  user      User     @relation(fields: [userId], references: [id])
+  skill     Skill    @relation(fields: [skillId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([userId, skillId])
+}
+
+model TaskList {
+  id            String         @id @default(uuid())
+  name          String
+  level         Int
+  description   String
+  skillId       String
+  required      Boolean
+  skill         Skill          @relation(fields: [skillId], references: [id])
+  userTaskLists UserTaskList[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model UserTaskList {
+  id         String   @id @default(uuid())
+  taskListId String
+  userId     String
+  taskList   TaskList @relation(fields: [taskListId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Mission {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  dateStart   DateTime
+  dateEnd     DateTime
+  rating      Int
+  feedback    String?
+  societyId   String
+  userId      String
+  society     Society  @relation(fields: [societyId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Society {
+  id        String    @id @default(uuid())
+  name      String
+  missions  Mission[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
