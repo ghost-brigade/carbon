@@ -9,3 +9,71 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User {
+  id         Int            @id @default(autoincrement())
+  email      String         @unique
+  password   String
+  entryDate  DateTime
+  experience Int
+  skills     UserSkill[]
+  taskLists  UserTaskList[]
+  missions   Mission[]
+}
+
+model Skill {
+  id         Int         @id @default(autoincrement())
+  name       String
+  language   String
+  userSkills UserSkill[]
+  taskLists  TaskList[]
+}
+
+model UserSkill {
+  userId  Int
+  skillId Int
+  level   Int
+  user    User  @relation(fields: [userId], references: [id])
+  skill   Skill @relation(fields: [skillId], references: [id])
+
+  @@id([userId, skillId])
+}
+
+model TaskList {
+  id            Int            @id @default(autoincrement())
+  name          String
+  level         Int
+  description   String
+  skillId       Int
+  required      Boolean
+  skill         Skill          @relation(fields: [skillId], references: [id])
+  userTaskLists UserTaskList[]
+}
+
+model UserTaskList {
+  id         Int      @id @default(autoincrement())
+  taskListId Int
+  userId     Int
+  taskList   TaskList @relation(fields: [taskListId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
+}
+
+model Mission {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  dateStart   DateTime
+  dateEnd     DateTime
+  rating      Int
+  feedback    String?
+  societyId   Int
+  userId      Int
+  society     Society  @relation(fields: [societyId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Society {
+  id       Int       @id @default(autoincrement())
+  name     String
+  missions Mission[]
+}
