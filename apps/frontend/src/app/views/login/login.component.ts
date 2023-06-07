@@ -1,4 +1,4 @@
-import { Component, signal, computed } from "@angular/core";
+import { Component, signal, computed, inject, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { z } from "zod";
@@ -9,6 +9,12 @@ import {
   transition,
   trigger,
 } from "@angular/animations";
+import { RequestService } from "../../shared/services/request.service";
+import { PostEndpoint } from "../../constants/endpoints/post.constants";
+import { finalize } from "rxjs";
+import { LoaderService } from "../../core/components/loader/loader.service";
+import { AuthService } from "../../core/services/auth.service";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "carbon-login",
@@ -41,7 +47,11 @@ import {
     ]),
   ],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  requestService = inject(RequestService);
+  loaderService = inject(LoaderService);
+  authService = inject(AuthService);
+  router = inject(Router);
   email = signal("");
   password = signal("");
   isValidEmail = computed(() => {
@@ -50,4 +60,35 @@ export class LoginComponent {
     }
     return false;
   });
+
+  ngOnInit() {
+    if (this.authService.isTokenValid()) {
+      this.router.navigate(["/profile/me"]);
+    }
+  }
+
+  submitLogin() {
+    this.loaderService.show();
+    this.requestService
+      .post({
+        endpoint: PostEndpoint.Login,
+        body: {
+          email: this.email(),
+          password: this.password(),
+        },
+      })
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: (res) => {
+          this.authService.setToken(res.access_token);
+
+          if (this.authService.isTokenValid()) {
+            this.router.navigate(["/profile/me"]);
+          }
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
+  }
 }

@@ -1,8 +1,10 @@
 import { Route } from "@angular/router";
+import { AuthGuard } from "./core/guards/auth.guard";
 
 export const appRoutes: Route[] = [
   {
     path: "profile/me",
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import("./views/profile/profile.component").then(
         (m) => m.ProfileComponent
@@ -12,6 +14,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "profile/:id",
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import("./views/profile/profile.component").then(
         (m) => m.ProfileComponent
@@ -21,6 +24,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "news",
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import("./views/news/news.component").then((m) => m.NewsComponent),
     title: "News",
@@ -28,6 +32,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "search",
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import("./views/search/search.component").then((m) => m.SearchComponent),
     title: "Recherche",
@@ -35,6 +40,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "ressources",
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import("./views/ressources/ressources.component").then(
         (m) => m.RessourcesComponent
@@ -44,6 +50,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "leaderboard",
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import("./views/leaderboard/leaderboard.component").then(
         (m) => m.LeaderboardComponent
