@@ -18,16 +18,19 @@ export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
   @UseGuards(new ZodGuard("body", SkillCreateSchema))
+  @Public()
   @Post()
   async create(@Body() createSkill: SkillCreateType) {
     return this.skillService.create(createSkill);
   }
-
+  
+  @Public()
   @Get()
   async findAll() {
     return this.skillService.findAll();
   }
 
+  @Public()
   @Get(":id")
   async findOne(@Param("id") id: string) {
     return await this.skillService.findOne(id);

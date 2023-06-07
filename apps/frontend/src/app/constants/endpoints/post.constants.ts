@@ -1,14 +1,12 @@
+import { LoginType, JwtType } from "@carbon/zod";
 export const PostEndpoint = {
   Login: "/login",
 } as const;
 
 export type PostEndpointMap = {
   "/login": {
-    response: {
-      success: boolean;
-      token: string;
-    };
-    body: object;
+    response: JwtType;
+    body: LoginType;
   };
 };
 
