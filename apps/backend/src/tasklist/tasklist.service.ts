@@ -1,7 +1,15 @@
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import { TaskList, Prisma } from "@prisma/client";
-import { TaskListCreateType, TaskListType, TaskListUpdateType } from "@carbon/zod";
+import {
+  TaskListCreateType,
+  TaskListType,
+  TaskListUpdateType,
+} from "@carbon/zod";
 
 @Injectable()
 export class TaskListService {
@@ -9,16 +17,28 @@ export class TaskListService {
 
   async create(createTaskList: TaskListCreateType): Promise<TaskList> {
     try {
+      const { name, level, description, skillId, required } = createTaskList;
+
+      // Check if the skill exists
+      const skill = await this.prisma.skill.findUnique({
+        where: { id: skillId },
+      });
+      if (!skill) {
+        throw new NotFoundException(`Skill with id ${skillId} not found`);
+      }
+
+      // Create the task list with the skill relationship
       return this.prisma.taskList.create({
         data: {
-          name: createTaskList.name,
-          level: createTaskList.level,
-          description: createTaskList.description,
-          skillId: createTaskList.skillId,
-          required: createTaskList.required,
+          name,
+          level,
+          description,
+          required,
+          skill: { connect: { id: skillId } }, // Connect the task list to the skill
         },
       });
     } catch (error) {
+      console.log(error)
       throw new InternalServerErrorException("Error while creating taskList");
     }
   }
@@ -41,7 +61,10 @@ export class TaskListService {
     }
   }
 
-  async update(id: string, updateTaskList: TaskListUpdateType): Promise<TaskListType> {
+  async update(
+    id: string,
+    updateTaskList: TaskListUpdateType
+  ): Promise<TaskListType> {
     try {
       return (await this.prisma.taskList.update({
         where: { id },
