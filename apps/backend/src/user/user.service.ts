@@ -5,9 +5,9 @@ import { PrismaService } from "../prisma.service";
 
 @Injectable()
 export class UserService {
-  constructor(private readonly prisma: PrismaService) {}  
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUser: UserCreateType): Promise<any> {
+  async create(createUser: UserCreateType): Promise<UserType> {
     try {
       return (await this.prisma.user.create({
         data: {
@@ -23,7 +23,7 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<any[]> {
+  async findAll(): Promise<UserType[]> {
     try {
       return (await this.prisma.user.findMany()) as UserType[];
     } catch (error) {
@@ -31,7 +31,7 @@ export class UserService {
     }
   }
 
-  async findOne(id: string): Promise<any> {
+  async findOne(id: string): Promise<UserType> {
     try {
       return (await this.prisma.user.findUnique({
         where: { id },
@@ -41,7 +41,7 @@ export class UserService {
     }
   }
 
-  async findUserByEmail(email: string): Promise<any> {
+  async findUserByEmail(email: string): Promise<UserType> {
     try {
       return (await this.prisma.user.findUnique({
         where: { email },
@@ -51,7 +51,7 @@ export class UserService {
     }
   }
 
-  async update(id: string, updateUser: UserUpdateType): Promise<any> {
+  async update(id: string, updateUser: UserUpdateType): Promise<UserType> {
     try {
       if (updateUser.password) {
         updateUser.password = await this.hashPassword(updateUser.password);
