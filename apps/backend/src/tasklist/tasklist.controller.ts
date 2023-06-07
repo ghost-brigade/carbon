@@ -18,6 +18,7 @@ export class TaskListController {
   constructor(private readonly taskListService: TaskListService) {}
 
   @UseGuards(new ZodGuard("body", TaskListCreateSchema))
+  @Public()
   @Post()
   async create(@Body() createTaskList: TaskListCreateType) {
     return this.taskListService.create(createTaskList);
