@@ -8,6 +8,10 @@ module.exports = {
     join(__dirname, "src/**/!(*.stories|*.spec).{ts,html}"),
     ...createGlobPatternsForDependencies(__dirname),
   ],
+  safelist: [
+    "col-span-1",
+    "col-span-2",
+  ],
   theme: {
     extend: {},
   },
@@ -19,9 +23,10 @@ module.exports = {
           "primary": "#6665DD",
           "secondary": "#a1cef7",
           "accent": "#00BB7E",
-          "neutral": "#282B2A",
-          "base-100": "#FDFDFD",
+          "neutral": "#FFFFFF",
+          "base-100": "#282B2A",
           "info": "#6665DD",
+          "base-content": "#FFFFFF",
           "success": "#36d399",
           "warning": "#facc15",
           "error": "#E53F49",
