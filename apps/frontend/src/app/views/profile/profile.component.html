@@ -1,1 +1,17 @@
-<p>profile works!</p>
+<section class="flex w-full flex-col items-center justify-center">
+  <img
+    src="assets/svg/navbar/picture.jpg"
+    class="mask mask-hexagon my-4 h-36 w-36 transition-all duration-300 hover:scale-105" />
+  <h1 class="text-lg font-semibold">
+    {{ profile?.firstName }} {{ profile?.lastName | uppercase }}
+  </h1>
+  <h2 class="mt-4">Level {{ xp.level }}</h2>
+  <div
+    class="tooltip tooltip-bottom"
+    [attr.data-tip]="'Next level: ' + xp.xpUntilNextLevel + 'XP'">
+    <progress
+      class="progress progress-accent mt-2 w-56"
+      value="{{ xp.currentLevelXP }}"
+      max="{{ xp.currentLevelXP + xp.xpUntilNextLevel }}"></progress>
+  </div>
+</section>

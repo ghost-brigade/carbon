@@ -1,13 +1,12 @@
+import { UserType } from "@carbon/zod";
+
 export const GetEndpoint = {
-  Login: "/login",
+  Me: "/user/me",
 } as const;
 
 export type GetEndpointMap = {
-  "/login": {
-    response: {
-      success: boolean;
-      token: string;
-    };
+  "/user/me": {
+    response: UserType;
   };
 };
 
