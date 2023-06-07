@@ -26,26 +26,22 @@ export class MissionController {
   constructor(private readonly missionService: MissionService) {}
 
   @Post()
-  @Public()
   @UseGuards(new ZodGuard("body", MissionCreateSchema))
   async create(@Body() createMission: MissionCreateType) {
     return await this.missionService.create(createMission);
   }
 
   @Get()
-  @Public()
   async findAll() {
     return await this.missionService.findAll();
   }
 
   @Get(":id")
-  @Public()
   async findOne(@Param("id") id: string) {
     return await this.missionService.findOne(id);
   }
 
   @Put(":id")
-  @Public()
   @UseGuards(new ZodGuard("body", MissionUpdateSchema))
   async update(
     @Param("id") id: string,
@@ -55,7 +51,6 @@ export class MissionController {
   }
 
   @Delete(":id")
-  @Public()
   async remove(@Param("id") id: string) {
     return await this.missionService.remove(id);
   }
