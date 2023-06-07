@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -17,10 +16,10 @@ model User {
   firstName      String?
   lastName       String?
   birthDate      DateTime?
-  entryDate      DateTime
-  experience     Int
-  salary         Json
-  role           String
+  entryDate      DateTime         @default(now())
+  experience     Int?             @default(0)
+  salary         Json?
+  role           String           @default("user")
   skills         UserSkill[]
   taskLists      UserTaskList[]
   missions       Mission[]
