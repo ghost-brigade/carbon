@@ -4,16 +4,16 @@
     "colId": "history",
     "containerId": "",
     "name": "http://localhost:3000/mission/",
-    "url": "http://localhost:3000/mission/",
-    "method": "POST",
+    "url": "http://localhost:3000/mission/7931ac95-bff3-44e2-a528-e84da690fd65",
+    "method": "DELETE",
     "sortNum": 0,
     "created": "2023-06-07T12:56:18.992Z",
-    "modified": "2023-06-07T15:41:25.905Z",
+    "modified": "2023-06-07T16:54:35.694Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\": \"Apple\",\n  \"description\" : \"kljsdgfljhdsf\",\n  \"userId\" : \"016b9660-2403-4ae7-88ea-0a5a0a92b236\",\n  \"societyId\" : \"016b9660-2403-4ae7-88ea-0a5a0a92b236\",\n  \"dateStart\":\"2023-07-16T19:20:30.451Z\",\n  \"dateEnd\":\"2026-09-16T19:20:30.451Z\"\n}",
+      "raw": "{\n  \"name\": \"Applesdsds\",\n  \"description\" : \"kljsdgfljhdsf\",\n  \"userId\" : \"016b9660-2403-4ae7-88ea-0a5a0a92b236\",\n  \"societyId\" : \"016b9660-2403-4ae7-88ea-0a5a0a92b236\",\n  \"dateStart\":\"2023-07-16T19:20:30.451Z\",\n  \"dateEnd\":\"2026-09-16T19:20:30.451Z\"\n}",
       "form": []
     },
     "tests": []

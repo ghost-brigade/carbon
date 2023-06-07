@@ -32,24 +32,31 @@ export class MissionController {
     return await this.missionService.create(createMission);
   }
 
-  // @Get()
-  // async findAll() {
-  //   return await this.missionService.findAll();
-  // }
+  @Get()
+  @Public()
+  async findAll() {
+    return await this.missionService.findAll();
+  }
 
-  // @Get(":id")
-  // async findOne(@Param("id") id: string) {
-  //   return await this.missionService.findOne(id);
-  // }
+  @Get(":id")
+  @Public()
+  async findOne(@Param("id") id: string) {
+    return await this.missionService.findOne(id);
+  }
 
-  // @Put(":id")
-  // @UseGuards(new ZodGuard("body", MissionUpdateSchema))
-  // async update(@Param("id") id: string, @Body() updateMission: MissionUpdateType) {
-  //   return await this.missionService.update(id, updateMission);
-  // }
+  @Put(":id")
+  @Public()
+  @UseGuards(new ZodGuard("body", MissionUpdateSchema))
+  async update(
+    @Param("id") id: string,
+    @Body() updateMission: MissionUpdateType
+  ) {
+    return await this.missionService.update(id, updateMission);
+  }
 
-  // @Delete(":id")
-  // async remove(@Param("id") id: string) {
-  //   return await this.missionService.remove(id);
-  // }
+  @Delete(":id")
+  @Public()
+  async remove(@Param("id") id: string) {
+    return await this.missionService.remove(id);
+  }
 }

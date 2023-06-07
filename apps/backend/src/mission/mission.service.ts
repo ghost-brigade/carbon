@@ -14,7 +14,7 @@ export class MissionService {
     private readonly society: SocietyService
   ) {}
 
-  async create(createMission: MissionCreateType): Promise<any> {
+  async create(createMission: MissionCreateType): Promise<MissionType> {
     const society = await this.society.findOne(createMission.societyId);
     if (!society) {
       throw new NotFoundException("Society not found");
@@ -28,6 +28,7 @@ export class MissionService {
           dateStart: new Date(createMission.dateStart),
           dateEnd: new Date(createMission.dateEnd),
           societyId: createMission.societyId,
+          userId: createMission.userId,
         },
       })) as any;
     } catch (error) {
