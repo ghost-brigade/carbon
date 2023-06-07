@@ -1,13 +1,25 @@
 import { MissionType, MissionCreateType, MissionUpdateType } from "@carbon/zod";
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { SocietyService } from "../society/society.service";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()
 export class MissionService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly society: SocietyService
+  ) {}
 
-  async create(createMission: MissionCreateType): Promise<MissionType> {
-    console.log(createMission);
+  async create(createMission: MissionCreateType): Promise<any> {
+    const society = await this.society.findOne(createMission.societyId);
+    if (!society) {
+      throw new NotFoundException("Society not found");
+    }
+
     try {
       return (await this.prisma.mission.create({
         // @ts-ignore
@@ -15,7 +27,7 @@ export class MissionService {
           ...createMission,
           dateStart: new Date(createMission.dateStart),
           dateEnd: new Date(createMission.dateEnd),
-          
+          societyId: createMission.societyId,
         },
       })) as any;
     } catch (error) {

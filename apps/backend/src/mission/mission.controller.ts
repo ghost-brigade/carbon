@@ -25,17 +25,17 @@ import { Public } from "../core/decorators/public.decorator";
 export class MissionController {
   constructor(private readonly missionService: MissionService) {}
 
-  // @Post()
-  // @Public()
-  // @UseGuards(new ZodGuard("body", MissionCreateSchema))
-  // async create(@Body() createMission: MissionCreateType) {
-  //   return await this.missionService.create(createMission);
-  // }
-
-  @Get()
-  async findAll() {
-    return await this.missionService.findAll();
+  @Post()
+  @Public()
+  @UseGuards(new ZodGuard("body", MissionCreateSchema))
+  async create(@Body() createMission: MissionCreateType) {
+    return await this.missionService.create(createMission);
   }
+
+  // @Get()
+  // async findAll() {
+  //   return await this.missionService.findAll();
+  // }
 
   // @Get(":id")
   // async findOne(@Param("id") id: string) {

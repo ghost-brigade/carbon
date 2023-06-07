@@ -12,7 +12,16 @@ import { TaskListModule } from "./tasklist/tasklist.module";
 import { MissionModule } from "./mission/mission.module";
 
 @Module({
-  imports: [UserModule, AuthenticationModule, SkillModule, FileModule, SocietyModule, SchoolModule, TaskListModule, MissionModule],
+  imports: [
+    UserModule,
+    AuthenticationModule,
+    SkillModule,
+    FileModule,
+    SocietyModule,
+    SchoolModule,
+    TaskListModule,
+    MissionModule,
+  ],
   exports: [PrismaService],
   providers: [
     PrismaService,

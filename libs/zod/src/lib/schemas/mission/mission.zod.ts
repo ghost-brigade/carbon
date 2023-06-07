@@ -3,10 +3,10 @@ import { TimestampSchema } from "../timestamp.zod";
 
 export const MissionSchema = z
   .object({
-    id: z.string().uuid(),
+    id: z.string(),
     name: z.string(),
-    societyId: z.string().uuid().optional(),
-    userId: z.string().uuid().optional(),
+    societyId: z.string().optional(),
+    userId: z.string().optional(),
     description: z.string().optional(),
     dateStart: z.string(),
     dateEnd: z.string(),
