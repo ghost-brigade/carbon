@@ -8,34 +8,34 @@ import {
   Delete,
 } from "@nestjs/common";
 import { SkillService } from "./skill.service";
-import { SkillCreateType } from "@carbon/zod";
+import { SkillCreateType, SkillUpdateType } from "@carbon/zod";
 
 @Controller("skill")
 export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
   @Post()
-  create(@Body() createSkill: SkillCreateType) {
+  async create(@Body() createSkill: SkillCreateType) {
     return this.skillService.create(createSkill);
   }
 
   @Get()
-  findAll() {
+  async findAll() {
     return this.skillService.findAll();
   }
 
   @Get(":id")
-  findOne(@Param("id") id: string) {
-    return this.skillService.findOne(+id);
+  async findOne(@Param("id") id: string) {
+    return await this.skillService.findOne(id);
   }
 
   @Patch(":id")
-  update(@Param("id") id: string, @Body() updateSkillDto) {
-    return this.skillService.update(+id, updateSkillDto);
+  async update(@Param("id") id: string, @Body() updateSkill: SkillUpdateType) {
+    return await this.skillService.update(id, updateSkill);
   }
 
   @Delete(":id")
-  remove(@Param("id") id: string) {
-    return this.skillService.remove(+id);
+  async remove(@Param("id") id: string) {
+    return await this.skillService.remove(id);
   }
 }
