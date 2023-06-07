@@ -4,13 +4,18 @@
     "colId": "afb096c6-74bb-4ef5-a278-8e6f8d45332d",
     "containerId": "d7672cc7-d45c-49a3-b876-b11382125c71",
     "name": "create",
-    "url": "localhost:3000/skills",
-    "method": "POST",
+    "url": "localhost:3000/skill/443ee264-a02e-42d0-8dd1-cea0967fc233",
+    "method": "PATCH",
     "sortNum": 10000,
     "created": "2023-06-06T14:39:07.552Z",
-    "modified": "2023-06-06T14:48:16.297Z",
+    "modified": "2023-06-07T09:06:59.355Z",
     "headers": [],
     "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"name\": \"testazd\",\n  \"language\": \"angulddar\"\n}",
+      "form": []
+    },
     "tests": []
   }
 ]

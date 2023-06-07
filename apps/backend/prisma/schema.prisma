@@ -1,6 +1,5 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,16 +10,44 @@ datasource db {
 }
 
 model User {
-  id         String         @id @default(uuid())
-  email      String         @unique
-  password   String
-  entryDate  DateTime
-  experience Int
-  skills     UserSkill[]
-  taskLists  UserTaskList[]
-  missions   Mission[]
-  createdAt  DateTime       @default(now())
-  updatedAt  DateTime       @updatedAt
+  id             String           @id @default(uuid())
+  email          String           @unique
+  password       String
+  firstName      String?
+  lastName       String?
+  birthDate      DateTime?
+  entryDate      DateTime         @default(now())
+  experience     Int?             @default(0)
+  salary         Json?
+  role           String           @default("user")
+  skills         UserSkill[]
+  taskLists      UserTaskList[]
+  missions       Mission[]
+  userTokens     UserToken[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  UserPreference UserPreference[]
+  School         School[]
+}
+
+model UserPreference {
+  id          String   @id @default(uuid())
+  userId      String
+  description String
+  isLiked     Boolean
+  user        User     @relation(fields: [userId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model UserToken {
+  id        String   @id @default(uuid())
+  userId    String
+  token     String   @unique
+  status    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Skill {
@@ -62,6 +89,7 @@ model UserTaskList {
   id         String   @id @default(uuid())
   taskListId String
   userId     String
+  status     String
   taskList   TaskList @relation(fields: [taskListId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
   createdAt  DateTime @default(now())
@@ -69,16 +97,29 @@ model UserTaskList {
 }
 
 model Mission {
+  id               String   @id @default(uuid())
+  name             String
+  description      String
+  dateStart        DateTime
+  dateEnd          DateTime
+  rating           Int
+  averageDailyRate Json
+  feedback         String?
+  societyId        String
+  userId           String
+  society          Society  @relation(fields: [societyId], references: [id])
+  user             User     @relation(fields: [userId], references: [id])
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+model School {
   id          String   @id @default(uuid())
   name        String
   description String
   dateStart   DateTime
   dateEnd     DateTime
-  rating      Int
-  feedback    String?
-  societyId   String
   userId      String
-  society     Society  @relation(fields: [societyId], references: [id])
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -90,4 +131,14 @@ model Society {
   missions  Mission[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+model File {
+  id          String   @id @default(uuid())
+  name        String
+  description String
+  tags        String[]
+  path        String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
