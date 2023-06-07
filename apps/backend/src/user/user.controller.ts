@@ -16,10 +16,10 @@ import {
   UserCreateType,
   UserType,
   UserUpdateType,
+  UserParamsType,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
-import { Public } from "../core/decorators/public.decorator";
 import { UserContext } from "../core/decorators/user-context.decorator";
 
 @Controller("user")
@@ -44,7 +44,7 @@ export class UserController {
   @Get()
   @UseInterceptors(new UserPasswordInterceptor())
   @HttpCode(200)
-  async findAll(): Promise<UserType[]> {
+  async findAll(@Param() params: UserParamsType): Promise<UserType[]> {
     return await this.userService.findAll();
   }
 
