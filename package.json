@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
+    "migrate": "cd apps/backend && npx prisma migrate deploy --schema=./prisma/schema.prisma",
     "seed": "ts-node --transpile-only --project ./apps/backend/tsconfig.app.json ./apps/backend/src/seed.ts",
     "format": "nx run-many -t lint --fix",
     "format:frontend": "nx lint frontend --fix",
