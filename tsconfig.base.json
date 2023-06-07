@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@carbon/enum": ["libs/enum/src/index.ts"],
       "@carbon/zod": ["libs/zod/src/index.ts"]
     }
   },
