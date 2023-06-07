@@ -22,6 +22,7 @@
         @enter
         *ngIf="isValidEmail()">
         <input
+          (keydown.Enter)="submitLogin()"
           type="password"
           placeholder="•••••••••"
           [ngModel]="password()"
@@ -29,6 +30,7 @@
           class="input input-bordered join-item w-full" />
         <button
           class="btn btn-accent join-item"
+          (click)="submitLogin()"
           [disabled]="password().length === 0">
           →
         </button>
