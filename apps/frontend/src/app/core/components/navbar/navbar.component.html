@@ -42,8 +42,18 @@
           *ngFor="let tile of tiles(); let i = index"
           class="btn {{
             $currentRoute() === tile.path ? 'btn-primary' : ''
-          }} btn-block col-span-{{ getTileWidth(i) }} h-28"
+          }} btn-block flex flex-col gap-4 items-center justify-center col-span-{{
+            getTileWidth(i)
+          }} h-28"
           [routerLink]="'/' + tile.path">
+          <img
+            *ngIf="tile.data?.['icon'] !== 'profile'"
+            src="assets/svg/navbar/{{ tile.data?.['icon'] }}.svg"
+            class="h-8 w-8" />
+          <img
+            *ngIf="tile.data?.['icon'] === 'profile'"
+            src="assets/svg/navbar/picture.jpg"
+            class="mask mask-hexagon h-12 w-12" />
           <span>{{ tile.title }}</span>
         </label>
       </div>

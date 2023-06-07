@@ -10,7 +10,7 @@ export const appRoutes: Route[] = [
         (m) => m.ProfileComponent
       ),
     title: "Profil",
-    data: { role: "ALL", icon: "person", order: 1, hidden: false },
+    data: { role: "ALL", icon: "profile", order: 1, hidden: false },
   },
   {
     path: "profile/:id",
@@ -28,7 +28,7 @@ export const appRoutes: Route[] = [
     loadComponent: () =>
       import("./views/news/news.component").then((m) => m.NewsComponent),
     title: "News",
-    data: { role: "ALL", icon: "article", order: 2, hidden: false },
+    data: { role: "ALL", icon: "news", order: 2, hidden: false },
   },
   {
     path: "search",
@@ -46,7 +46,7 @@ export const appRoutes: Route[] = [
         (m) => m.RessourcesComponent
       ),
     title: "Ressources",
-    data: { role: "ALL", icon: "folder", order: 4, hidden: false },
+    data: { role: "ALL", icon: "document", order: 4, hidden: false },
   },
   {
     path: "leaderboard",
