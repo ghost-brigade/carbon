@@ -20,10 +20,18 @@ import {
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
 import { Public } from "../core/decorators/public.decorator";
+import { UserContext } from "../core/decorators/user-context.decorator";
 
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
+
+  @Get("me")
+  @UseInterceptors(new UserPasswordInterceptor())
+  @HttpCode(200)
+  async me(@UserContext() user: UserType): Promise<UserType> {
+    return await this.userService.findUserByEmail(user.email);
+  }
 
   @UseGuards(new ZodGuard("body", UserCreateSchema))
   @Post()
