@@ -9,14 +9,15 @@ export class UserService {
 
   async create(createUser: UserCreateType): Promise<any> {
     try {
-      return await this.prisma.user.create({
+      return (await this.prisma.user.create({
         data: {
           email: createUser.email,
+          firstName: createUser.firstName,
+          lastName: createUser.lastName,
+          birthDate: createUser.birthDate,
           password: await this.hashPassword(createUser.password),
-          entryDate: new Date(),
-          experience: 0,
         },
-      });
+      })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while creating user");
     }
@@ -24,7 +25,7 @@ export class UserService {
 
   async findAll(): Promise<any[]> {
     try {
-      return await this.prisma.user.findMany();
+      return (await this.prisma.user.findMany()) as UserType[];
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching users");
     }
@@ -32,9 +33,9 @@ export class UserService {
 
   async findOne(id: string): Promise<any> {
     try {
-      return await this.prisma.user.findUnique({
+      return (await this.prisma.user.findUnique({
         where: { id },
-      });
+      })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching user");
     }
@@ -42,9 +43,9 @@ export class UserService {
 
   async findUserByEmail(email: string): Promise<any> {
     try {
-      return await this.prisma.user.findUnique({
+      return (await this.prisma.user.findUnique({
         where: { email },
-      });
+      })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching user");
     }

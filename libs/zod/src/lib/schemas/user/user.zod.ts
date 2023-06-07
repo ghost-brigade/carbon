@@ -10,11 +10,9 @@ export const UserSchema = z
     firstName: z.string(),
     lastName: z.string(),
     birthDate: z.date(),
-    salary: z.array(
-      z.object({
-        amount: z.number(),
-      })
-    ),
+
+    // { "amount": 1000, date: "2021-01-01"}
+    salary: z.any(),
     role: z.nativeEnum(RolesValues),
     entryDate: z.date(),
     experience: z.number(),
