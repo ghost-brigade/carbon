@@ -19,6 +19,7 @@ export class SocietyController {
 
   @UseGuards(new ZodGuard("body", SocietyCreateSchema))
   @Post()
+  @Public()
   async create(@Body() createSociety: SocietyCreateType) {
     return this.societyService.create(createSociety);
   }

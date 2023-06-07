@@ -3,5 +3,6 @@ export * from "./schemas/tasklist";
 export * from "./schemas/school";
 export * from "./schemas/society";
 export * from "./schemas/user";
+export * from "./schemas/mission";
 export * from "./schemas/authentication";
 export * from "./schemas/file";

@@ -96,21 +96,29 @@ model UserTaskList {
   updatedAt  DateTime @updatedAt
 }
 
+model Society {
+  id        String    @id @default(uuid())
+  name      String
+  missions  Mission[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
 model Mission {
-  id               String   @id @default(uuid())
+  id               String    @id @default(uuid())
   name             String
   description      String
   dateStart        DateTime
-  dateEnd          DateTime
-  rating           Int
-  averageDailyRate Json
+  dateEnd          DateTime?
+  rating           Int?
+  averageDailyRate Json?
   feedback         String?
   societyId        String
-  userId           String
-  society          Society  @relation(fields: [societyId], references: [id])
-  user             User     @relation(fields: [userId], references: [id])
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  userId           String?
+  society          Society   @relation(fields: [societyId], references: [id])
+  user             User?     @relation(fields: [userId], references: [id])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model School {
@@ -123,14 +131,6 @@ model School {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-model Society {
-  id        String    @id @default(uuid())
-  name      String
-  missions  Mission[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
 }
 
 model File {
