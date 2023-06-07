@@ -7,7 +7,7 @@ import { PrismaService } from "../prisma.service";
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUser: UserCreateType): Promise<UserType> {
+  async create(createUser: UserCreateType): Promise<any> {
     try {
       return await this.prisma.user.create({
         data: {
@@ -22,7 +22,7 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<UserType[]> {
+  async findAll(): Promise<any[]> {
     try {
       return await this.prisma.user.findMany();
     } catch (error) {
@@ -30,7 +30,7 @@ export class UserService {
     }
   }
 
-  async findOne(id: string): Promise<UserType> {
+  async findOne(id: string): Promise<any> {
     try {
       return await this.prisma.user.findUnique({
         where: { id },
@@ -40,7 +40,7 @@ export class UserService {
     }
   }
 
-  async findUserByEmail(email: string): Promise<UserType> {
+  async findUserByEmail(email: string): Promise<any> {
     try {
       return await this.prisma.user.findUnique({
         where: { email },
@@ -50,7 +50,7 @@ export class UserService {
     }
   }
 
-  async update(id: string, updateUser: UserUpdateType): Promise<UserType> {
+  async update(id: string, updateUser: UserUpdateType): Promise<any> {
     try {
       if (updateUser.password) {
         updateUser.password = await this.hashPassword(updateUser.password);
