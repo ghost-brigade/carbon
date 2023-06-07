@@ -10,7 +10,7 @@ export default async (users: UserType[], societies: any[]): Promise<any[]> => {
   for (let i = 0; i < 30; i++) {
     const mission = await prisma.mission.create({
       data: {
-        name: faker.name.jobTitle(),
+        name: faker.lorem.sentence(),
         description: faker.lorem.paragraph(),
         dateStart: faker.date.past(),
         dateEnd: faker.date.between({

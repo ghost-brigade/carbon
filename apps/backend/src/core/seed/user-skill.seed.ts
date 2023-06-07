@@ -9,10 +9,10 @@ export default async (
 ): Promise<UserType[]> => {
   const usersSkills: any[] = [];
 
-  for (let i = 0; i < 30; i++) {
+  for (let i = 0; i < users.length; i++) {
     const userSkill = await prisma.userSkill.create({
       data: {
-        userId: users[Math.floor(Math.random() * users.length)].id,
+        userId: users[i].id,
         skillId: skills[Math.floor(Math.random() * skills.length)].id,
         level: faker.number.int({ min: 1, max: 5 }),
       },

@@ -13,7 +13,7 @@ model User {
   id             String           @id @default(uuid())
   email          String           @unique
   password       String
-  firstName       String?
+  firstName      String?
   lastName       String?
   birthDate      DateTime?
   entryDate      DateTime         @default(now())
@@ -48,6 +48,14 @@ model UserToken {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model Society {
+  id        String    @id @default(uuid())
+  name      String
+  missions  Mission[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Skill {
@@ -105,9 +113,9 @@ model Mission {
   rating           Int
   averageDailyRate Json
   feedback         String?
-  societyId        String
+  societyId        String?
   userId           String
-  society          Society  @relation(fields: [societyId], references: [id])
+  society          Society?  @relation(fields: [societyId], references: [id])
   user             User     @relation(fields: [userId], references: [id])
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
@@ -123,14 +131,6 @@ model School {
   user        User     @relation(fields: [userId], references: [id])
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-}
-
-model Society {
-  id        String    @id @default(uuid())
-  name      String
-  missions  Mission[]
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
 }
 
 model File {
