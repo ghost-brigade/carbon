@@ -13,34 +13,34 @@ import { TaskListCreateSchema, TaskListCreateType, TaskListUpdateSchema, TaskLis
 import { Public } from "../core/decorators/public.decorator";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 
-@Controller("skill")
+@Controller("taskList")
 export class TaskListController {
-  constructor(private readonly skillService: TaskListService) {}
+  constructor(private readonly taskListService: TaskListService) {}
 
   @UseGuards(new ZodGuard("body", TaskListCreateSchema))
   @Post()
   async create(@Body() createTaskList: TaskListCreateType) {
-    return this.skillService.create(createTaskList);
+    return this.taskListService.create(createTaskList);
   }
 
   @Get()
   async findAll() {
-    return this.skillService.findAll();
+    return this.taskListService.findAll();
   }
 
   @Get(":id")
   async findOne(@Param("id") id: string) {
-    return await this.skillService.findOne(id);
+    return await this.taskListService.findOne(id);
   }
 
   @UseGuards(new ZodGuard("body", TaskListUpdateSchema))
   @Patch(":id")
   async update(@Param("id") id: string, @Body() updateTaskList: TaskListUpdateType) {
-    return await this.skillService.update(id, updateTaskList);
+    return await this.taskListService.update(id, updateTaskList);
   }
 
   @Delete(":id")
   async remove(@Param("id") id: string) {
-    return await this.skillService.remove(id);
+    return await this.taskListService.remove(id);
   }
 }
