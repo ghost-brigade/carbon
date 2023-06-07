@@ -10,22 +10,24 @@ import {
   TaskListType,
   TaskListUpdateType,
 } from "@carbon/zod";
+import { SkillService } from "../skill/skill.service";
 
 @Injectable()
 export class TaskListService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly skillService: SkillService
+  ) {}
 
   async create(createTaskList: TaskListCreateType): Promise<TaskList> {
+    const skill = await this.skillService.findOne(createTaskList.skillId);
+
+    if (!skill) {
+      throw new NotFoundException("Skill not found");
+    }
+    
     try {
       const { name, level, description, skillId, required } = createTaskList;
-
-      // Check if the skill exists
-      const skill = await this.prisma.skill.findUnique({
-        where: { id: skillId },
-      });
-      if (!skill) {
-        throw new NotFoundException(`Skill with id ${skillId} not found`);
-      }
 
       // Create the task list with the skill relationship
       return this.prisma.taskList.create({
@@ -38,7 +40,7 @@ export class TaskListService {
         },
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       throw new InternalServerErrorException("Error while creating taskList");
     }
   }
