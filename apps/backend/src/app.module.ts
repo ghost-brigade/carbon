@@ -1,13 +1,17 @@
 import { AuthenticationModule } from "./authentication/authentication.module";
 import { Module } from "@nestjs/common";
-import { SkillModule } from "./skills/skill.module";
+import { SkillModule } from "./skill/skill.module";
 import { APP_GUARD } from "@nestjs/core";
 import { UserModule } from "./user/user.module";
 import { JwtAuthGuard } from "./core/guard/passport/jwt-auth.guard";
+import { PrismaService } from "./prisma.service";
+import { FileModule } from "./file/file.module";
 
 @Module({
-  imports: [UserModule, AuthenticationModule, SkillModule],
+  imports: [UserModule, AuthenticationModule, SkillModule, FileModule],
+  exports: [PrismaService],
   providers: [
+    PrismaService,
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

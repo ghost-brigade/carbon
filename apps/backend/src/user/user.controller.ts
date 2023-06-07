@@ -6,36 +6,68 @@ import {
   Param,
   Delete,
   Put,
+  UseGuards,
+  HttpCode,
+  UseInterceptors,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { UserCreateType, UserUpdateType } from "@carbon/zod";
+import {
+  UserCreateSchema,
+  UserCreateType,
+  UserType,
+  UserUpdateType,
+  UserParamsType,
+} from "@carbon/zod";
+import { ZodGuard } from "../core/guard/zod/zod.guard";
+import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
+import { UserContext } from "../core/decorators/user-context.decorator";
 
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  @Get("me")
+  @UseInterceptors(new UserPasswordInterceptor())
+  @HttpCode(200)
+  async me(@UserContext() user: UserType): Promise<UserType> {
+    return await this.userService.findUserByEmail(user.email);
+  }
+
+  @UseGuards(new ZodGuard("body", UserCreateSchema))
   @Post()
-  async create(@Body() createUser: UserCreateType) {
+  @UseInterceptors(new UserPasswordInterceptor())
+  @HttpCode(201)
+  async create(@Body() createUser: UserCreateType): Promise<UserType> {
     return await this.userService.create(createUser);
   }
 
   @Get()
-  async findAll() {
+  @UseInterceptors(new UserPasswordInterceptor())
+  @HttpCode(200)
+  async findAll(@Param() params: UserParamsType): Promise<UserType[]> {
     return await this.userService.findAll();
   }
 
   @Get(":id")
-  async findOne(@Param("id") id: string) {
+  @UseInterceptors(new UserPasswordInterceptor())
+  @HttpCode(200)
+  async findOne(@Param("id") id: string): Promise<UserType> {
     return await this.userService.findOne(id);
   }
 
   @Put(":id")
-  async update(@Param("id") id: string, @Body() updateUser: UserUpdateType) {
+  @UseInterceptors(new UserPasswordInterceptor())
+  @HttpCode(200)
+  async update(
+    @Param("id") id: string,
+    @Body() updateUser: UserUpdateType
+  ): Promise<UserType> {
     return await this.userService.update(id, updateUser);
   }
 
   @Delete(":id")
-  async remove(@Param("id") id: string) {
+  @HttpCode(204)
+  async remove(@Param("id") id: string): Promise<boolean> {
     return await this.userService.remove(id);
   }
 }

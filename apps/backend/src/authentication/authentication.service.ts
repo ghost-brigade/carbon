@@ -4,6 +4,7 @@ import {
   LoginResponseType,
   LoginType,
   LoginResponseSchema,
+  UserTokenType,
 } from "@carbon/zod";
 import {
   Injectable,
@@ -14,12 +15,13 @@ import { JwtService } from "@nestjs/jwt";
 import { compare } from "bcryptjs";
 import { JWT_SECRET } from "../core/constants/jwt.constant";
 import { UserService } from "../user/user.service";
-
+import { UserTokenService } from "./user-token.service";
 @Injectable()
 export class AuthenticationService {
   constructor(
     private jwtService: JwtService,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    private readonly userTokenService: UserTokenService
   ) {}
 
   async login(payload: LoginType): Promise<LoginResponseType> {
@@ -48,6 +50,7 @@ export class AuthenticationService {
       return {
         access_token: await this.jwtService.signAsync({
           email: user.email,
+          token: await this.userTokenService.createToken({ userId: user.id }),
           sub: user.id,
         }),
       };
@@ -58,10 +61,8 @@ export class AuthenticationService {
 
   async jwtLogin(access_token: string): Promise<UserType> {
     try {
-      const parsed = LoginResponseSchema.safeParse(access_token);
-
-      if (parsed.success === false) {
-        new UnauthorizedException("Token is invalid or expired");
+      if (!access_token) {
+        throw new Error();
       }
 
       const data: JwtResponseType = await this.jwtService.verifyAsync(
@@ -71,9 +72,15 @@ export class AuthenticationService {
         }
       );
 
+      console.log(data);
+
+      if ((await this.userTokenService.validateToken(data.token)) === false) {
+        throw new Error();
+      }
+
       return await this.userService.findUserByEmail(data.email);
     } catch {
-      new UnauthorizedException("Token is invalid or expired");
+      throw new UnauthorizedException("Token is invalid or expired");
     }
   }
 

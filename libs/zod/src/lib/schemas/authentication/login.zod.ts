@@ -15,6 +15,7 @@ export const LoginResponseSchema = z.object({
 
 export const JwtResponseSchema = z.object({
   email: z.string().email(),
+  token: z.string(),
   iat: z.number(),
   exp: z.number(),
 });
