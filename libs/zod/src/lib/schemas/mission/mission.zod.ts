@@ -1,30 +1,33 @@
 import { z } from "zod";
+import { TimestampSchema } from "../timestamp.zod";
 
-export const MissionSchema = z.object({
-    id: z.string(),
+export const MissionSchema = z
+  .object({
+    id: z.string().uuid(),
     name: z.string(),
-    description: z.string(),
-    dateStart: z.date(),
-    dateEnd: z.date(),
-    rating: z.number(),
+    societyId: z.string().uuid().optional(),
+    userId: z.string().uuid().optional(),
+    description: z.string().optional(),
+    dateStart: z.string(),
+    dateEnd: z.string(),
+    rating: z.number().optional(),
     feedback: z.string().optional(),
-    societyId: z.string(),
-    userId: z.string(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-});
+  })
+  .merge(TimestampSchema);
 
 export const MissionCreateSchema = MissionSchema.pick({
-    name: true,
-    description: true,
-    societyId: true,
-    userId: true
+  name: true,
+  description: true,
+  dateStart: true,
+  dateEnd: true,
+  societyId: true,
+  userId: true,
 });
 
 export const MissionUpdateSchema = MissionSchema.omit({
-    id: true,
-    createdAt: true,
-    updatedAt: true
+  id: true,
+  createdAt: true,
+  updatedAt: true,
 });
 
 export type MissionType = z.infer<typeof MissionSchema>;

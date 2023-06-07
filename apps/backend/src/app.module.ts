@@ -7,9 +7,17 @@ import { JwtAuthGuard } from "./core/guard/passport/jwt-auth.guard";
 import { PrismaService } from "./prisma.service";
 import { FileModule } from "./file/file.module";
 import { SocietyModule } from "./society/society.module";
+import { MissionModule } from "./mission/mission.module";
 
 @Module({
-  imports: [UserModule, AuthenticationModule, SkillModule, FileModule, SocietyModule],
+  imports: [
+    UserModule,
+    AuthenticationModule,
+    SkillModule,
+    FileModule,
+    SocietyModule,
+    MissionModule,
+  ],
   exports: [PrismaService],
   providers: [
     PrismaService,

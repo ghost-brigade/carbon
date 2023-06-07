@@ -1,4 +1,3 @@
-import { compare, genSalt, hash } from "bcryptjs";
 import { MissionType, MissionCreateType, MissionUpdateType } from "@carbon/zod";
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
@@ -8,24 +7,19 @@ export class MissionService {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(createMission: MissionCreateType): Promise<MissionType> {
+    console.log(createMission);
     try {
-      const newMission = await this.prisma.mission.create({
+      return (await this.prisma.mission.create({
+        // @ts-ignore
         data: {
-          name: createMission.name,
-          description: createMission.description,
-          dateStart: new Date(),
-          dateEnd: null,
-          rating: 0,
-          feedback: null,
-          societyId: createMission.societyId,
-          userId: createMission.userId,
-          createdAt: new Date(),
-          updatedAt: new Date(),
+          ...createMission,
+          dateStart: new Date(createMission.dateStart),
+          dateEnd: new Date(createMission.dateEnd),
+          
         },
-      });
-
-      return newMission;
+      })) as any;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -33,7 +27,7 @@ export class MissionService {
   async findAll(): Promise<MissionType[]> {
     try {
       const missions = await this.prisma.mission.findMany();
-      return missions;
+      return missions as any[];
     } catch (error) {
       throw new InternalServerErrorException();
     }
@@ -44,13 +38,16 @@ export class MissionService {
       const mission = await this.prisma.mission.findUnique({
         where: { id },
       });
-      return mission;
+      return mission as any;
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async update(id: string, updateMission: MissionUpdateType): Promise<MissionType | null> {
+  async update(
+    id: string,
+    updateMission: MissionUpdateType
+  ): Promise<MissionType | null> {
     try {
       const updatedMission = await this.prisma.mission.update({
         where: { id },
@@ -62,18 +59,18 @@ export class MissionService {
           updatedAt: new Date(),
         },
       });
-      return updatedMission;
+      return updatedMission as any;
     } catch (error) {
       throw new InternalServerErrorException();
     }
   }
 
-  async remove(id: string): Promise<MissionType | null> {
+  async remove(id: string): Promise<boolean> {
     try {
       const deletedMission = await this.prisma.mission.delete({
         where: { id },
       });
-      return deletedMission;
+      return true;
     } catch (error) {
       throw new InternalServerErrorException();
     }
