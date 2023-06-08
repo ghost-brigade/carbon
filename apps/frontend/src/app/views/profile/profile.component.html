@@ -13,7 +13,11 @@
       {{ preference.description }}
     </div>
   </div>
-  <p class="mt-8 text-5xl">{{ getRank() }}</p>
+  <p
+    *ngIf="xp"
+    class="mt-8 text-5xl">
+    {{ getRank(xp.level) }}
+  </p>
   <h2 class="mt-4">Niveau {{ xp.level }}</h2>
   <div
     class="tooltip tooltip-bottom"
@@ -84,7 +88,7 @@
         <div
           class="tooltip"
           [attr.data-tip]="'Depuis le ' + getStartDate(profile.entryDate)">
-          {{ getYearsOfExperience() }}
+          {{ getFormattedTime(profile) }}
         </div>
       </div>
       <div class="stat-desc">Top 4% !</div>
