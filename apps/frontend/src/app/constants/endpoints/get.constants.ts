@@ -1,10 +1,11 @@
-import { UserType, NewsType } from "@carbon/zod";
+import { UserType, NewsType, RessourceType } from "@carbon/zod";
 
 
 export const GetEndpoint = {
   Me: "/user/me",
   Leaderboard: "/leaderboard/:leaderboard",
   News: "/news",
+  Ressources: "/ressources",
 } as const;
 
 export type GetEndpointMap = {
@@ -19,6 +20,10 @@ export type GetEndpointMap = {
     params: {
       leaderboard: "experience" | "seniority" | "mission";
     };
+    "/ressources": {
+      response: { 
+        RessourceType;
+      };
   };
 };
 
