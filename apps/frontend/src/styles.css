@@ -12,3 +12,19 @@ body {
   min-height: 100%;
   min-width: 100%;
 }
+
+.t-safe {
+  margin-top: env(safe-area-inset-top);
+}
+
+.b-safe {
+  margin-bottom: env(safe-area-inset-bottom);
+}
+
+.p-safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.p-safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}

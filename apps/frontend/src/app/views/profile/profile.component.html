@@ -5,6 +5,15 @@
   <h1 class="text-lg font-semibold">
     {{ profile?.firstName }} {{ profile?.lastName | uppercase }}
   </h1>
+  <div class="mt-2 flex flex-row flex-wrap items-center justify-center gap-2">
+    <div
+      class="badge {{ preference.isLiked ? 'badge-accent' : 'badge-error' }} "
+      *ngFor="let preference of profile.UserPreference.slice(0, 5)">
+      {{ preference.isLiked ? "👍 " : "👎 " }}
+      {{ preference.description }}
+    </div>
+  </div>
+  <p class="mt-8 text-5xl">{{ getRank() }}</p>
   <h2 class="mt-4">Niveau {{ xp.level }}</h2>
   <div
     class="tooltip tooltip-bottom"
@@ -17,21 +26,52 @@
   <div
     class="flex flex-row items-center justify-center"
     *ngIf="uniqueBadges().length">
-    <img
-      *ngFor="let badge of uniqueBadges()"
-      src="assets/svg/badges/{{ badge.achievement }}.svg"
-      class="my-4 h-16 w-16" />
+    <div *ngFor="let badge of uniqueBadges()">
+      <dialog
+        id="{{ badge.achievement }}"
+        class="modal text-neutral text-center">
+        <form
+          method="dialog"
+          class="modal-box">
+          <button
+            [attr.for]="badge.achievement"
+            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+            ✕
+          </button>
+          <p class="py-4">{{ badge.description }}</p>
+        </form>
+        <form
+          method="dialog"
+          class="modal-backdrop">
+          <button>fermer</button>
+        </form>
+      </dialog>
+      <img
+        (click)="showModal(badge.achievement)"
+        src="assets/svg/badges/{{ badge.achievement }}.svg"
+        class="my-4 h-16 w-16 cursor-pointer"
+        [title]="badge.description"
+        [alt]="badge.description" />
+    </div>
   </div>
 </section>
 
-<section class="flex w-full flex-col items-center justify-center">
-  <h2 class="mb-5 text-lg font-semibold">Statistiques</h2>
+<section class="mt-10 flex w-full flex-col items-center justify-center">
+  <h2 class="text-lg font-semibold">Compétences</h2>
+</section>
+
+<section class="mt-10 flex w-full flex-col items-center justify-center">
+  <h2 class="text-lg font-semibold">Statistiques</h2>
   <div class="stats stats-vertical md:stats-horizontal bg-neutral-800 shadow">
     <div class="stat">
       <div class="stat-figure text-primary text-3xl">🧓</div>
       <div class="stat-title">Collaborateur depuis</div>
       <div class="stat-value text-primary">
-        {{ getYearsOfExperience() }} ans
+        <div
+          class="tooltip"
+          [attr.data-tip]="'Depuis le ' + getStartDate(profile.entryDate)">
+          {{ getYearsOfExperience() }}
+        </div>
       </div>
       <div class="stat-desc">Top 4% !</div>
     </div>
@@ -48,12 +88,59 @@
 </section>
 
 <section class="mt-10 flex w-full flex-col items-center justify-center">
-  <h2 class="mb-5 text-lg font-semibold">Progrès</h2>
-  <div>
-    <div
-      class="radial-progress bg-primary text-primary-content border-primary border-4"
-      style="--value: 70">
-      70%
+  <h2 class="mb-2 text-lg font-semibold">Progrès</h2>
+</section>
+
+<section class="mt-10 flex w-full flex-col items-center justify-center gap-4">
+  <h2 class="text-lg font-semibold">Formations</h2>
+  <div
+    class="flex w-72 flex-1 flex-row items-center gap-4"
+    *ngFor="let school of profile.School">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="h-12 w-12 self-start">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+    </svg>
+
+    <div class="flex-3 flex flex-col">
+      <h3 class="text-xl font-semibold">{{ school.name }}</h3>
+      <span class="text-xs">{{ school.description.slice(0, 30) }}</span>
+      <span class="text-sm">{{ getYears(school) }}</span>
+    </div>
+  </div>
+</section>
+
+<section class="mt-10 flex w-full flex-col items-center justify-center gap-4">
+  <h2 class="text-lg font-semibold">Missions</h2>
+  <div
+    class="flex w-72 flex-1 flex-row items-center gap-4"
+    *ngFor="let mission of profile.missions">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="h-12 w-12 self-start">
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+    </svg>
+
+    <div class="flex-3 flex flex-col">
+      <h3 class="text-xl font-semibold">{{ mission.name.slice(0, 15) }}</h3>
+      <span class="text-xs"
+        >TJM: {{ mission.averageDailyRate.toFixed(0) }}€
+      </span>
+      <span class="text-sm">{{ getYears(mission) }}</span>
     </div>
   </div>
 </section>

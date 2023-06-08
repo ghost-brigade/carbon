@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
   profileService = inject(ProfileService);
-  profile: UserType | undefined;
+  profile: (UserType & any) | undefined;
   xp: XP = {
     currentLevelXP: 0,
     level: 0,
@@ -51,8 +51,10 @@ export class ProfileComponent implements OnInit {
     const years = today.getFullYear() - start.getFullYear();
     const months = today.getMonth() - start.getMonth();
     const days = today.getDate() - start.getDate();
-
-    return (years + months / 12 + days / 365).toFixed(1);
+    if (years > 0) return years + (years === 1 ? " an" : " ans");
+    if (months > 0) return months + (months === 1 ? " mois" : " mois");
+    if (days > 0) return days + (days === 1 ? " jour" : " jours");
+    return "0";
   }
 
   uniqueBadges() {
@@ -69,5 +71,40 @@ export class ProfileComponent implements OnInit {
         return acc;
       }
     }, []).slice(0, 3);
+  }
+
+  showModal(id: string) {
+    (
+      document.getElementById(id) as HTMLElement & { showModal: () => void }
+    ).showModal();
+  }
+
+  getRank(): string {
+    switch (true) {
+      case this.xp.level <= 10:
+        return "🌱";
+      case this.xp.level <= 20:
+        return "🌲";
+      case this.xp.level <= 30:
+        return "🏆";
+      case this.xp.level <= 40:
+        return "⭐️";
+      case this.xp.level <= 50:
+        return "👑";
+      default:
+        return "💎";
+    }
+  }
+
+  getStartDate(date: string): string {
+    const d = new Date(date);
+    return d.toLocaleDateString();
+  }
+
+  getYears(school: any): string {
+    const startDate = new Date(school.dateStart);
+    const endDate = new Date(school.dateEnd);
+
+    return `${startDate.getFullYear()} - ${endDate.getFullYear()}`;
   }
 }
