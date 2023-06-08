@@ -25,7 +25,16 @@ export class UserService {
 
   async findAll(): Promise<UserType[]> {
     try {
-      return (await this.prisma.user.findMany()) as UserType[];
+      return (await this.prisma.user.findMany({
+        include: {
+          skills: true,
+          taskLists: true,
+          missions: true,
+          UserPreference: true,
+          School: true,
+          UserAchievement: true,
+        },
+      })) as UserType[];
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching users");
     }
@@ -35,6 +44,14 @@ export class UserService {
     try {
       return (await this.prisma.user.findUnique({
         where: { id },
+        include: {
+          skills: true,
+          taskLists: true,
+          missions: true,
+          UserPreference: true,
+          School: true,
+          UserAchievement: true,
+        },
       })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching user");
@@ -45,6 +62,14 @@ export class UserService {
     try {
       return (await this.prisma.user.findUnique({
         where: { email },
+        include: {
+          skills: true,
+          taskLists: true,
+          missions: true,
+          UserPreference: true,
+          School: true,
+          UserAchievement: true,
+        },
       })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching user");
