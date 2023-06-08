@@ -55,36 +55,30 @@ export const UserUpdateSchema = UserSchema.pick({
 });
 
 export const UserSkillCreateSchema = z.object({
-  userId: z.string(),
   skillId: z.string(),
   level: z.number(),
 });
 
 export const UserPreferenceCreateSchema = z.object({
-  userId: z.string(),
   description: z.string(),
   isLiked: z.boolean(),
 });
 
 export const UserAchievementCreateSchema = z.object({
-  userId: z.string(),
   achievement: z.string(),
   description: z.string().optional(),
 });
 
 export const UserTaskListCreateSchema = z.object({
-  userId: z.string(),
   taskListId: z.string(),
   status: z.string(),
 });
 
 export const UserMissionCreateSchema = z.object({
-  userId: z.string(),
   missionId: z.string(),
 });
 
 export const UserSchoolCreateSchema = z.object({
-  userId: z.string(),
   schoolId: z.string(),
 });
 
