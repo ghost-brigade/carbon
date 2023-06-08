@@ -14,4 +14,45 @@
       value="{{ xp.currentLevelXP }}"
       max="{{ xp.currentLevelXP + xp.xpUntilNextLevel }}"></progress>
   </div>
+  <div class="flex flex-row items-center justify-center">
+    <img
+      src="assets/svg/badges/elder-1.svg"
+      class="my-4 h-16 w-16" />
+    <img
+      src="assets/svg/badges/talks-4.svg"
+      class="my-4 h-16 w-16" />
+    <img
+      src="assets/svg/badges/startup-3.svg"
+      class="my-4 h-16 w-16" />
+  </div>
+</section>
+
+<section class="flex w-full flex-col items-center justify-center">
+  <h2 class="mb-5 text-lg font-semibold">Statistiques</h2>
+  <div class="stats stats-vertical md:stats-horizontal bg-neutral-800 shadow">
+    <div class="stat">
+      <div class="stat-figure text-primary text-3xl">🧓</div>
+      <div class="stat-title">Collaborateur depuis</div>
+      <div class="stat-value text-primary">5 ans</div>
+      <div class="stat-desc">Top 4% !</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-figure text-accent text-3xl">🥷</div>
+      <div class="stat-title">Nombre de missions</div>
+      <div class="stat-value text-accent">14</div>
+      <div class="stat-desc">Top 43% !</div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-10 flex w-full flex-col items-center justify-center">
+  <h2 class="mb-5 text-lg font-semibold">Progrès</h2>
+  <div>
+    <div
+      class="radial-progress bg-primary text-primary-content border-primary border-4"
+      style="--value: 70">
+      70%
+    </div>
+  </div>
 </section>
