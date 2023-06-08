@@ -133,10 +133,13 @@ export default async (users: UserType[]): Promise<UserType[]> => {
   ];
 
   for (let i = 0; i < 30; i++) {
+    const currentAchievement =
+      achievements[Math.floor(Math.random() * achievements.length)];
     const userAchievement = await prisma.userAchievement.create({
       data: {
         userId: users[Math.floor(Math.random() * users.length)].id,
-        achievement: achievements[Math.floor(Math.random() * achievements.length)].id,
+        achievement: currentAchievement.id,
+        description: currentAchievement.description,
       },
     });
 
