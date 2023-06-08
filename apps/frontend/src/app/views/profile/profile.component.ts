@@ -73,6 +73,12 @@ export class ProfileComponent implements OnInit {
     }, []).slice(0, 3);
   }
 
+  getSortedSkills() {
+    return this.profile?.skills.sort((a: any, b: any) => {
+      return b.level - a.level;
+    });
+  }
+
   showModal(id: string) {
     (
       document.getElementById(id) as HTMLElement & { showModal: () => void }
