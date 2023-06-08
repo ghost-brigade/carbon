@@ -72,6 +72,8 @@ export class AuthenticationService {
         }
       );
 
+      // console.log(data);
+
       if ((await this.userTokenService.validateToken(data.token)) === false) {
         throw new Error();
       }

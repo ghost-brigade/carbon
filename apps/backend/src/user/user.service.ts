@@ -1,6 +1,17 @@
 import { compare, genSalt, hash } from "bcryptjs";
-import { UserCreateType, UserType, UserUpdateType } from "@carbon/zod";
-import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import {
+  UserCreateType,
+  UserPreferenceCreateType,
+  UserSkillCreateType,
+  UserType,
+  UserUpdateType,
+} from "@carbon/zod";
+import {
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnprocessableEntityException,
+} from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 
 @Injectable()
@@ -154,5 +165,85 @@ export class UserService {
 
   async hashPassword(password: string): Promise<string> {
     return await hash(password, await genSalt(10));
+  }
+
+  async addSkillToUser(
+    id: string,
+    createSkill: UserSkillCreateType
+  ): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { skills: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const { skillId, level } = createSkill;
+
+    const existingSkill = user.skills.find(
+      (skill) => skill.skillId === skillId
+    );
+
+    if (existingSkill) {
+      throw new UnprocessableEntityException(
+        "Skill already exists for the user"
+      );
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        skills: {
+          create: { skillId, level },
+        },
+      },
+      include: { skills: true }, // Include the updated skills in the response
+    });
+
+    return updatedUser;
+  }
+
+  async addPreferenceToUser(
+    id: string,
+    createPreference: UserPreferenceCreateType
+  ): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { UserPreference: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const { description, isLiked } = createPreference;
+
+    const existingPreferences = user.UserPreference.filter(
+      (preference) => preference.isLiked === isLiked
+    );
+
+    if (existingPreferences.length >= 5) {
+      const preferenceType = isLiked ? "true" : "false";
+      throw new UnprocessableEntityException(
+        `User already has 5 preferences with isLiked ${preferenceType}`
+      );
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        UserPreference: {
+          create: {
+            description: description,
+            isLiked: isLiked,
+          },
+        },
+      },
+      include: { UserPreference: true },
+    });
+
+    return updatedUser;
   }
 }
