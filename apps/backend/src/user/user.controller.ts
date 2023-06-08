@@ -86,13 +86,13 @@ export class UserController {
     return await this.userService.addSkillToUser(id, createSkill);
   }
 
-  // @Post(":id/preference")
-  // async addPreference(
-  //   @Param("id") id: string,
-  //   @Body() createPreference: UserPreferenceCreateType
-  // ): Promise<UserType> {
-  //   return await this.userService.addPreferenceToUser(id, createPreference);
-  // }
+  @Post(":id/preference")
+  async addPreference(
+    @Param("id") id: string,
+    @Body() createPreference: UserPreferenceCreateType
+  ): Promise<UserType> {
+    return await this.userService.addPreferenceToUser(id, createPreference);
+  }
 
   // @Post(":id/achievement")
   // async addAchievement(
