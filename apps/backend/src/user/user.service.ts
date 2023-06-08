@@ -7,7 +7,7 @@ import { PrismaService } from "../prisma.service";
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createUser: UserCreateType): Promise<any> {
+  async create(createUser: UserCreateType): Promise<UserType> {
     try {
       return (await this.prisma.user.create({
         data: {
@@ -23,35 +23,99 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<any[]> {
+  async findAll({
+    limit,
+    order,
+    include,
+  }: {
+    limit?: number;
+    order?: {
+      [key: string]: "asc" | "desc";
+    };
+    include?: {
+      [key: string]: boolean | object;
+    };
+  }): Promise<UserType[]> {
     try {
-      return (await this.prisma.user.findMany()) as UserType[];
+      const request = {
+        where: {},
+        orderBy: {
+          ...order,
+        },
+        take: limit,
+      };
+
+      if (include) {
+        request["include"] = include;
+      }
+
+      return (await this.prisma.user.findMany(request)) as UserType[];
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching users");
     }
   }
 
-  async findOne(id: string): Promise<any> {
+  // async leaderboardPercentage(): Promise<number> {
+  //   try {
+  //     // calcul if i'm in the top 1% of the leaderboard
+
+  //   } catch (error) {
+  //     throw new InternalServerErrorException("Error while fetching users");
+  //   }
+  // }
+
+  async findOne(id: string): Promise<UserType> {
     try {
       return (await this.prisma.user.findUnique({
         where: { id },
+        include: {
+          skills: {
+            include: {
+              skill: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          taskLists: true,
+          UserPreference: true,
+          School: true,
+          UserAchievement: true,
+        },
       })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching user");
     }
   }
 
-  async findUserByEmail(email: string): Promise<any> {
+  async findUserByEmail(email: string): Promise<UserType> {
     try {
       return (await this.prisma.user.findUnique({
         where: { email },
+        include: {
+          skills: {
+            include: {
+              skill: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
+          taskLists: true,
+          missions: true,
+          UserPreference: true,
+          School: true,
+          UserAchievement: true,
+        },
       })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching user");
     }
   }
 
-  async update(id: string, updateUser: UserUpdateType): Promise<any> {
+  async update(id: string, updateUser: UserUpdateType): Promise<UserType> {
     try {
       if (updateUser.password) {
         updateUser.password = await this.hashPassword(updateUser.password);

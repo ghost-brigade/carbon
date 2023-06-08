@@ -2,11 +2,18 @@ import { UserType } from "@carbon/zod";
 
 export const GetEndpoint = {
   Me: "/user/me",
+  Leaderboard: "/leaderboard/:leaderboard",
 } as const;
 
 export type GetEndpointMap = {
   "/user/me": {
     response: UserType;
+  };
+  "/leaderboard/:leaderboard": {
+    response: UserType[];
+    params: {
+      leaderboard: "experience" | "seniority" | "mission";
+    };
   };
 };
 

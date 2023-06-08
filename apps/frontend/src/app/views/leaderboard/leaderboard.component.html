@@ -1,1 +1,96 @@
-<p>leaderboard works!</p>
+<section
+  class="flex w-full flex-col items-center justify-center overflow-x-hidden">
+  <div class="tabs w-full max-w-lg">
+    <a
+      (click)="setTab('experience')"
+      class="tab tab-bordered flex-1 cursor-pointer {{
+        selectTab() === 'experience' ? 'tab-active' : ''
+      }}"
+      >Expérience</a
+    >
+    <a
+      (click)="setTab('seniority')"
+      class="tab tab-bordered flex-1 cursor-pointer {{
+        selectTab() === 'seniority' ? 'tab-active' : ''
+      }}"
+      >Séniorité</a
+    >
+    <a class="tab tab-bordered flex-1 cursor-pointer">Missions</a>
+  </div>
+
+  <div
+    class="mt-4 max-w-[100vw] overflow-x-auto xl:max-w-3xl"
+    *ngIf="selectTab() === 'experience'">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nom</th>
+          <th>Level</th>
+          <th>XP Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of levelLeaderboard(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <div class="flex items-center space-x-3">
+              <div class="avatar">
+                <div class="mask mask-hexagon h-12 w-12">
+                  <img
+                    src="assets/svg/navbar/picture.jpg"
+                    alt="Avatar Tailwind CSS Component" />
+                </div>
+              </div>
+              <div>
+                <div class="font-bold">
+                  {{ user.firstName }} {{ user.lastName | uppercase }}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>Level {{ getLevel(user) }}</td>
+          <th>{{ user.experience.toLocaleString() }} XP</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    class="mt-4 max-w-[100vw] overflow-x-auto xl:max-w-3xl"
+    *ngIf="selectTab() === 'seniority'">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nom</th>
+          <th>Année d'entrée</th>
+          <th>Séniorité</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of seniorityLeaderboard(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <div class="flex items-center space-x-3">
+              <div class="avatar">
+                <div class="mask mask-hexagon h-12 w-12">
+                  <img
+                    src="assets/svg/navbar/picture.jpg"
+                    alt="Avatar Tailwind CSS Component" />
+                </div>
+              </div>
+              <div>
+                <div class="font-bold">
+                  {{ user.firstName }} {{ user.lastName | uppercase }}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>{{ getStartYear(user) }}</td>
+          <th>{{ getYearsOfExperience(user) }}</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
