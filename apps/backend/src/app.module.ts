@@ -10,6 +10,7 @@ import { SocietyModule } from "./society/society.module";
 import { SchoolModule } from "./school/school.module";
 import { TaskListModule } from "./tasklist/tasklist.module";
 import { MissionModule } from "./mission/mission.module";
+import { LeaderboardModule } from "./leaderboard/leaderboard.module";
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { MissionModule } from "./mission/mission.module";
     SchoolModule,
     TaskListModule,
     MissionModule,
+    LeaderboardModule,
   ],
   exports: [PrismaService],
   providers: [

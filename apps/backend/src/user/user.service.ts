@@ -23,31 +23,62 @@ export class UserService {
     }
   }
 
-  async findAll(): Promise<UserType[]> {
+  async findAll({
+    limit,
+    order,
+    include,
+  }: {
+    limit?: number;
+    order?: {
+      [key: string]: "asc" | "desc";
+    };
+    include?: {
+      [key: string]: boolean | object;
+    };
+  }): Promise<UserType[]> {
     try {
-      return (await this.prisma.user.findMany({
-        include: {
-          skills: true,
-          taskLists: true,
-          missions: true,
-          UserPreference: true,
-          School: true,
-          UserAchievement: true,
+      const request = {
+        where: {},
+        orderBy: {
+          ...order,
         },
-      })) as UserType[];
+        take: limit,
+      };
+
+      if (include) {
+        request["include"] = include;
+      }
+
+      return (await this.prisma.user.findMany(request)) as UserType[];
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching users");
     }
   }
+
+  // async leaderboardPercentage(): Promise<number> {
+  //   try {
+  //     // calcul if i'm in the top 1% of the leaderboard
+
+  //   } catch (error) {
+  //     throw new InternalServerErrorException("Error while fetching users");
+  //   }
+  // }
 
   async findOne(id: string): Promise<UserType> {
     try {
       return (await this.prisma.user.findUnique({
         where: { id },
         include: {
-          skills: true,
+          skills: {
+            include: {
+              skill: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
           taskLists: true,
-          missions: true,
           UserPreference: true,
           School: true,
           UserAchievement: true,
@@ -63,7 +94,15 @@ export class UserService {
       return (await this.prisma.user.findUnique({
         where: { email },
         include: {
-          skills: true,
+          skills: {
+            include: {
+              skill: {
+                select: {
+                  name: true,
+                },
+              },
+            },
+          },
           taskLists: true,
           missions: true,
           UserPreference: true,
