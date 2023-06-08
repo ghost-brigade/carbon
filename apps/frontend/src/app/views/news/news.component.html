@@ -1,1 +1,26 @@
-<p>news works!</p>
+<!-- <div class="bg-[url('assets/img/bg/aaabstract1.png')]"> -->
+<div class="flex h-full w-full items-center justify-center">
+  <div
+    class="grid grid-cols-1 gap-4 rounded-[2rem] bg-[url('assets/img/bg/aaabstract1.png')] p-8 lg:w-[80%] lg:grid-cols-4 lg:grid-rows-3">
+    <div
+      *ngFor="let item of news"
+      class="bg-opacity-[20%] {{item.color}} glass card bg-base-100 image-full rounded-[2rem] h-[230px] shadow-xl row-span-1 text-red-500 lg:{{
+        item.size
+      }} ">
+      <figure><img src="/assets/img/news/{{ item.src }}" alt="Shoes"/></figure>
+      <div class="card-body">
+        <h2 class="card-title">
+          {{ item.title }}
+          <div class="badge badge-outline">{{ item.tag }}</div>
+        </h2>
+        <p>{{ item.content }}</p>
+        <div class="card-actions justify-end">
+          <div class="badge badge-outline">Fashion</div>
+          <div class="badge badge-outline">Products</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- </div> -->
