@@ -52,7 +52,24 @@ export class UserController {
   @UseInterceptors(new UserPasswordInterceptor(), new UserSalaryInterceptor())
   @HttpCode(200)
   async findAll(@Param() params: UserParamsType): Promise<UserType[]> {
-    return await this.userService.findAll();
+    return await this.userService.findAll({
+      include: {
+        skills: {
+          include: {
+            skill: {
+              select: {
+                name: true,
+              }
+            },
+          },
+        },
+        taskLists: true,
+        missions: true,
+        UserPreference: true,
+        School: true,
+        UserAchievement: true,
+      },
+    });
   }
 
   @Get(":id")

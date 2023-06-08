@@ -1,0 +1,11 @@
+<div
+  class="b-safe toast cursor-pointer"
+  *ngIf="$visible()"
+  @toast
+  (click)="hide()">
+  <div class="alert alert-{{ $type().toLowerCase() }}">
+    <div>
+      <span>{{ $message() }}</span>
+    </div>
+  </div>
+</div>
