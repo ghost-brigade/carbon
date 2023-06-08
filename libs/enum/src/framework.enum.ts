@@ -52,6 +52,7 @@ export const FrameworkValues = {
   HIBERNATE: "Hibernate",
   TENSORFLOW: "TensorFlow",
   PYTORCH: "PyTorch",
+  ANGULAR: "Angular",
 };
 
 export type Framework = (typeof FrameworkValues)[keyof typeof FrameworkValues];
