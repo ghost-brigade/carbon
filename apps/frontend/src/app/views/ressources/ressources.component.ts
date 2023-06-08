@@ -30,6 +30,7 @@ export class RessourcesComponent {
   ];
   loaderService: any;
   requestService: any;
+  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
   ngOnInit(): void {
     this.loaderService.show();
     this.requestService
