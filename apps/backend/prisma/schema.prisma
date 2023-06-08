@@ -13,7 +13,7 @@ model User {
   id              String            @id @default(uuid())
   email           String            @unique
   password        String
-  firstName       String?
+  firstName        String?
   lastName        String?
   birthDate       DateTime?
   entryDate       DateTime          @default(now())
@@ -155,12 +155,18 @@ model School {
   updatedAt   DateTime @updatedAt
 }
 
+enum FileType {
+  avatar
+  resource
+}
+
 model File {
   id          String   @id @default(uuid())
   name        String
   description String
   tags        String[]
   path        String
+  type        FileType @default(resource)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   User        User[]
