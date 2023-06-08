@@ -22,6 +22,7 @@ export const UserSchema = z
     missions: z.any(),
     userPreferences: z.any(),
     school: z.any(),
+    avatar: z.any(),
     /** TODO here */
   })
   .merge(TimestampSchema);
