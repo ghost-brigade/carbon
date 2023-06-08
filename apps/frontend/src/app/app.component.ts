@@ -5,6 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { SplashScreen } from "@capacitor/splash-screen";
 import { NavbarComponent } from "./core/components/navbar/navbar.component";
 import { LoaderComponent } from "./core/components/loader/loader.component";
+import { ToastComponent } from "./core/components/toast/toast.component";
 
 @Component({
   standalone: true,
@@ -14,6 +15,7 @@ import { LoaderComponent } from "./core/components/loader/loader.component";
     FormsModule,
     LoaderComponent,
     NavbarComponent,
+    ToastComponent,
   ],
   selector: "carbon-root",
   templateUrl: "./app.component.html",
