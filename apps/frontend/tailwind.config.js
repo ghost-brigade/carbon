@@ -11,6 +11,10 @@ module.exports = {
   safelist: [
     "col-span-1",
     "col-span-2",
+    "alert-success", 
+    "alert-warning", 
+    "alert-error", 
+    "alert-info"
   ],
   theme: {
     extend: {},

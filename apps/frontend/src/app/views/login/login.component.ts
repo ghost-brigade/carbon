@@ -15,6 +15,7 @@ import { finalize } from "rxjs";
 import { LoaderService } from "../../core/components/loader/loader.service";
 import { AuthService } from "../../core/services/auth.service";
 import { Router } from "@angular/router";
+import { ToastService } from "../../core/components/toast/toast.service";
 
 @Component({
   selector: "carbon-login",
@@ -51,6 +52,7 @@ export class LoginComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
   authService = inject(AuthService);
+  toastService = inject(ToastService);
   router = inject(Router);
   email = signal("");
   password = signal("");
@@ -86,8 +88,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(["/profile/me"]);
           }
         },
-        error: (err) => {
-          console.error(err);
+        error: () => {
+          this.toastService.show("ERROR", "Email ou mot de passe incorrect");
         },
       });
   }

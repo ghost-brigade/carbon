@@ -6,3 +6,6 @@ migrate:
 
 seed:
 	@npx prisma db seed
+
+reset:
+	@npx prisma migrate reset --force
