@@ -1,0 +1,66 @@
+<section class="flex w-full flex-col items-center justify-center">
+  <div class="mt-20 flex flex-col items-center justify-center gap-4">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="100"
+      height="110"
+      class="min-w-36 my-12"
+      fill="none">
+      <path
+        fill="#FDFDFD"
+        d="M88.722 19.173 60.526 2.632C57.52.752 53.76 0 50 0c-3.76 0-7.519 1.128-10.902 3.008L10.902 19.173C4.135 22.933 0 30.45 0 37.97v32.707c0 7.894 4.135 15.037 10.902 18.797l28.196 16.541c3.383 1.88 7.143 3.008 10.902 3.008 3.76 0 7.519-1.128 10.902-3.008l28.196-16.541C95.865 85.714 100 78.195 100 70.677V37.97c-.376-7.519-4.511-14.662-11.278-18.797Zm-.376 51.88c0 3.759-1.88 7.142-5.263 9.022L54.887 96.616c-1.504.752-3.383 1.504-5.263 1.504s-3.383-.376-5.263-1.504l-28.196-16.54c-3.007-1.88-5.263-5.264-5.263-9.023V38.346c0-3.76 1.88-7.143 5.263-9.023l28.196-16.541c1.504-.752 3.383-1.504 5.263-1.504s3.383.376 5.263 1.504l28.196 16.541c3.007 1.88 5.263 5.264 5.263 9.023v32.707Z" />
+    </svg>
+    <div class="flex w-[230px] flex-col gap-4 transition-all">
+      <input
+        type="email"
+        placeholder="Email"
+        [ngModel]="email()"
+        (ngModelChange)="email.set($event)"
+        class="input input-bordered join-item w-full" />
+      <div
+        class="join"
+        @enter
+        *ngIf="isValidEmail()">
+        <input
+          (keydown.Enter)="submitLogin()"
+          type="password"
+          placeholder="•••••••••"
+          [ngModel]="password()"
+          (ngModelChange)="password.set($event)"
+          class="input input-bordered join-item w-full" />
+        <button
+          class="btn btn-accent join-item"
+          (click)="submitLogin()"
+          [disabled]="password().length === 0">
+          →
+        </button>
+      </div>
+
+      <button
+        @enter
+        *ngIf="!isValidEmail()"
+        class="flex h-12 w-full items-center justify-around gap-4 rounded-lg bg-white p-4">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="705.6"
+          height="720"
+          class="h-6 w-6"
+          viewBox="0 0 186.69 190.5">
+          <path
+            fill="#4285f4"
+            d="M95.25 77.932v36.888h51.262c-2.251 11.863-9.006 21.908-19.137 28.662l30.913 23.986c18.011-16.625 28.402-41.044 28.402-70.052 0-6.754-.606-13.249-1.732-19.483z" />
+          <path
+            fill="#34a853"
+            d="m41.869 113.38-6.972 5.337-24.679 19.223c15.673 31.086 47.796 52.561 85.03 52.561 25.717 0 47.278-8.486 63.038-23.033l-30.913-23.986c-8.486 5.715-19.31 9.179-32.125 9.179-24.765 0-45.806-16.712-53.34-39.226z" />
+          <path
+            fill="#fbbc05"
+            d="M10.218 52.561C3.724 65.376.001 79.837.001 95.25s3.723 29.874 10.217 42.689c0 .086 31.693-24.592 31.693-24.592-1.905-5.715-3.031-11.776-3.031-18.098s1.126-12.383 3.031-18.098z" />
+          <path
+            fill="#ea4335"
+            d="M95.25 37.927c14.028 0 26.497 4.849 36.455 14.201l27.276-27.276C142.442 9.439 120.968 0 95.25 0 58.016 0 25.891 21.388 10.218 52.561L41.91 77.153c7.533-22.514 28.575-39.226 53.34-39.226z" />
+        </svg>
+        <span class="text-sm text-neutral-800">Continuer avec Google</span>
+      </button>
+    </div>
+  </div>
+</section>

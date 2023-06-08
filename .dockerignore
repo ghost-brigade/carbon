@@ -1,0 +1,8 @@
+.angular
+.github
+.nx-container
+.vscode
+coverage
+terraform
+thunder-test
+tools

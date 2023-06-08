@@ -1,0 +1,23 @@
+{
+  "ignoreFiles": [
+    "**/*"
+  ],
+  "extends": [
+    "stylelint-prettier/recommended"
+  ],
+  "overrides": [
+    {
+      "files": [
+        "**/*.css"
+      ],
+      "extends": [
+        "stylelint-config-standard"
+      ],
+      "rules": {
+        "at-rule-no-unknown": null,
+        "no-empty-source": null
+      }
+    }
+  ],
+  "rules": {}
+}

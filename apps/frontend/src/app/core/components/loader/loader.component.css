@@ -1,0 +1,203 @@
+.loader {
+  background-color: #000000a0;
+  backdrop-filter: blur(5px);
+  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div {
+  position: absolute;
+  width: 90px;
+  height: 51px;
+}
+
+div div {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+div div span {
+  position: absolute;
+  width: 4px;
+  height: 0;
+  background: #fdfdfd;
+  z-index: 11;
+}
+
+div:nth-of-type(2) {
+  transform: rotate(60deg);
+}
+
+div:nth-of-type(3) {
+  transform: rotate(-60deg);
+}
+
+.h1 {
+  animation: load1 3.6s ease 0s infinite;
+  left: 0;
+}
+
+.h2 {
+  animation: load2 3.6s ease 0.3s infinite;
+  right: 0;
+}
+
+.h3 {
+  animation: load3 3.6s ease 0.6s infinite;
+  right: 0;
+}
+
+.h4 {
+  animation: load4 3.6s ease 0.9s infinite;
+  right: 0;
+}
+
+.h5 {
+  animation: load5 3.6s ease 1.2s infinite;
+  left: 0;
+}
+
+.h6 {
+  animation: load6 3.6s ease 1.5s infinite;
+  left: 0;
+}
+
+@keyframes load1 {
+  0% {
+    bottom: 0;
+    height: 0;
+  }
+
+  7% {
+    bottom: 0;
+    height: 100%;
+  }
+
+  50% {
+    top: 0;
+    height: 100%;
+  }
+
+  60% {
+    top: 0;
+    height: 0;
+  }
+}
+
+@keyframes load2 {
+  0% {
+    top: 0;
+    height: 0;
+  }
+
+  7% {
+    top: 0;
+    height: 100%;
+  }
+
+  50% {
+    bottom: 0;
+    height: 100%;
+  }
+
+  60% {
+    bottom: 0;
+    height: 0;
+  }
+}
+
+@keyframes load3 {
+  0% {
+    top: 0;
+    height: 0;
+  }
+
+  7% {
+    top: 0;
+    height: 100%;
+  }
+
+  50% {
+    bottom: 0;
+    height: 100%;
+  }
+
+  60% {
+    bottom: 0;
+    height: 0;
+  }
+}
+
+@keyframes load4 {
+  0% {
+    top: 0;
+    height: 0;
+  }
+
+  7% {
+    top: 0;
+    height: 100%;
+  }
+
+  50% {
+    bottom: 0;
+    height: 100%;
+  }
+
+  60% {
+    bottom: 0;
+    height: 0;
+  }
+}
+
+@keyframes load5 {
+  0% {
+    bottom: 0;
+    height: 0;
+  }
+
+  7% {
+    bottom: 0;
+    height: 100%;
+  }
+
+  50% {
+    top: 0;
+    height: 100%;
+  }
+
+  60% {
+    top: 0;
+    height: 0;
+  }
+}
+
+@keyframes load6 {
+  0% {
+    bottom: 0;
+    height: 0;
+  }
+
+  7% {
+    bottom: 0;
+    height: 100%;
+  }
+
+  50% {
+    top: 0;
+    height: 100%;
+  }
+
+  60% {
+    top: 0;
+    height: 0;
+  }
+}
