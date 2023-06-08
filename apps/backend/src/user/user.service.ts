@@ -1,6 +1,8 @@
+import { School } from "@prisma/client";
 import { compare, genSalt, hash } from "bcryptjs";
 import {
   UserCreateType,
+  UserParamsType,
   UserPreferenceCreateType,
   UserSkillCreateType,
   UserType,
@@ -35,10 +37,12 @@ export class UserService {
   }
 
   async findAll({
+    params,
     limit,
     order,
     include,
   }: {
+    params?: UserParamsType;
     limit?: number;
     order?: {
       [key: string]: "asc" | "desc";
@@ -48,7 +52,7 @@ export class UserService {
     };
   }): Promise<UserType[]> {
     try {
-      const request = {
+      const query = {
         where: {},
         orderBy: {
           ...order,
@@ -56,11 +60,21 @@ export class UserService {
         take: limit,
       };
 
-      if (include) {
-        request["include"] = include;
-      }
+      if (include) query["include"] = include;
+      if (params.firstName)
+        query.where["firstName"] = { startsWith: params.firstName };
+      if (params.lastName)
+        query.where["lastName"] = { startsWith: params.lastName };
+      if (params.skills)
+        query.where["skills"] = {
+          some: {
+            skill: {
+              name: { in: params.skills },
+            },
+          },
+        };
 
-      return (await this.prisma.user.findMany(request)) as UserType[];
+      return (await this.prisma.user.findMany(query)) as UserType[];
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching users");
     }

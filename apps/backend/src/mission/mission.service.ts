@@ -1,4 +1,9 @@
-import { MissionType, MissionCreateType, MissionUpdateType } from "@carbon/zod";
+import {
+  MissionType,
+  MissionCreateType,
+  MissionUpdateType,
+  MissionParamsType,
+} from "@carbon/zod";
 import { SocietyService } from "../society/society.service";
 import {
   Injectable,
@@ -6,6 +11,7 @@ import {
   NotFoundException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
+import { Mission } from "@prisma/client";
 
 @Injectable()
 export class MissionService {
@@ -32,16 +38,27 @@ export class MissionService {
         },
       })) as any;
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
 
-  async findAll(): Promise<MissionType[]> {
+  async findAll({
+    params,
+  }: {
+    params?: MissionParamsType;
+  }): Promise<Mission[]> {
     try {
-      const missions = await this.prisma.mission.findMany();
-      return missions as any[];
+      const query = {};
+
+      if (params.name) query["name"] = { startsWith: params.name };
+
+      const missions = await this.prisma.mission.findMany({
+        where: query,
+      });
+
+      return missions;
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException();
     }
   }
