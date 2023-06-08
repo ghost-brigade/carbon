@@ -54,7 +54,47 @@ export const UserUpdateSchema = UserSchema.pick({
   missions: true,
 });
 
+export const UserSkillCreateSchema = z.object({
+  userId: z.string(),
+  skillId: z.string(),
+  level: z.number(),
+});
+
+export const UserPreferenceCreateSchema = z.object({
+  userId: z.string(),
+  description: z.string(),
+  isLiked: z.boolean(),
+});
+
+export const UserAchievementCreateSchema = z.object({
+  userId: z.string(),
+  achievement: z.string(),
+  description: z.string().optional(),
+});
+
+export const UserTaskListCreateSchema = z.object({
+  userId: z.string(),
+  taskListId: z.string(),
+  status: z.string(),
+});
+
+export const UserMissionCreateSchema = z.object({
+  userId: z.string(),
+  missionId: z.string(),
+});
+
+export const UserSchoolCreateSchema = z.object({
+  userId: z.string(),
+  schoolId: z.string(),
+});
+
 export type UserType = z.infer<typeof UserSchema>;
 export type UserCreateType = z.infer<typeof UserCreateSchema>;
 export type UserUpdateType = z.infer<typeof UserUpdateSchema>;
 export type UserParamsType = z.infer<typeof UserParamsSchema>;
+export type UserSkillCreateType = z.infer<typeof UserSkillCreateSchema>;
+export type UserPreferenceCreateType = z.infer<typeof UserPreferenceCreateSchema>;
+export type UserAchievementCreateType = z.infer<typeof UserAchievementCreateSchema>;
+export type UserTaskListCreateType = z.infer<typeof UserTaskListCreateSchema>;
+export type UserMissionCreateType = z.infer<typeof UserMissionCreateSchema>;
+export type UserSchoolCreateType = z.infer<typeof UserSchoolCreateSchema>;
