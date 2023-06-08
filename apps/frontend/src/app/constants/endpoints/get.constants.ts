@@ -1,13 +1,18 @@
-import { UserType } from "@carbon/zod";
+import { UserType, NewsType } from "@carbon/zod";
+
 
 export const GetEndpoint = {
   Me: "/user/me",
   Leaderboard: "/leaderboard/:leaderboard",
+  News: "/news",
 } as const;
 
 export type GetEndpointMap = {
   "/user/me": {
     response: UserType;
+  };
+  "/news": {
+    response: NewsType;
   };
   "/leaderboard/:leaderboard": {
     response: UserType[];

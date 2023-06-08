@@ -8,4 +8,23 @@ import { CommonModule } from "@angular/common";
   templateUrl: "./ressources.component.html",
   styleUrls: ["./ressources.component.css"],
 })
-export class RessourcesComponent {}
+export class RessourcesComponent {
+  ressources = [
+    {
+      name: "Ressource 1",
+      description: "Description de la ressource 1",
+      image: "assets/images/ressource1.png",
+    },
+    {
+      name: "Ressource 2",
+      description: "Description de la ressource 2",
+      image: "assets/images/ressource2.png",
+    },
+    {
+      name: "Ressource 3",
+      description: "Description de la ressource 3",
+      image: "assets/images/ressource3.png",
+    },
+    
+  ]
+}

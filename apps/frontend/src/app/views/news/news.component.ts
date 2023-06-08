@@ -1,5 +1,9 @@
-import { Component } from "@angular/core";
+import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
+import { GetEndpoint } from "../../constants/endpoints/get.constants";
+import { finalize } from "rxjs";
+import { RequestService } from "../../shared/services/request.service";
+import { LoaderService } from "../../core/components/loader/loader.service";
 
 @Component({
   selector: "carbon-news",
@@ -8,10 +12,13 @@ import { CommonModule } from "@angular/common";
   templateUrl: "./news.component.html",
   styleUrls: ["./news.component.css"],
 })
-export class NewsComponent {
+export class NewsComponent implements OnInit {
+  requestService = inject(RequestService);
+  loaderService = inject(LoaderService);
   news = [
     {
       title: "🎤 Nouvelle conference",
+
       tag: "Carbon",
       src: "1.jpg",
       content: "Conference JS le 03/24",
@@ -99,4 +106,17 @@ export class NewsComponent {
       color: "bg-base-100",
     },
   ];
+  ngOnInit(): void {
+    this.loaderService.show();
+    this.requestService
+      .get({
+        endpoint: GetEndpoint.Me,
+      })
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+        },
+      });
+  }
 }
