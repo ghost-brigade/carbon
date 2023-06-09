@@ -62,9 +62,15 @@ export class UserService {
 
       if (include) query["include"] = include;
       if (params.firstName)
-        query.where["firstName"] = { startsWith: params.firstName };
+        query.where["firstName"] = {
+          startsWith: params.firstName,
+          mode: "insensitive",
+        };
       if (params.lastName)
-        query.where["lastName"] = { startsWith: params.lastName };
+        query.where["lastName"] = {
+          startsWith: params.lastName,
+          mode: "insensitive",
+        };
       if (params.skills)
         query.where["skills"] = {
           some: {
@@ -72,6 +78,7 @@ export class UserService {
               name: { in: params.skills },
             },
           },
+          mode: "insensitive",
         };
 
       return (await this.prisma.user.findMany(query)) as UserType[];
