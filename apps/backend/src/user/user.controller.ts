@@ -9,6 +9,7 @@ import {
   UseGuards,
   HttpCode,
   UseInterceptors,
+  Query,
 } from "@nestjs/common";
 import { UserService } from "./user.service";
 import {
@@ -52,8 +53,9 @@ export class UserController {
     new UserSalaryInterceptor()
   )
   @HttpCode(200)
-  async findAll(@Param() params: UserParamsType): Promise<UserType[]> {
+  async findAll(@Query() params: UserParamsType): Promise<UserType[]> {
     return await this.userService.findAll({
+      params,
       include: {
         skills: {
           include: {

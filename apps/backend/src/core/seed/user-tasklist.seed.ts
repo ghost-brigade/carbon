@@ -1,5 +1,6 @@
-import { PrismaClient, TaskList, User } from "@prisma/client";
+import { PrismaClient, TaskList } from "@prisma/client";
 import { TaskListStatusValues } from "../../../../../libs/enum/src/task-list-status.enum";
+import { UserType } from "@carbon/zod";
 
 const prisma = new PrismaClient();
 
@@ -8,7 +9,10 @@ enum Status {
   PENDING = "PENDING",
 }
 
-export default async (users: User[], taskList: TaskList[]): Promise<any[]> => {
+export default async (
+  users: UserType[],
+  taskList: TaskList[]
+): Promise<any[]> => {
   const userTaskLists: any[] = [];
 
   for (const user of users) {

@@ -15,6 +15,10 @@ export const MissionSchema = z
   })
   .merge(TimestampSchema);
 
+export const MissionParamsSchema = MissionSchema.pick({
+  name: true,
+});
+
 export const MissionCreateSchema = MissionSchema.pick({
   name: true,
   description: true,
@@ -33,3 +37,4 @@ export const MissionUpdateSchema = MissionSchema.omit({
 export type MissionType = z.infer<typeof MissionSchema>;
 export type MissionCreateType = z.infer<typeof MissionCreateSchema>;
 export type MissionUpdateType = z.infer<typeof MissionUpdateSchema>;
+export type MissionParamsType = z.infer<typeof MissionParamsSchema>;

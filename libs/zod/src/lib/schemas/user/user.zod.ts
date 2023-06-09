@@ -31,9 +31,7 @@ export const UserParamsSchema = UserSchema.pick({
   entryDate: true,
   firstName: true,
   lastName: true,
-  missions: true,
   skills: true,
-  taskLists: true,
 });
 
 export const UserCreateSchema = UserSchema.pick({

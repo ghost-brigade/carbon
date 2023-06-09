@@ -2,23 +2,24 @@ import {
   Controller,
   Post,
   Body,
-  UseGuards,
   HttpCode,
   UploadedFile,
   UseInterceptors,
   BadRequestException,
   Param,
   Get,
-  Put,
   Delete,
+  Query,
 } from "@nestjs/common";
-import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { FileInterceptor } from "@nestjs/platform-express";
 // Due to a bug we need to import Multer without using it
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Multer } from "multer";
 import { FileService } from "./file.service";
-import { FileCreateType } from "libs/zod/src/lib/schemas/file/file.zod";
+import {
+  FileCreateType,
+  FileParamsType,
+} from "libs/zod/src/lib/schemas/file/file.zod";
 
 @Controller("file")
 export class FileController {
@@ -58,8 +59,8 @@ export class FileController {
 
   @Get()
   @HttpCode(200)
-  async findAll() {
-    return await this.fileService.findAll();
+  async findAll(@Query() params: FileParamsType) {
+    return await this.fileService.findAll(params);
   }
 
   @Get(":id")
