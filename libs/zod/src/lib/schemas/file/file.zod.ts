@@ -1,12 +1,13 @@
 import { z } from "zod";
 import { TimestampSchema } from "../timestamp.zod";
+import { FileValues } from "@carbon/enum";
 
 export const FileSchema = z
   .object({
     id: z.string(),
     name: z.string(),
     description: z.string().optional(),
-    type: z.enum(["avatar", "resource"]).default("resource"),
+    type: z.nativeEnum(FileValues).default(FileValues.Resource),
     tags: z
       .array(
         z.string().max(30, { message: "Tag must be less than 30 characters" })

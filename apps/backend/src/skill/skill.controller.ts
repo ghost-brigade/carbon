@@ -9,8 +9,13 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { SkillService } from "./skill.service";
-import { SkillCreateSchema, SkillCreateType, SkillUpdateSchema, SkillUpdateType } from "@carbon/zod";
-import { Public } from "../core/decorators/public.decorator";
+import {
+  SkillCreateSchema,
+  SkillCreateType,
+  SkillType,
+  SkillUpdateSchema,
+  SkillUpdateType,
+} from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 
 @Controller("skill")
@@ -18,19 +23,16 @@ export class SkillController {
   constructor(private readonly skillService: SkillService) {}
 
   @UseGuards(new ZodGuard("body", SkillCreateSchema))
-  @Public()
   @Post()
-  async create(@Body() createSkill: SkillCreateType) {
+  async create(@Body() createSkill: SkillCreateType): Promise<SkillType> {
     return this.skillService.create(createSkill);
   }
-  
-  @Public()
+
   @Get()
   async findAll() {
     return this.skillService.findAll();
   }
 
-  @Public()
   @Get(":id")
   async findOne(@Param("id") id: string) {
     return await this.skillService.findOne(id);

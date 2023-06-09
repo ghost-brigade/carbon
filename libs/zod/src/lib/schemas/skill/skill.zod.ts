@@ -1,18 +1,16 @@
 import { z } from "zod";
+import { TaskListSchema } from "../tasklist";
+import { TimestampSchema } from "../timestamp.zod";
 
-export const SkillSchema = z.object({
-  id: z.string().uuid(),
-  name: z.string(),
-  language: z.string(),
-
-  /** TODO here */
-  userSkills: z.any(),
-  taskLists: z.any(),
-  /** TODO here */
-  
-  createdAt: z.date(),
-  updatedAt: z.date(),
-});
+export const SkillSchema = z
+  .object({
+    id: z.string().uuid(),
+    name: z.string(),
+    language: z.string().optional().nullable().default(null),
+    userSkills: z.any(),
+    taskLists: TaskListSchema,
+  })
+  .merge(TimestampSchema);
 
 export const SkillCreateSchema = SkillSchema.pick({
   name: true,
