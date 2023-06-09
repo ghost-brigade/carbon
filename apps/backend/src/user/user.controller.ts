@@ -20,12 +20,15 @@ import {
   UserParamsType,
   UserSkillCreateType,
   UserPreferenceCreateType,
+  UserUpdateSchema,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
 import { UserContext } from "../core/decorators/user-context.decorator";
 import { UserSalaryInterceptor } from "../core/interceptors/user-salary.interceptor";
 import { UserAvatarInterceptor } from "../core/interceptors/user-avatar.interceptor";
+import { AuthorizationGuard } from "../core/guard/authorization.guard";
+import { RolesValues } from "@carbon/enum";
 
 @Controller("user")
 export class UserController {
@@ -42,6 +45,7 @@ export class UserController {
   @Post()
   @UseInterceptors(new UserPasswordInterceptor(), new UserSalaryInterceptor())
   @HttpCode(201)
+  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   async create(@Body() createUser: UserCreateType): Promise<UserType> {
     return await this.userService.create(createUser);
   }
@@ -94,15 +98,18 @@ export class UserController {
     new UserSalaryInterceptor()
   )
   @HttpCode(200)
+  @UseGuards(new ZodGuard("body", UserUpdateSchema))
   async update(
     @Param("id") id: string,
-    @Body() updateUser: UserUpdateType
+    @Body() updateUser: UserUpdateType,
+    @UserContext() user: UserType
   ): Promise<UserType> {
-    return await this.userService.update(id, updateUser);
+    return await this.userService.update(id, updateUser, user);
   }
 
   @Delete(":id")
   @HttpCode(204)
+  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   async remove(@Param("id") id: string): Promise<boolean> {
     return await this.userService.remove(id);
   }

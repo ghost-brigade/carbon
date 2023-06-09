@@ -7,6 +7,7 @@ import {
 import { map } from "rxjs/operators";
 import { FileService } from "../../file/file.service";
 import { UserType } from "@carbon/zod";
+import { FileType } from "@prisma/client";
 
 @Injectable()
 export class UserAvatarInterceptor implements NestInterceptor {
@@ -25,7 +26,14 @@ export class UserAvatarInterceptor implements NestInterceptor {
       return await Promise.all(
         user.map(async (u) => {
           if (u.avatar) {
-            u.avatar = await this.getSignedAvatarUrl(u.avatar);
+            if (typeof u.avatar === "string") {
+              throw new Error("Avatar is not an object");
+            }
+
+            u.avatar = await this.getSignedAvatarUrl({
+              id: u.avatar.id,
+              path: u.avatar.path,
+            });
           }
 
           return u;
@@ -34,7 +42,14 @@ export class UserAvatarInterceptor implements NestInterceptor {
     }
 
     if (user.avatar) {
-      user.avatar = await this.getSignedAvatarUrl(user.avatar);
+      if (typeof user.avatar === "string") {
+        throw new Error("Avatar is not an object");
+      }
+
+      user.avatar = await this.getSignedAvatarUrl({
+        id: user.avatar.id,
+        path: user.avatar.path,
+      });
     }
 
     return user;

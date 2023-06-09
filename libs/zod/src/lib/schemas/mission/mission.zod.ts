@@ -5,13 +5,21 @@ export const MissionSchema = z
   .object({
     id: z.string(),
     name: z.string(),
-    societyId: z.string().optional(),
-    userId: z.string().optional(),
-    description: z.string().optional(),
-    dateStart: z.string(),
-    dateEnd: z.string(),
+    description: z.string(),
+    dateStart: z.string().or(z.date()),
+    dateEnd: z.string().or(z.date()).optional(),
     rating: z.number().optional(),
     feedback: z.string().optional(),
+    averageDailyRate: z.string().or(
+      z.array(
+        z.object({
+          amount: z.number(),
+          date: z.string().or(z.date()),
+        })
+      )
+    ),
+    societyId: z.string().optional(),
+    userId: z.string().optional(),
   })
   .merge(TimestampSchema);
 
