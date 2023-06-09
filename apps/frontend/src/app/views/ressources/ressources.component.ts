@@ -28,20 +28,35 @@ export class RessourcesComponent {
       image: "assets/images/ressource3.png",
     },
   ];
-  loaderService: any;
-  requestService: any;
-  // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
-  ngOnInit(): void {
-    this.loaderService.show();
-    this.requestService
-      .get({
-        endpoint: GetEndpoint.Me,
-      })
-      .pipe(finalize(() => this.loaderService.hide()))
-      .subscribe({
-        next: (res: any) => {
-          console.log(res);
-        },
-      });
-  }
+  categories = [
+    {
+      name: "Catégorie 1",
+      image: "assets/images/categorie1.png",
+    },
+    {
+      name: "Catégorie 2",
+      image: "assets/images/categorie2.png",
+    },
+    {
+      name: "Catégorie 3",
+      image: "assets/images/categorie3.png",
+    },
+  ];
+  
+  // loaderService: any;
+  // requestService: any;
+  // // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
+  // ngOnInit(): void {
+  //   this.loaderService.show();
+  //   this.requestService
+  //     .get({
+  //       endpoint: GetEndpoint.Me,
+  //     })
+  //     .pipe(finalize(() => this.loaderService.hide()))
+  //     .subscribe({
+  //       next: (res: any) => {
+  //         console.log(res);
+  //       },
+  //     });
+  // }
 }
