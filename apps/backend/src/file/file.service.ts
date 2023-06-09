@@ -3,11 +3,13 @@ import {
   FileCreateType,
   FileParamsType,
   FileType,
+  UserType,
 } from "@carbon/zod";
 import {
   BadRequestException,
   Injectable,
   InternalServerErrorException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
 import {
@@ -17,12 +19,17 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+import { UserService } from "../user/user.service";
+import { RolesValues } from "@carbon/enum";
 
 @Injectable()
 export class FileService {
   private S3: S3Client;
 
-  constructor(private readonly prisma: PrismaService) {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly userService: UserService
+  ) {
     this.S3 = new S3Client({
       region: "auto",
       endpoint: `https://${process.env.AWS_ACCOUNT_ID}.r2.cloudflarestorage.com`,
@@ -203,18 +210,37 @@ export class FileService {
     }
   }
 
-  async remove(id: string): Promise<boolean> {
+  async remove(id: string, user: UserType): Promise<boolean> {
     if (!id) {
       throw new BadRequestException("Invalid file id");
     }
 
-    try {
-      const file = await this.findOne(id);
+    const file = await this.findOne(id);
 
-      if (!file) {
-        throw new BadRequestException("File not found");
+    if (!file) {
+      throw new BadRequestException("File not found");
+    }
+
+    if (
+      this.userService.hasRight(user, [
+        RolesValues.COMMERCIAL,
+        RolesValues.HR,
+      ]) === false
+    ) {
+      if (typeof user.avatar === "string") {
+        throw new BadRequestException("User has an avatar");
       }
 
+      if (file.type !== "avatar") {
+        throw new BadRequestException("File type is not avatar");
+      }
+
+      if (file.id !== user.avatar.id) {
+        throw new BadRequestException("File is not your avatar");
+      }
+    }
+
+    try {
       await this.S3.send(
         new DeleteObjectCommand({
           Bucket: process.env.AWS_BUCKET_NAME,
