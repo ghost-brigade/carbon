@@ -24,6 +24,10 @@ export class AuthenticationService {
     private readonly userTokenService: UserTokenService
   ) {}
 
+  async logout(token: string): Promise<boolean> {
+    return await this.userTokenService.invalidateToken(token);
+  }
+
   async login(payload: LoginType): Promise<LoginResponseType> {
     if (!payload.email || !payload.password) {
       new UnprocessableEntityException("Email and password are required");
@@ -65,18 +69,23 @@ export class AuthenticationService {
         throw new Error();
       }
 
-      const data: JwtResponseType = await this.jwtService.verifyAsync(
-        access_token,
-        {
-          secret: JWT_SECRET,
-        }
-      );
+      const data = await this.decodeToken(access_token);
 
       if ((await this.userTokenService.validateToken(data.token)) === false) {
         throw new Error();
       }
 
       return await this.userService.findUserByEmail(data.email);
+    } catch {
+      throw new UnauthorizedException("Token is invalid or expired");
+    }
+  }
+
+  async decodeToken(access_token: string): Promise<JwtResponseType> {
+    try {
+      return await this.jwtService.verifyAsync(access_token, {
+        secret: JWT_SECRET,
+      });
     } catch {
       throw new UnauthorizedException("Token is invalid or expired");
     }

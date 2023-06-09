@@ -3,16 +3,21 @@ import { CommonModule } from "@angular/common";
 import { appRoutes } from "../../../app.routes";
 import { AuthService } from "../../services/auth.service";
 import { NavigationEnd, Router, RouterModule } from "@angular/router";
+import { finalize } from "rxjs";
+import { RequestService } from "../../../shared/services/request.service";
+import { LoaderService } from "../loader/loader.service";
+import { GetEndpoint } from "../../../constants/endpoints/get.constants";
 
 @Component({
   selector: "carbon-navbar",
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.css"],
 })
 export class NavbarComponent {
   authService = inject(AuthService);
+  loaderService = inject(LoaderService);
+  requestService = inject(RequestService);
   $currentRoute = signal("search");
   $isLoggedIn = computed(() => this.authService.$isLoggedIn());
   tiles = computed(() => {
@@ -69,5 +74,20 @@ export class NavbarComponent {
     }
 
     return size;
+  }
+
+  logout() {
+    this.loaderService.show();
+    this.requestService
+      .get({
+        endpoint: GetEndpoint.Logout,
+      })
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: () => {
+          this.authService.logout();
+          this.router.navigate(["/login"]);
+        },
+      });
   }
 }

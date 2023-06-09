@@ -1,4 +1,5 @@
 export * from "./schemas/skill";
+export * from "./schemas/news";
 export * from "./schemas/tasklist";
 export * from "./schemas/school";
 export * from "./schemas/society";

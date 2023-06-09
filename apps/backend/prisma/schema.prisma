@@ -20,25 +20,27 @@ model User {
   experience      Int?              @default(0)
   salary          Json?
   role            String            @default("user")
+  avatarId        String?
   skills          UserSkill[]
   taskLists       UserTaskList[]
   missions        Mission[]
   userTokens      UserToken[]
-  createdAt       DateTime          @default(now())
-  updatedAt       DateTime          @updatedAt
   UserPreference  UserPreference[]
   School          School[]
   UserAchievement UserAchievement[]
+  avatar          File?             @relation(fields: [avatarId], references: [id])
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
 }
 
 model UserAchievement {
-  id            String      @id @default(uuid())
-  userId        String
-  achievement   String
-  description   String?
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  user          User        @relation(fields: [userId], references: [id])
+  id          String   @id @default(uuid())
+  userId      String
+  achievement String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
 }
 
 // model Achievement {
@@ -135,10 +137,10 @@ model Mission {
   feedback         String?
   societyId        String?
   userId           String
-  society          Society? @relation(fields: [societyId], references: [id])
-  user             User     @relation(fields: [userId], references: [id])
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  society          Society?  @relation(fields: [societyId], references: [id])
+  user             User      @relation(fields: [userId], references: [id])
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
 
 model School {
@@ -153,12 +155,29 @@ model School {
   updatedAt   DateTime @updatedAt
 }
 
+enum FileType {
+  avatar
+  resource
+}
+
 model File {
   id          String   @id @default(uuid())
   name        String
   description String
   tags        String[]
   path        String
+  type        FileType @default(resource)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  User        User[]
+}
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  src       String
+  content   String
+  size      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

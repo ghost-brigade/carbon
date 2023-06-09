@@ -1,4 +1,9 @@
-import { FileCreateSchema, FileCreateType, FileType } from "@carbon/zod";
+import {
+  FileCreateSchema,
+  FileCreateType,
+  FileParamsType,
+  FileType,
+} from "@carbon/zod";
 import {
   BadRequestException,
   Injectable,
@@ -106,6 +111,15 @@ export class FileService {
       throw new BadRequestException("Invalid file create data");
     }
 
+    if (
+      fileCreate.type === "avatar" &&
+      ["jpg", "jpeg", "png", "gif", "webp"].includes(
+        this.getFileExtension(file.originalname)
+      ) === false
+    ) {
+      throw new BadRequestException("Invalid file type");
+    }
+
     try {
       const filename = `${this.getFormattedFilename(
         file.originalname
@@ -134,9 +148,16 @@ export class FileService {
     }
   }
 
-  async findAll(): Promise<FileType[]> {
+  async findAll(params: FileParamsType): Promise<FileType[]> {
     try {
-      const files = await this.prisma.file.findMany();
+      const query = {};
+
+      if (params.tags) query["tags"] = { hasSome: params.tags };
+      if (params.type) query["type"] = params.type;
+
+      const files = await this.prisma.file.findMany({
+        where: query,
+      });
 
       return await Promise.all(
         files.map(async (file: FileType) => {
@@ -150,6 +171,7 @@ export class FileService {
         })
       );
     } catch (error) {
+      console.log(error);
       throw new InternalServerErrorException("Error while fetching files");
     }
   }

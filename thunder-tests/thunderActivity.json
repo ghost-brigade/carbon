@@ -23,17 +23,21 @@
     "colId": "history",
     "containerId": "",
     "name": "localhost:3000/society",
-    "url": "localhost:3000/society",
+    "url": "localhost:3000/user/04c04ee3-6e0b-4fd7-b607-60657277d052/skill",
     "method": "POST",
     "sortNum": 0,
     "created": "2023-06-07T14:58:46.839Z",
-    "modified": "2023-06-07T14:58:46.839Z",
+    "modified": "2023-06-08T12:15:28.522Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"name\":\"Apple\" \n}",
+      "raw": "{\n  \"userId\":\"user1@carbon-it.fr\",\n  \"skillId\": \"password\",\n  \"level\": 1\n}",
       "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGNhcmJvbi1pdC5mciIsInRva2VuIjoiZGFmYjVlOWUyNWQ5NGZjMjc5MWJiYjg0NDExNGYwOTNkNTAyNDQ0YSIsInN1YiI6Ijk0ODZlNzE3LWVlZjgtNGIzZS05MTJlLTVjYTMxOGYyMmM5ZSIsImlhdCI6MTY4NjIyNjQ0MCwiZXhwIjoxNjg2MzEyODQwfQ.ev-Jce8zgGXRitFh7kcc1HWItr_hruwBpbI728uxOWU"
     },
     "tests": []
   }

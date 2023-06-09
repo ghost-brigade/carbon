@@ -6,6 +6,7 @@ import { finalize } from "rxjs";
 import { LoaderService } from "../../core/components/loader/loader.service";
 import { ProfileService, XP } from "./profile.service";
 import { UserType } from "@carbon/zod";
+import { getFormattedTime, getRank } from "../../shared/utils/format";
 
 @Component({
   selector: "carbon-profile",
@@ -19,6 +20,8 @@ export class ProfileComponent implements OnInit {
   loaderService = inject(LoaderService);
   profileService = inject(ProfileService);
   profile: (UserType & any) | undefined;
+  getFormattedTime = getFormattedTime;
+  getRank = getRank;
   xp: XP = {
     currentLevelXP: 0,
     level: 0,
@@ -40,21 +43,6 @@ export class ProfileComponent implements OnInit {
           console.log(this.xp);
         },
       });
-  }
-
-  getYearsOfExperience(): string {
-    if (!this.profile) return "0";
-    const startDate = this.profile.entryDate;
-
-    const today = new Date();
-    const start = new Date(startDate);
-    const years = today.getFullYear() - start.getFullYear();
-    const months = today.getMonth() - start.getMonth();
-    const days = today.getDate() - start.getDate();
-    if (years > 0) return years + (years === 1 ? " an" : " ans");
-    if (months > 0) return months + (months === 1 ? " mois" : " mois");
-    if (days > 0) return days + (days === 1 ? " jour" : " jours");
-    return "0";
   }
 
   uniqueBadges() {
@@ -83,23 +71,6 @@ export class ProfileComponent implements OnInit {
     (
       document.getElementById(id) as HTMLElement & { showModal: () => void }
     ).showModal();
-  }
-
-  getRank(): string {
-    switch (true) {
-      case this.xp.level <= 10:
-        return "🌱";
-      case this.xp.level <= 20:
-        return "🌲";
-      case this.xp.level <= 30:
-        return "🏆";
-      case this.xp.level <= 40:
-        return "⭐️";
-      case this.xp.level <= 50:
-        return "👑";
-      default:
-        return "💎";
-    }
   }
 
   getStartDate(date: string): string {

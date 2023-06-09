@@ -36,5 +36,47 @@
       "form": []
     },
     "tests": []
+  },
+  {
+    "_id": "0db18ad3-ee0a-4c89-9bb7-640d380c71b5",
+    "colId": "afb096c6-74bb-4ef5-a278-8e6f8d45332d",
+    "containerId": "",
+    "name": "login",
+    "url": "localhost:3000/login",
+    "method": "POST",
+    "sortNum": 30000,
+    "created": "2023-06-08T12:13:07.694Z",
+    "modified": "2023-06-08T12:14:00.521Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"email\":\"user1@carbon-it.fr\",\n  \"password\": \"password\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "2bb889fb-3459-44fc-b3df-29cb39c8802e",
+    "colId": "afb096c6-74bb-4ef5-a278-8e6f8d45332d",
+    "containerId": "",
+    "name": "add skill to user",
+    "url": "localhost:3000/user/04c04ee3-6e0b-4fd7-b607-60657277d052/skill",
+    "method": "POST",
+    "sortNum": 40000,
+    "created": "2023-06-08T12:15:54.604Z",
+    "modified": "2023-06-08T12:32:26.512Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"skillId\": \"a0f9815d-f873-499b-a95d-ba4770ab1929\",\n  \"level\": 1\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGNhcmJvbi1pdC5mciIsInRva2VuIjoiZGFmYjVlOWUyNWQ5NGZjMjc5MWJiYjg0NDExNGYwOTNkNTAyNDQ0YSIsInN1YiI6Ijk0ODZlNzE3LWVlZjgtNGIzZS05MTJlLTVjYTMxOGYyMmM5ZSIsImlhdCI6MTY4NjIyNjQ0MCwiZXhwIjoxNjg2MzEyODQwfQ.ev-Jce8zgGXRitFh7kcc1HWItr_hruwBpbI728uxOWU"
+    },
+    "tests": []
   }
 ]
