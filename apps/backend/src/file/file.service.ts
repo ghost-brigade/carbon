@@ -105,6 +105,10 @@ export class FileService {
   }
 
   async create(file: Express.Multer.File, fileCreate: FileCreateType) {
+    if (file === undefined) {
+      throw new BadRequestException("Invalid file");
+    }
+
     const parsed = FileCreateSchema.safeParse(fileCreate);
 
     if (parsed.success === false) {

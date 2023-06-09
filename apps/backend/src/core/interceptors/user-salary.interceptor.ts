@@ -30,12 +30,12 @@ export class UserSalaryInterceptor implements NestInterceptor {
 
     if (Array.isArray(user)) {
       return user.map((u) => {
-        u.salary = transform(JSON.parse(u.salary));
+        u.salary = transform(JSON.parse(u.salary as string));
         return u;
       });
     }
 
-    user.salary = transform(JSON.parse(user.salary));
+    user.salary = transform(JSON.parse(user.salary as string));
     return user;
   }
 
