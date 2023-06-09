@@ -17,6 +17,7 @@ export class UserPreferenceService {
           },
         },
         distinct: ["description"],
+        take: 10,
       });
 
       return userPreferences.map(({ description }) => ({ description }));
