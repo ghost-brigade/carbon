@@ -20,6 +20,7 @@ import {
   UserParamsType,
   UserSkillCreateType,
   UserPreferenceCreateType,
+  UserTaskListCreateType,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
@@ -131,13 +132,13 @@ export class UserController {
   //   return await this.userService.addAchievementToUser(id, createAchievement);
   // }
 
-  // @Post(":id/tasklist")
-  // async addTaskList(
-  //   @Param("id") id: string,
-  //   @Body() createTaskList: UserTaskListCreateType
-  // ): Promise<UserType> {
-  //   return await this.userService.addTaskListToUser(id, createTaskList);
-  // }
+  @Post(":id/tasklist")
+  async addTaskList(
+    @Param("id") id: string,
+    @Body() createTaskList: UserTaskListCreateType
+  ): Promise<UserType> {
+    return await this.userService.addTaskListToUser(id, createTaskList);
+  }
 
   // @Post(":id/mission")
   // async addMission(
