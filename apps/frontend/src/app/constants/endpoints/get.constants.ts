@@ -44,6 +44,7 @@ export type GetEndpointMap = {
     queryParams: {
       skills?: string;
       orderBy?: string;
+      search?: string;
     };
   };
   "/school": {

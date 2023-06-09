@@ -1,8 +1,10 @@
 <section class="grid justify-items-center gap-8 p-4">
   <div class="join">
     <input
+      #search
       class="input-bordered input join-item"
-      placeholder="" />
+      placeholder="Leone Abbacchio"
+      (input)="searchMenuService.setSearch(search.value)" />
     <button class="join-item btn">
       <svg
         xmlns="http://www.w3.org/2000/svg"

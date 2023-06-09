@@ -11,6 +11,7 @@ export class SearchMenuService {
   selectedSkills$ = new BehaviorSubject<string[]>([]);
   selectedSocieties$ = new BehaviorSubject<string[]>([]);
   order$ = new BehaviorSubject<OrderBy>("lastName:asc");
+  search = new BehaviorSubject<string>("");
 
   toggle() {
     this.isOpen = !this.isOpen;
@@ -36,6 +37,10 @@ export class SearchMenuService {
     }
 
     this.order$.next("lastName:asc");
+  }
+
+  setSearch(search: string) {
+    this.search.next(search);
   }
 
   // toggleSociety(societyId: string) {

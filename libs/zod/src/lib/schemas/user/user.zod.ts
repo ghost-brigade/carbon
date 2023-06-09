@@ -42,6 +42,7 @@ export const UserParamsSchema = z.object({
   lastName: UserSchema.shape.lastName.optional(),
   skills: z.string().optional(),
   orderBy: z.string().optional(),
+  search: z.string().optional(),
 });
 
 export const UserCreateSchema = UserSchema.pick({
