@@ -1,7 +1,7 @@
 <!-- <div class="bg-[url('assets/img/bg/aaabstract1.png')]"> -->
-<div class="flex h-full w-full items-center justify-center ">
+<div class="flex h-full w-full items-center justify-center">
   <div
-    class="grid grid-cols-1 gap-4 rounded-[2rem] p-9 lg:w-[80%] lg:grid-cols-4 lg:grid-rows-4 bg-[url('assets/img/bg/aaabstract1.png')]">
+    class="grid grid-cols-1 gap-4 rounded-[2rem] bg-[url('assets/img/bg/aaabstract1.png')] p-9 lg:w-[80%] lg:grid-cols-4 lg:grid-rows-4">
     <!-- <div
       *ngFor="let item of news"
       class="bg-opacity-[20%] {{item.color}} glass card bg-base-100 rounded-[2rem] h-[230px] shadow-xl row-span-1 text-[#dededed6] lg:{{
@@ -18,13 +18,18 @@
         <p>{{ item.content }}</p>
       </div>
     </div> -->
-    <div *ngFor="let item of news" class="card shadow-xl bg-opacity-[20%] glass h-[230px] {{item.size}} ">
+    <div
+      *ngFor="let item of news"
+      class="card shadow-xl bg-opacity-[20%] glass h-[230px] {{ item.size }} ">
       <div class="card-body bg-opacity-[20%]">
         <h2 class="card-title">{{ item.title }}</h2>
         <p>{{ item.content }}</p>
       </div>
       <figure>
-        <img src="assets/img/news/{{item.src}}" alt="Shoes" class="rounded-xl" />
+        <img
+          src="assets/img/news/{{ item.src }}"
+          alt="Shoes"
+          class="rounded-xl" />
       </figure>
     </div>
   </div>

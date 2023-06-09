@@ -7,12 +7,18 @@ import UserSkillSeed from "./core/seed/user-skill.seed";
 import MissionSeed from "./core/seed/mission.seed";
 import SocietiesSeed from "./core/seed/society.seed";
 import SchoolSeed from "./core/seed/school.seed";
+// import FileSeed from "./core/seed/file.seed";
 // import TaskListSeed from "./core/seed/tasklist.seed";
 // import AchievementSeed from "./core/seed/achievement.seed";
 import UserAchievementSeed from "./core/seed/user-achievement.seed";
 import tasklistSeed from "./core/seed/tasklist.seed";
 import userTasklistSeed from "./core/seed/user-tasklist.seed";
 import newsSeed from "./core/seed/news.seed";
+import {
+  S3Client,
+  ListObjectsV2Command,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
 
 const prisma = new PrismaClient();
 
@@ -21,9 +27,39 @@ const prisma = new PrismaClient();
  */
 config();
 
+// connect to s3 bucket and remove all
+const S3 = new S3Client({
+  region: "auto",
+  endpoint: `https://${process.env.AWS_ACCOUNT_ID}.r2.cloudflarestorage.com`,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
+});
+
 async function main() {
+
+
+const emptyBucket = async () => {
+  const files = await S3.send(
+    new ListObjectsV2Command({
+      Bucket: process.env.AWS_BUCKET_NAME,
+    })
+  );
+
+  files.Contents.forEach(async (file) => {
+    await S3.send(
+      new DeleteObjectCommand({
+        Bucket: process.env.AWS_BUCKET_NAME,
+        Key: file.Key,
+      })
+    );
+  });
+};
+  await emptyBucket();
+
   const skills = await SkillSeed();
-  const users = await UserSeed();
+  const users = await UserSeed(S3);
   const societies = await SocietiesSeed();
   const news = await newsSeed();
   // const achievements = await AchievementSeed();
