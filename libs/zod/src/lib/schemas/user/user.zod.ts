@@ -51,16 +51,14 @@ export const UserCreateSchema = UserSchema.pick({
   birthDate: true,
 });
 
-export const UserUpdateSchema = z
-  .object({
-    password: z.string().min(8),
-    firstName: z.string(),
-    lastName: z.string(),
-    birthDate: z.string().or(z.date()),
-    experience: z.number(),
-    salary: z.number(),
-  })
-  .optional();
+export const UserUpdateSchema = z.object({
+  password: z.string().min(8).optional(),
+  firstName: z.string().optional(),
+  lastName: z.string().optional(),
+  birthDate: z.string().or(z.date()).optional(),
+  experience: z.number().optional(),
+  salary: z.number().optional(),
+});
 
 export const UserSkillCreateSchema = z.object({
   skillId: z.string(),

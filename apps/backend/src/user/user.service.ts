@@ -1,4 +1,4 @@
-import { School, User } from "@prisma/client";
+import { Prisma, School, User } from "@prisma/client";
 import { compare, genSalt, hash } from "bcryptjs";
 import {
   UserCreateType,
@@ -153,8 +153,8 @@ export class UserService {
     updateUser: UserUpdateType,
     user: UserType
   ): Promise<UserType> {
-    if (typeof updateUser.salary !== "string") {
-      throw new UnprocessableEntityException("Salary must be a string");
+    if (typeof updateUser.salary !== "number") {
+      throw new UnprocessableEntityException("Salary must be a number");
     }
 
     if (
@@ -180,18 +180,9 @@ export class UserService {
         updateUser.password = await this.hashPassword(updateUser.password);
       }
 
-      const salary = {
-        amount: updateUser.salary,
-        date: new Date(),
-      };
-
-      delete updateUser.salary;
-
       return (await this.prisma.user.update({
         where: { id },
-        data: {
-          ...updateUser,
-        } as User,
+        data: updateUser,
       })) as UserType;
     } catch (error) {
       throw new InternalServerErrorException("Error while updating user");
