@@ -7,11 +7,14 @@ import { SearchMenuComponent } from "../../core/components/search-menu/search-me
 import { UserService } from "../../core/services/user.service";
 import { SearchMenuService } from "../../shared/services/search-menu.service";
 import {
+  combineLatestWith,
   debounceTime,
   distinctUntilChanged,
   skip,
   switchMap,
 } from "rxjs/operators";
+import { UserParamsType } from "@carbon/zod";
+import { BehaviorSubject } from "rxjs";
 
 export interface QueryParams {
   search?: string;
@@ -30,6 +33,10 @@ export interface QueryParams {
 })
 export class SearchComponent implements OnInit {
   users: User[] = [];
+  queryParams$ = new BehaviorSubject<UserParamsType>({
+    skills: "",
+    orderBy: "lastName:asc",
+  });
 
   constructor(
     private userService: UserService,
@@ -37,25 +44,38 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.userService.getUsers().subscribe({
+    const queryParams = this.queryParams$.getValue();
+
+    this.userService.getUsers(queryParams).subscribe({
       next: (users) => {
         this.users = users;
       },
       error: console.error,
     });
 
-    this.searchMenuService.selectedSkills$
+    this.queryParams$
       .pipe(
-        skip(1),
+        skip(2),
         debounceTime(1000),
         distinctUntilChanged(),
-        switchMap((skills) => this.userService.getUsersBySkills(skills))
+        switchMap((queryParams) => this.userService.getUsers(queryParams))
       )
       .subscribe({
         next: (users) => {
           this.users = users;
         },
         error: console.error,
+      });
+
+    this.searchMenuService.selectedSkills$
+      .pipe(combineLatestWith(this.searchMenuService.order$))
+      .subscribe({
+        next: ([selectedSkills, orderBy]) => {
+          this.queryParams$.next({
+            skills: selectedSkills.join(","),
+            orderBy,
+          });
+        },
       });
   }
 }

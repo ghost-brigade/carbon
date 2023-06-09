@@ -1,6 +1,7 @@
 import { Component } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
+import { SearchMenuService } from "../../../shared/services/search-menu.service";
 
 @Component({
   selector: "carbon-search-sort",
@@ -9,7 +10,5 @@ import { FormsModule } from "@angular/forms";
   templateUrl: "./search-sort.component.html",
 })
 export class SearchSortComponent {
-  sort = {
-    name: "asc",
-  };
+  constructor(public searchMenuService: SearchMenuService) {}
 }

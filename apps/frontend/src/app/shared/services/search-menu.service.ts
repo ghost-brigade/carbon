@@ -1,6 +1,8 @@
 import { Injectable } from "@angular/core";
 import { BehaviorSubject } from "rxjs";
 
+type OrderBy = "lastName:asc" | "lastName:desc";
+
 @Injectable({
   providedIn: "root",
 })
@@ -8,6 +10,7 @@ export class SearchMenuService {
   isOpen = false;
   selectedSkills$ = new BehaviorSubject<string[]>([]);
   selectedSocieties$ = new BehaviorSubject<string[]>([]);
+  order$ = new BehaviorSubject<OrderBy>("lastName:asc");
 
   toggle() {
     this.isOpen = !this.isOpen;
@@ -23,6 +26,16 @@ export class SearchMenuService {
     }
 
     this.selectedSkills$.next([...selectedSkills, skill]);
+  }
+
+  toggleOrder() {
+    const order = this.order$.getValue();
+
+    if (order === "lastName:asc") {
+      return this.order$.next("lastName:desc");
+    }
+
+    this.order$.next("lastName:asc");
   }
 
   // toggleSociety(societyId: string) {

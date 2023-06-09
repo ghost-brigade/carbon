@@ -43,6 +43,7 @@ export type GetEndpointMap = {
     response: UserType[];
     queryParams: {
       skills?: string;
+      orderBy?: string;
     };
   };
   "/school": {
