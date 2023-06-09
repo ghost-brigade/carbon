@@ -11,6 +11,7 @@ import { SchoolModule } from "./school/school.module";
 import { TaskListModule } from "./tasklist/tasklist.module";
 import { MissionModule } from "./mission/mission.module";
 import { LeaderboardModule } from "./leaderboard/leaderboard.module";
+import { NewsModule } from "./news/news.module";
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { LeaderboardModule } from "./leaderboard/leaderboard.module";
     TaskListModule,
     MissionModule,
     LeaderboardModule,
+    NewsModule,
   ],
   exports: [PrismaService],
   providers: [

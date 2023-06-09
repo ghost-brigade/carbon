@@ -12,6 +12,7 @@ import SchoolSeed from "./core/seed/school.seed";
 import UserAchievementSeed from "./core/seed/user-achievement.seed";
 import tasklistSeed from "./core/seed/tasklist.seed";
 import userTasklistSeed from "./core/seed/user-tasklist.seed";
+import newsSeed from "./core/seed/news.seed";
 
 const prisma = new PrismaClient();
 
@@ -24,7 +25,7 @@ async function main() {
   const skills = await SkillSeed();
   const users = await UserSeed();
   const societies = await SocietiesSeed();
-  const news = await NewsSeed();
+  const news = await newsSeed();
   // const achievements = await AchievementSeed();
 
   const usersAchievements = await UserAchievementSeed(users);
