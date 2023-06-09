@@ -3,7 +3,7 @@
     id="drawer"
     type="checkbox"
     class="drawer-toggle" />
-  <div class="drawer-content">
+  <div class="drawer-content h-full">
     <nav
       class="navbar bg-base-100 mb-4 border-b-2"
       *ngIf="$isLoggedIn()">
@@ -36,13 +36,23 @@
       class="drawer-overlay backdrop-blur-sm"></label>
     <section
       class="menu bg-base-100 text-base-content h-full w-80 px-4 pt-[calc(env(safe-area-inset-top)+2rem)]">
-      <div class="grid w-full grid-cols-2 gap-4">
+      <div
+        class="grid h-full w-full grid-cols-2 content-start justify-start gap-4">
+        <label
+          for="drawer"
+          class="btn btn-block col-span-2 flex h-28 flex-col items-center"
+          (click)="logout()">
+          <img
+            src="assets/svg/navbar/logout.svg"
+            class="h-8 w-8" />
+          <span>Déconnexion</span>
+        </label>
         <label
           for="drawer"
           *ngFor="let tile of tiles(); let i = index"
           class="btn {{
             $currentRoute() === tile.path ? 'btn-primary' : ''
-          }} btn-block flex flex-col gap-4 items-center justify-center col-span-{{
+          }} btn-block flex flex-col gap-4 items-center col-span-{{
             getTileWidth(i)
           }} h-28"
           [routerLink]="'/' + tile.path">

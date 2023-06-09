@@ -60,6 +60,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: "login",
+    title: "Connexion",
     loadComponent: () =>
       import("./views/login/login.component").then((m) => m.LoginComponent),
   },
