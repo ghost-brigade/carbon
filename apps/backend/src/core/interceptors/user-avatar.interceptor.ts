@@ -27,21 +27,15 @@ export class UserAvatarInterceptor implements NestInterceptor {
         return await Promise.all(
           user.map(async (u) => {
             if (u.avatar) {
-              u.avatar = await this.getSignedAvatarUrl(u.avatar);
-            }
-    if (Array.isArray(user)) {
-      return await Promise.all(
-        user.map(async (u) => {
-          if (u.avatar) {
-            if (typeof u.avatar === "string") {
-              throw new Error("Avatar is not an object");
-            }
+              if (typeof u.avatar === "string") {
+                throw new Error("Avatar is not an object");
+              }
 
-            u.avatar = await this.getSignedAvatarUrl({
-              id: u.avatar.id,
-              path: u.avatar.path,
-            });
-          }
+              u.avatar = await this.getSignedAvatarUrl({
+                id: u.avatar.id,
+                path: u.avatar.path,
+              });
+            }
 
             return u;
           })
@@ -49,18 +43,15 @@ export class UserAvatarInterceptor implements NestInterceptor {
       }
 
       if (user.avatar) {
-        user.avatar = await this.getSignedAvatarUrl(user.avatar);
-      }
-    if (user.avatar) {
-      if (typeof user.avatar === "string") {
-        throw new Error("Avatar is not an object");
-      }
+        if (typeof user.avatar === "string") {
+          throw new Error("Avatar is not an object");
+        }
 
-      user.avatar = await this.getSignedAvatarUrl({
-        id: user.avatar.id,
-        path: user.avatar.path,
-      });
-    }
+        user.avatar = await this.getSignedAvatarUrl({
+          id: user.avatar.id,
+          path: user.avatar.path,
+        });
+      }
 
       return user;
     } catch (error) {}
