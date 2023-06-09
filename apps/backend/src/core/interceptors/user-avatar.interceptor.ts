@@ -21,23 +21,25 @@ export class UserAvatarInterceptor implements NestInterceptor {
   private async formatAvatar(
     user: UserType | UserType[]
   ): Promise<UserType | UserType[]> {
-    if (Array.isArray(user)) {
-      return await Promise.all(
-        user.map(async (u) => {
-          if (u.avatar) {
-            u.avatar = await this.getSignedAvatarUrl(u.avatar);
-          }
+    try {
+      if (Array.isArray(user)) {
+        return await Promise.all(
+          user.map(async (u) => {
+            if (u.avatar) {
+              u.avatar = await this.getSignedAvatarUrl(u.avatar);
+            }
 
-          return u;
-        })
-      );
-    }
+            return u;
+          })
+        );
+      }
 
-    if (user.avatar) {
-      user.avatar = await this.getSignedAvatarUrl(user.avatar);
-    }
+      if (user.avatar) {
+        user.avatar = await this.getSignedAvatarUrl(user.avatar);
+      }
 
-    return user;
+      return user;
+    } catch (error) {}
   }
 
   private async getSignedAvatarUrl(avatar: {
