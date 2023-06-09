@@ -81,10 +81,9 @@ export class UserService {
         query.where["skills"] = {
           some: {
             skill: {
-              name: { in: params.skills },
+              name: { in: params.skills.split(",") },
             },
           },
-          mode: "insensitive",
         };
 
       return (await this.prisma.user.findMany(query)) as UserType[];

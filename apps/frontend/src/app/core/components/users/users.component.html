@@ -1,0 +1,14 @@
+<ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
+  <li *ngFor="let user of users">
+    <div class="card-bordered card">
+      <figure>
+        <img
+          src="TODO"
+          alt="TODO" />
+      </figure>
+      <div class="card-body">
+        <h2 class="card-title">{{ user.firstName }} {{ user.lastName }}</h2>
+      </div>
+    </div>
+  </li>
+</ul>

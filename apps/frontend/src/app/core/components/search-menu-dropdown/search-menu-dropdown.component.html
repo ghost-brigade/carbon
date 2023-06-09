@@ -1,0 +1,26 @@
+<li>
+  <button
+    class="menu-dropdown-toggle"
+    [class.menu-dropdown-show]="isOpen"
+    (click)="toggle()">
+    <ng-content></ng-content>
+  </button>
+  <ul
+    class="menu-dropdown"
+    [class.menu-dropdown-show]="isOpen">
+    <li *ngFor="let element of elements">
+      <label
+        [for]="element.id"
+        class="gap-4">
+        <input
+          type="checkbox"
+          [name]="element.name"
+          [id]="element.id"
+          (change)="toggleElement(element.name)" />
+        <span>
+          {{ element.name }}
+        </span>
+      </label>
+    </li>
+  </ul>
+</li>
