@@ -36,4 +36,10 @@ export class AuthService {
     }
     return false;
   }
+
+  logout() {
+    this.$token.set("");
+    this.$isLoggedIn.set(false);
+    localStorage.removeItem("carbon_token");
+  }
 }

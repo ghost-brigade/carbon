@@ -4,7 +4,7 @@ export const GetEndpoint = {
   Me: "/user/me",
   Leaderboard: "/leaderboard/:leaderboard",
   News: "/news",
-  // Ressources: "/ressources",
+  Logout: "/logout",
 } as const;
 
 export type GetEndpointMap = {
@@ -19,10 +19,9 @@ export type GetEndpointMap = {
     params: {
       leaderboard: "experience" | "seniority" | "mission";
     };
-    // "/ressources": {
-    //   response: {
-    //     RessourceType;
-    //   };
+  };
+  "/logout": {
+    response: undefined;
   };
 };
 
