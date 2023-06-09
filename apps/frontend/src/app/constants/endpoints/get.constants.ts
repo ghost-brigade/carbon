@@ -1,10 +1,9 @@
-import { UserType} from "@carbon/zod";
-
+import { UserType, NewsType } from "@carbon/zod";
 
 export const GetEndpoint = {
   Me: "/user/me",
   Leaderboard: "/leaderboard/:leaderboard",
-  // News: "/news",
+  News: "/news",
   // Ressources: "/ressources",
 } as const;
 
@@ -12,16 +11,16 @@ export type GetEndpointMap = {
   "/user/me": {
     response: UserType;
   };
-  // "/news": {
-  //   response: NewsType;
-  // };
+  "/news": {
+    response: NewsType;
+  };
   "/leaderboard/:leaderboard": {
     response: UserType[];
     params: {
       leaderboard: "experience" | "seniority" | "mission";
     };
     // "/ressources": {
-    //   response: { 
+    //   response: {
     //     RessourceType;
     //   };
   };
