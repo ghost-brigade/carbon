@@ -7,16 +7,54 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 export default async (): Promise<UserType[]> => {
-  const users = [];
-  const domain = "carbon-it.fr";
+  const usersDataset = [
+    {
+      email: "julien@esgi.fr",
+      firstName: "Julien",
+      lastName: "Arbellinitoci",
+      role: RolesValues.USER,
+    },
+    {
+      email: "louis@esgi.fr",
+      firstName: "Louis",
+      lastName: "Mouline",
+      role: RolesValues.USER,
+    },
+    {
+      email: "anthony@esgi.fr",
+      firstName: "Anthony",
+      lastName: "Arjojo",
+      role: RolesValues.USER,
+    },
+    {
+      email: "alexis@esgi.fr",
+      firstName: "Alexis",
+      lastName: "Loursbrun",
+      role: RolesValues.USER,
+    },
+    {
+      email: "solene@carbon-it.fr",
+      firstName: "Solène",
+      lastName: "Ancel",
+      role: RolesValues.HR,
+    },
+    {
+      email: "christophe@carbon-it.fr",
+      firstName: "Christophe",
+      lastName: "Arrestier",
+      role: RolesValues.COMMERCIAL,
+    },
+  ];
 
-  for (let i = 0; i < 10; i++) {
-    const user = await prisma.user.create({
+  const users = [];
+
+  for (const user of usersDataset) {
+    const newUser = await prisma.user.create({
       data: {
-        email: `user${i}@${domain}`,
+        email: user.email,
         password: await bcrypt.hash("password", 10),
-        firstName: faker.person.firstName(),
-        lastName: faker.person.lastName(),
+        firstName: user.firstName,
+        lastName: user.lastName,
         birthDate: faker.date.past(),
         salary: [
           JSON.stringify({
@@ -24,15 +62,12 @@ export default async (): Promise<UserType[]> => {
             date: faker.date.past(),
           }),
         ],
-        role: RolesValues[
-          Math.floor((Math.random() * Object.keys(RolesValues).length) / 2)
-        ],
+        role: user.role,
         entryDate: faker.date.past(),
         experience: faker.number.int({ min: 0, max: 100000 }),
       },
     });
-
-    users.push(user);
+    users.push(newUser);
   }
 
   return users;
