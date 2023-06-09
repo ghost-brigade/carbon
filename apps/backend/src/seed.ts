@@ -24,6 +24,7 @@ async function main() {
   const skills = await SkillSeed();
   const users = await UserSeed();
   const societies = await SocietiesSeed();
+  const news = await NewsSeed();
   // const achievements = await AchievementSeed();
 
   const usersAchievements = await UserAchievementSeed(users);
