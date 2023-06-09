@@ -1,7 +1,6 @@
 import { Component, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { User } from "../../../shared/types/users";
-import { Observable } from "rxjs";
 
 @Component({
   selector: "carbon-users",
