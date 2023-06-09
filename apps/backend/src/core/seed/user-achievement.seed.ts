@@ -96,19 +96,19 @@ export default async (users: UserType[]): Promise<UserType[]> => {
     },
     {
       id: "trophy-2",
-      description: "Atteindre le top 1 dans deux leaderboards",
+      description: "Atteindre le top 2 dans un leaderboard",
     },
     {
       id: "trophy-3",
-      description: "Atteindre le top 1 dans trois leaderboards",
+      description: "Atteindre le top 3 dans un leaderboard",
     },
     {
       id: "trophy-4",
-      description: "Atteindre le top 1 dans quatre leaderboards",
+      description: "Atteindre le top 4 dans un leaderboard",
     },
     {
       id: "trophy-5",
-      description: "Atteindre le top 1 dans cinq leaderboards",
+      description: "Atteindre le top 5 dans un leaderboard",
     },
     {
       id: "elder-1",

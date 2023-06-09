@@ -8,6 +8,7 @@ import {
   Put,
   UseInterceptors,
   UseGuards,
+  Query,
 } from "@nestjs/common";
 import { MissionService } from "./mission.service";
 import {
@@ -17,6 +18,7 @@ import {
   MissionSchema,
   MissionCreateSchema,
   MissionUpdateSchema,
+  MissionParamsType,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { Public } from "../core/decorators/public.decorator";
@@ -32,8 +34,8 @@ export class MissionController {
   }
 
   @Get()
-  async findAll() {
-    return await this.missionService.findAll();
+  async findAll(@Query() params?: MissionParamsType) {
+    return await this.missionService.findAll({ params });
   }
 
   @Get(":id")

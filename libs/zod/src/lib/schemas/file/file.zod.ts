@@ -6,6 +6,7 @@ export const FileSchema = z
     id: z.string(),
     name: z.string(),
     description: z.string().optional(),
+    type: z.enum(["avatar", "resource"]).default("resource"),
     tags: z
       .array(
         z.string().max(30, { message: "Tag must be less than 30 characters" })
@@ -30,6 +31,12 @@ export const FileUpdateSchema = FileSchema.omit({
   updatedAt: true,
 });
 
+export const FileParamsType = FileSchema.pick({
+  tags: true,
+  type: true,
+});
+
 export type FileType = z.infer<typeof FileSchema>;
 export type FileCreateType = z.infer<typeof FileCreateSchema>;
 export type FileUpdateType = z.infer<typeof FileUpdateSchema>;
+export type FileParamsType = z.infer<typeof FileParamsType>;

@@ -22,6 +22,7 @@ export const UserSchema = z
     missions: z.any(),
     userPreferences: z.any(),
     school: z.any(),
+    avatar: z.any(),
     /** TODO here */
   })
   .merge(TimestampSchema);
@@ -30,9 +31,7 @@ export const UserParamsSchema = UserSchema.pick({
   entryDate: true,
   firstName: true,
   lastName: true,
-  missions: true,
   skills: true,
-  taskLists: true,
 });
 
 export const UserCreateSchema = UserSchema.pick({
@@ -54,7 +53,45 @@ export const UserUpdateSchema = UserSchema.pick({
   missions: true,
 });
 
+export const UserSkillCreateSchema = z.object({
+  skillId: z.string(),
+  level: z.number(),
+});
+
+export const UserPreferenceCreateSchema = z.object({
+  description: z.string(),
+  isLiked: z.boolean(),
+});
+
+export const UserAchievementCreateSchema = z.object({
+  achievement: z.string(),
+  description: z.string().optional(),
+});
+
+export const UserTaskListCreateSchema = z.object({
+  taskListId: z.string(),
+  status: z.string(),
+});
+
+export const UserMissionCreateSchema = z.object({
+  missionId: z.string(),
+});
+
+export const UserSchoolCreateSchema = z.object({
+  schoolId: z.string(),
+});
+
 export type UserType = z.infer<typeof UserSchema>;
 export type UserCreateType = z.infer<typeof UserCreateSchema>;
 export type UserUpdateType = z.infer<typeof UserUpdateSchema>;
 export type UserParamsType = z.infer<typeof UserParamsSchema>;
+export type UserSkillCreateType = z.infer<typeof UserSkillCreateSchema>;
+export type UserPreferenceCreateType = z.infer<
+  typeof UserPreferenceCreateSchema
+>;
+export type UserAchievementCreateType = z.infer<
+  typeof UserAchievementCreateSchema
+>;
+export type UserTaskListCreateType = z.infer<typeof UserTaskListCreateSchema>;
+export type UserMissionCreateType = z.infer<typeof UserMissionCreateSchema>;
+export type UserSchoolCreateType = z.infer<typeof UserSchoolCreateSchema>;
