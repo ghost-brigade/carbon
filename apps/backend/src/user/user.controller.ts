@@ -21,6 +21,7 @@ import {
   UserSkillCreateType,
   UserPreferenceCreateType,
   UserTaskListCreateType,
+  UserPreferenceCreateSchema,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
@@ -116,12 +117,17 @@ export class UserController {
     return await this.userService.addSkillToUser(id, createSkill);
   }
 
-  @Post(":id/preference")
+  @UseGuards(new ZodGuard("body", UserPreferenceCreateSchema))
+  @Post("preference")
   async addPreference(
-    @Param("id") id: string,
+    @UserContext() user: UserType,
+    // @Param("id") id: string,
     @Body() createPreference: UserPreferenceCreateType
   ): Promise<UserType> {
-    return await this.userService.addPreferenceToUser(id, createPreference);
+    return await this.userService.addPreferenceToUser(
+      user.id,
+      createPreference
+    );
   }
 
   // @Post(":id/achievement")
