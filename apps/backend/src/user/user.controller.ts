@@ -130,6 +130,17 @@ export class UserController {
     );
   }
 
+  @Delete("preference/:preferenceId")
+  async removePreference(
+    @UserContext() user: UserType,
+    @Param("preferenceId") preferenceId: string
+  ): Promise<UserType> {
+    return await this.userService.removePreferenceFromUser(
+      user.id,
+      preferenceId
+    );
+  }
+
   // @Post(":id/achievement")
   // async addAchievement(
   //   @Param("id") id: string,

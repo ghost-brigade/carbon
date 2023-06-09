@@ -271,6 +271,42 @@ export class UserService {
     return updatedUser;
   }
 
+  async removePreferenceFromUser(
+    id: string,
+    preferenceId: string
+  ): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { UserPreference: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const existingPreference = user.UserPreference.find(
+      (preference) => preference.id === preferenceId
+    );
+
+    if (!existingPreference) {
+      throw new NotFoundException("Preference not found");
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        UserPreference: {
+          delete: {
+            id: preferenceId,
+          },
+        },
+      },
+      include: { UserPreference: true },
+    });
+
+    return updatedUser;
+  }
+
   async addTaskListToUser(
     id: string,
     createTaskList: UserTaskListCreateType
