@@ -6,14 +6,26 @@ const prisma = new PrismaClient();
 export default async (): Promise<any[]> => {
   const societies = [];
 
-  for (let i = 0; i < 10; i++) {
-    const society = await prisma.society.create({
+  const societesDataset = [
+    "Carbon IT",
+    "PMU",
+    "Carrefour",
+    "Canal+",
+    "SeLoger",
+    "Fnac Darty",
+    "Edenred",
+    "Societe Generale",
+    "BNP PARIBAS",
+    "Veepee",
+  ];
+
+  for (const society of societesDataset) {
+    const newSociety = await prisma.society.create({
       data: {
-        name: faker.company.name(),
+        name: society,
       },
     });
-
-    societies.push(society);
+    societies.push(newSociety);
   }
 
   return societies;
