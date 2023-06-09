@@ -171,3 +171,13 @@ model File {
   updatedAt   DateTime @updatedAt
   User        User[]
 }
+
+model News {
+  id        String   @id @default(uuid())
+  title     String
+  src       String
+  content   String
+  size      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
