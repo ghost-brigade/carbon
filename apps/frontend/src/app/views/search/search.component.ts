@@ -10,15 +10,11 @@ import {
   distinctUntilChanged,
   finalize,
   skip,
-  switchMap,
 } from "rxjs/operators";
 import { UserParamsType, UserType } from "@carbon/zod";
-import { BehaviorSubject, combineLatest } from "rxjs";
 import { LoaderService } from "../../core/components/loader/loader.service";
 
-export interface QueryParams {
-  search?: string;
-}
+type QueryParams = Pick<UserParamsType, "skills" | "orderBy" | "search">;
 
 @Component({
   selector: "carbon-search",
@@ -33,7 +29,6 @@ export interface QueryParams {
 })
 export class SearchComponent implements OnInit {
   users: UserType[] = [];
-  queryParams$ = new BehaviorSubject<UserParamsType>({});
 
   constructor(
     private userService: UserService,
@@ -42,9 +37,28 @@ export class SearchComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.search();
+
+    this.searchMenuService.search$
+      .pipe(skip(1), debounceTime(300), distinctUntilChanged())
+      .subscribe({
+        next: () => this.search(),
+        error: console.error,
+      });
+  }
+
+  search() {
     this.loaderService.show();
 
-    const queryParams = this.queryParams$.getValue();
+    const selectedSkills = this.searchMenuService.selectedSkills$.value;
+    const orderBy = this.searchMenuService.order$.value;
+    const search = this.searchMenuService.search$.value;
+
+    const queryParams: QueryParams = {
+      ...(selectedSkills.length > 0 && { skills: selectedSkills.join(",") }),
+      ...(orderBy && { orderBy }),
+      ...(search && { search }),
+    };
 
     this.userService
       .getUsers(queryParams)
@@ -53,37 +67,6 @@ export class SearchComponent implements OnInit {
         next: (users) => {
           this.users = users;
         },
-        error: console.error,
       });
-
-    this.queryParams$
-      .pipe(
-        skip(2),
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((queryParams) => this.userService.getUsers(queryParams))
-      )
-      .subscribe({
-        next: (users) => {
-          this.users = users;
-        },
-        error: console.error,
-      });
-
-    combineLatest([
-      this.searchMenuService.selectedSkills$.pipe(debounceTime(1200)),
-      this.searchMenuService.order$,
-      this.searchMenuService.search$,
-    ]).subscribe({
-      next: ([selectedSkills, orderBy, search]) => {
-        this.queryParams$.next({
-          ...(selectedSkills.length > 0 && {
-            skills: selectedSkills.join(","),
-          }),
-          ...(orderBy && { orderBy }),
-          ...(search && { search }),
-        });
-      },
-    });
   }
 }

@@ -1,10 +1,10 @@
 <section class="grid justify-items-center gap-8 p-4">
   <div class="join">
     <input
-      #search
+      #searchInput
       class="input-bordered input join-item"
       placeholder="Leone Abbacchio"
-      (input)="searchMenuService.setSearch(search.value)" />
+      (input)="searchMenuService.setSearch(searchInput.value)" />
     <button class="join-item btn">
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -23,4 +23,4 @@
   <carbon-search-buttons></carbon-search-buttons>
   <carbon-users [users]="users"></carbon-users>
 </section>
-<carbon-search-menu></carbon-search-menu>
+<carbon-search-menu (applyClick)="search()"></carbon-search-menu>

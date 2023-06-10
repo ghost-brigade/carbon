@@ -1,4 +1,4 @@
-import { Component } from "@angular/core";
+import { Component, Output, EventEmitter } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { SearchMenuDropdownComponent } from "../search-menu-dropdown/search-menu-dropdown.component";
 import { SearchMenuService } from "../../../shared/services/search-menu.service";
@@ -20,5 +20,13 @@ import { SearchFilterComponent } from "../search-filter/search-filter.component"
   animations: [slideUpAnimation, showAnimation],
 })
 export class SearchMenuComponent {
+  @Output() applyClick = new EventEmitter();
+
   constructor(public searchMenuService: SearchMenuService) {}
+
+  search() {
+    this.searchMenuService.toggle();
+
+    this.applyClick.emit();
+  }
 }
