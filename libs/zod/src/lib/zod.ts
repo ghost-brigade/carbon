@@ -7,3 +7,4 @@ export * from "./schemas/user";
 export * from "./schemas/mission";
 export * from "./schemas/authentication";
 export * from "./schemas/file";
+export * from "./schemas/event";

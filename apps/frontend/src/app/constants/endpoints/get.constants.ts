@@ -4,6 +4,7 @@ import {
   SocietyType,
   UserType,
   NewsType,
+  EventType,
 } from "@carbon/zod";
 
 export const GetEndpoint = {
@@ -15,6 +16,8 @@ export const GetEndpoint = {
   Society: "/society",
   User: "/user",
   School: "/school",
+  Event: "/event",
+  // Ressources: "/ressources",
 } as const;
 
 export type GetEndpointMap = {
@@ -23,6 +26,9 @@ export type GetEndpointMap = {
   };
   "/news": {
     response: NewsType;
+  };
+  "/event": {
+    response: EventType;
   };
   "/leaderboard/:leaderboard": {
     response: UserType[];

@@ -12,20 +12,21 @@ import { LoaderService } from "../../core/components/loader/loader.service";
   templateUrl: "./event.component.html",
   styleUrls: ["./event.component.css"],
 })
-export class NewsComponent implements OnInit {
+export class EventComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
-  news: any;
+  event: any;
   ngOnInit(): void {
     this.loaderService.show();
     this.requestService
       .get({
-        endpoint: GetEndpoint.News,
+        endpoint: GetEndpoint.Event,
       })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
-          this.news = res;
+          this.event = res;
+          console.log(res);
         },
       });
   }
