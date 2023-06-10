@@ -19,9 +19,13 @@ import {
   MissionCreateSchema,
   MissionUpdateSchema,
   MissionParamsType,
+  UserType,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { Public } from "../core/decorators/public.decorator";
+import { AuthorizationGuard } from "../core/guard/authorization.guard";
+import { RolesValues } from "@carbon/enum";
+import { UserContext } from "../core/decorators/user-context.decorator";
 
 @Controller("mission")
 export class MissionController {
@@ -29,6 +33,7 @@ export class MissionController {
 
   @Post()
   @UseGuards(new ZodGuard("body", MissionCreateSchema))
+  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   async create(@Body() createMission: MissionCreateType) {
     return await this.missionService.create(createMission);
   }
@@ -47,9 +52,10 @@ export class MissionController {
   @UseGuards(new ZodGuard("body", MissionUpdateSchema))
   async update(
     @Param("id") id: string,
-    @Body() updateMission: MissionUpdateType
+    @Body() updateMission: MissionUpdateType,
+    @UserContext() user: UserType
   ) {
-    return await this.missionService.update(id, updateMission);
+    return await this.missionService.update(id, updateMission, user);
   }
 
   @Delete(":id")
