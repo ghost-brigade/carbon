@@ -25,7 +25,7 @@ export class TaskListService {
     if (!skill) {
       throw new NotFoundException("Skill not found");
     }
-    
+
     try {
       const { name, level, description, skillId, required } = createTaskList;
 

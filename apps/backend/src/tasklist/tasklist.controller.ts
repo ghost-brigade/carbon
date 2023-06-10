@@ -9,7 +9,12 @@ import {
   UseGuards,
 } from "@nestjs/common";
 import { TaskListService } from "./tasklist.service";
-import { TaskListCreateSchema, TaskListCreateType, TaskListUpdateSchema, TaskListUpdateType } from "@carbon/zod";
+import {
+  TaskListCreateSchema,
+  TaskListCreateType,
+  TaskListUpdateSchema,
+  TaskListUpdateType,
+} from "@carbon/zod";
 import { Public } from "../core/decorators/public.decorator";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 
@@ -36,7 +41,10 @@ export class TaskListController {
 
   @UseGuards(new ZodGuard("body", TaskListUpdateSchema))
   @Patch(":id")
-  async update(@Param("id") id: string, @Body() updateTaskList: TaskListUpdateType) {
+  async update(
+    @Param("id") id: string,
+    @Body() updateTaskList: TaskListUpdateType
+  ) {
     return await this.taskListService.update(id, updateTaskList);
   }
 

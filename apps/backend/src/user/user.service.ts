@@ -150,7 +150,19 @@ export class UserService {
             },
           },
           avatar: true,
-          taskLists: true,
+          taskLists: {
+            include: {
+              taskList: {
+                include: {
+                  skill: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           UserPreference: true,
           School: true,
           UserAchievement: true,
