@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { UsersComponent } from "../../core/components/users/users.component";
-import { User } from "../../shared/types/users";
 import { SearchButtonsComponent } from "../../core/components/search-buttons/search-buttons.component";
 import { SearchMenuComponent } from "../../core/components/search-menu/search-menu.component";
 import { UserService } from "../../core/services/user.service";
@@ -12,7 +11,7 @@ import {
   skip,
   switchMap,
 } from "rxjs/operators";
-import { UserParamsType } from "@carbon/zod";
+import { UserParamsType, UserType } from "@carbon/zod";
 import { BehaviorSubject, combineLatest } from "rxjs";
 
 export interface QueryParams {
@@ -31,7 +30,7 @@ export interface QueryParams {
   templateUrl: "./search.component.html",
 })
 export class SearchComponent implements OnInit {
-  users: User[] = [];
+  users: UserType[] = [];
   queryParams$ = new BehaviorSubject<UserParamsType>({});
 
   constructor(

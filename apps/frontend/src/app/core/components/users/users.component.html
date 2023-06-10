@@ -7,7 +7,11 @@
           alt="{{ user.firstName }} {{ user.lastName }} profile picture" />
       </figure>
       <div class="card-body">
-        <h2 class="card-title">{{ user.firstName }} {{ user.lastName }}</h2>
+        <a
+          class="card-title block overflow-hidden text-ellipsis"
+          routerLink="/profile/{{ user.id }}">
+          {{ user.firstName }} {{ user.lastName | uppercase }}
+        </a>
       </div>
     </div>
   </li>

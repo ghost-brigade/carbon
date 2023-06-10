@@ -1,13 +1,14 @@
 import { Component, Input } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { User } from "../../../shared/types/users";
+import { UserType } from "@carbon/zod";
+import { RouterModule } from "@angular/router";
 
 @Component({
   selector: "carbon-users",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: "./users.component.html",
 })
 export class UsersComponent {
-  @Input() users: User[] = [];
+  @Input() users: UserType[] = [];
 }
