@@ -16,15 +16,12 @@ import {
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
-import { Roles, RolesValues } from "@carbon/enum";
+import { RolesValues } from "@carbon/enum";
+import hasRight from "../core/utils/hasRight";
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
-
-  hasRight(user: UserType, roles: Roles[]): boolean {
-    return roles.some((role) => user.role === role);
-  }
 
   async create(createUser: UserCreateType): Promise<UserType> {
     try {
@@ -199,9 +196,7 @@ export class UserService {
       throw new UnprocessableEntityException("Salary must be a number");
     }
 
-    if (
-      this.hasRight(user, [RolesValues.HR, RolesValues.COMMERCIAL]) === false
-    ) {
+    if (hasRight(user, [RolesValues.HR, RolesValues.COMMERCIAL]) === false) {
       if (id !== user.id) {
         throw new UnauthorizedException(
           "You don't have the right to update this user"
