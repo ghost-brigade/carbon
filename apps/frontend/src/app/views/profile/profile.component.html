@@ -8,7 +8,7 @@
   <div class="mt-2 flex flex-row flex-wrap items-center justify-center gap-2">
     <div
       class="badge {{ preference.isLiked ? 'badge-accent' : 'badge-error' }} "
-      *ngFor="let preference of profile.UserPreference.slice(0, 5)">
+      *ngFor="let preference of profile?.UserPreference?.slice(0, 5)">
       {{ preference.isLiked ? "👍 " : "👎 " }}
       {{ preference.description }}
     </div>
@@ -51,7 +51,7 @@
         </form>
       </dialog>
       <img
-        (click)="showModal(badge.achievement)"
+        (click)="showModal(badge.achievement || '')"
         src="assets/svg/badges/{{ badge.achievement }}.svg"
         class="my-4 h-16 w-16 cursor-pointer"
         [title]="badge.description"
@@ -87,6 +87,7 @@
       <div class="stat-value text-primary">
         <div
           class="tooltip"
+          *ngIf="profile"
           [attr.data-tip]="'Depuis le ' + getStartDate(profile.entryDate)">
           {{ getFormattedTime(profile) }}
         </div>
@@ -98,7 +99,7 @@
       <div class="stat-figure text-accent text-3xl">🥷</div>
       <div class="stat-title">Nombre de missions</div>
       <div class="stat-value text-accent">
-        {{ profile?.missions.length || 0 }}
+        {{ profile?.missions?.length || 0 }}
       </div>
       <div class="stat-desc">Top 43% !</div>
     </div>
@@ -113,7 +114,7 @@
   <h2 class="text-lg font-semibold">Formations</h2>
   <div
     class="flex w-72 flex-1 flex-row items-center gap-4"
-    *ngFor="let school of profile.School">
+    *ngFor="let school of profile?.School">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -139,7 +140,7 @@
   <h2 class="text-lg font-semibold">Missions</h2>
   <div
     class="flex w-72 flex-1 flex-row items-center gap-4"
-    *ngFor="let mission of profile.missions">
+    *ngFor="let mission of profile?.missions">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"

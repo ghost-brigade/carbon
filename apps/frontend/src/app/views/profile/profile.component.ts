@@ -5,8 +5,12 @@ import { GetEndpoint } from "../../constants/endpoints/get.constants";
 import { finalize } from "rxjs";
 import { LoaderService } from "../../core/components/loader/loader.service";
 import { ProfileService, XP } from "./profile.service";
-import { UserType } from "@carbon/zod";
 import { getFormattedTime, getRank } from "../../shared/utils/format";
+import {
+  GetUserType,
+  School,
+  UserAchievement,
+} from "../../shared/models/user.model";
 
 @Component({
   selector: "carbon-profile",
@@ -19,7 +23,7 @@ export class ProfileComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
   profileService = inject(ProfileService);
-  profile: (UserType & any) | undefined;
+  profile: GetUserType | undefined;
   getFormattedTime = getFormattedTime;
   getRank = getRank;
   xp: XP = {
@@ -47,22 +51,18 @@ export class ProfileComponent implements OnInit {
 
   uniqueBadges() {
     if (!this.profile) return [];
-    // @ts-ignore
-    // remove duplicate object based on 'achievement' property
     return this.profile.UserAchievement.reduce((acc, current) => {
-      const x = acc.find(
-        (item: any) => item.achievement === current.achievement
-      );
+      const x = acc.find((item) => item.achievement === current.achievement);
       if (!x) {
         return acc.concat([current]);
       } else {
         return acc;
       }
-    }, []).slice(0, 3);
+    }, [] as UserAchievement[]).slice(0, 3);
   }
 
   getSortedSkills() {
-    return this.profile?.skills.sort((a: any, b: any) => {
+    return this.profile?.skills.sort((a, b) => {
       return b.level - a.level;
     });
   }
@@ -78,7 +78,7 @@ export class ProfileComponent implements OnInit {
     return d.toLocaleDateString();
   }
 
-  getYears(school: any): string {
+  getYears(school: School): string {
     const startDate = new Date(school.dateStart);
     const endDate = new Date(school.dateEnd);
 

@@ -5,6 +5,7 @@ import {
   UserType,
   NewsType,
 } from "@carbon/zod";
+import { GetUserType } from "../../shared/models/user.model";
 
 export const GetEndpoint = {
   Me: "/user/me",
@@ -19,13 +20,13 @@ export const GetEndpoint = {
 
 export type GetEndpointMap = {
   "/user/me": {
-    response: UserType;
+    response: GetUserType;
   };
   "/news": {
     response: NewsType;
   };
   "/leaderboard/:leaderboard": {
-    response: UserType[];
+    response: GetUserType[];
     params: {
       leaderboard: "experience" | "seniority" | "mission";
     };

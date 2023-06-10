@@ -14,6 +14,7 @@ import { ProfileService } from "../profile/profile.service";
 import { LoaderService } from "../../core/components/loader/loader.service";
 import { finalize } from "rxjs";
 import { getFormattedTime, getYear } from "../../shared/utils/format";
+import { GetUserType } from "../../shared/models/user.model";
 @Component({
   selector: "carbon-leaderboard",
   standalone: true,
@@ -26,9 +27,9 @@ export class LeaderboardComponent implements OnInit {
   toastService = inject(ToastService);
   profileService = inject(ProfileService);
   loaderService = inject(LoaderService);
-  missionLeaderboard: WritableSignal<UserType[]> = signal([]);
-  seniorityLeaderboard: WritableSignal<UserType[]> = signal([]);
-  levelLeaderboard: WritableSignal<UserType[]> = signal([]);
+  missionLeaderboard: WritableSignal<GetUserType[]> = signal([]);
+  seniorityLeaderboard: WritableSignal<GetUserType[]> = signal([]);
+  levelLeaderboard: WritableSignal<GetUserType[]> = signal([]);
   selectTab: WritableSignal<"experience" | "seniority"> = signal("experience");
   getFormattedTime = getFormattedTime;
   getYear = getYear;
@@ -75,7 +76,7 @@ export class LeaderboardComponent implements OnInit {
       });
   }
 
-  getLevel(user: UserType) {
+  getLevel(user: GetUserType) {
     return this.profileService.calculateLevel(user.experience).level;
   }
 
