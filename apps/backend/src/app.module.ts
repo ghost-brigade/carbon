@@ -12,6 +12,7 @@ import { TaskListModule } from "./tasklist/tasklist.module";
 import { MissionModule } from "./mission/mission.module";
 import { LeaderboardModule } from "./leaderboard/leaderboard.module";
 import { NewsModule } from "./news/news.module";
+import { UserPreferenceModule } from "./user-preference/user-preference.module";
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { NewsModule } from "./news/news.module";
     MissionModule,
     LeaderboardModule,
     NewsModule,
+    UserPreferenceModule,
   ],
   exports: [PrismaService],
   providers: [

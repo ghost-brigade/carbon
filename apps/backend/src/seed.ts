@@ -38,24 +38,22 @@ const S3 = new S3Client({
 });
 
 async function main() {
-
-
-const emptyBucket = async () => {
-  const files = await S3.send(
-    new ListObjectsV2Command({
-      Bucket: process.env.AWS_BUCKET_NAME,
-    })
-  );
-
-  files.Contents.forEach(async (file) => {
-    await S3.send(
-      new DeleteObjectCommand({
+  const emptyBucket = async () => {
+    const files = await S3.send(
+      new ListObjectsV2Command({
         Bucket: process.env.AWS_BUCKET_NAME,
-        Key: file.Key,
       })
     );
-  });
-};
+
+    files.Contents.forEach(async (file) => {
+      await S3.send(
+        new DeleteObjectCommand({
+          Bucket: process.env.AWS_BUCKET_NAME,
+          Key: file.Key,
+        })
+      );
+    });
+  };
   await emptyBucket();
 
   const skills = await SkillSeed();

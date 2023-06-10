@@ -1,0 +1,19 @@
+<div class="menu-title">Trier par</div>
+<div class="join">
+  <input
+    type="radio"
+    name="lastName"
+    class="join-item btn"
+    aria-label="A-Z"
+    value="asc"
+    [checked]="(searchMenuService.order$ | async) === 'lastName:asc'"
+    (change)="searchMenuService.toggleOrder()" />
+  <input
+    type="radio"
+    name="lastName"
+    class="join-item btn"
+    aria-label="Z-A"
+    value="desc"
+    [checked]="(searchMenuService.order$ | async) === 'lastName:desc'"
+    (change)="searchMenuService.toggleOrder()" />
+</div>

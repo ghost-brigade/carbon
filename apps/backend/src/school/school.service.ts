@@ -1,20 +1,19 @@
 import { Injectable, InternalServerErrorException } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
-import { School, Prisma } from "@prisma/client";
 import { SchoolCreateType, SchoolType, SchoolUpdateType } from "@carbon/zod";
 
 @Injectable()
 export class SchoolService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async create(createSchool: SchoolCreateType): Promise<School> {
+  async create(createSchool: SchoolCreateType): Promise<SchoolType> {
     try {
       return this.prisma.school.create({
         data: {
           name: createSchool.name,
           description: createSchool.description,
-          dateStart: createSchool.dateStart,
-          dateEnd: createSchool.dateEnd,
+          dateStart: new Date(createSchool.dateStart),
+          dateEnd: new Date(createSchool.dateEnd),
           userId: createSchool.userId,
         },
       });
@@ -41,7 +40,10 @@ export class SchoolService {
     }
   }
 
-  async update(id: string, updateSchool: SchoolUpdateType): Promise<SchoolType> {
+  async update(
+    id: string,
+    updateSchool: SchoolUpdateType
+  ): Promise<SchoolType> {
     try {
       return (await this.prisma.school.update({
         where: { id },

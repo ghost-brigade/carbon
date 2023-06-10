@@ -36,7 +36,7 @@ export class MissionService {
           societyId: createMission.societyId,
           userId: createMission.userId,
         },
-      })) as any;
+      })) as MissionType;
     } catch (error) {
       throw new InternalServerErrorException();
     }

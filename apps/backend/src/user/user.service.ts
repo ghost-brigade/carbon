@@ -1,4 +1,4 @@
-import { School } from "@prisma/client";
+import { Prisma, School, User } from "@prisma/client";
 import { compare, genSalt, hash } from "bcryptjs";
 import {
   UserCreateType,
@@ -12,13 +12,19 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
+import { Roles, RolesValues } from "@carbon/enum";
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
+
+  hasRight(user: UserType, roles: Roles[]): boolean {
+    return roles.some((role) => user.role === role);
+  }
 
   async create(createUser: UserCreateType): Promise<UserType> {
     try {
@@ -60,22 +66,64 @@ export class UserService {
         take: limit,
       };
 
-      if (include) query["include"] = include;
-      if (params.firstName)
-        query.where["firstName"] = { startsWith: params.firstName };
-      if (params.lastName)
-        query.where["lastName"] = { startsWith: params.lastName };
-      if (params.skills)
+      if (include) {
+        query["include"] = include;
+      }
+
+      if (params?.search) {
+        const { search } = params;
+        const names = search.split(/\s+/);
+        const [firstName, lastName] = names;
+
+        query.where["OR"] = [
+          {
+            firstName: {
+              startsWith: firstName,
+              mode: "insensitive",
+            },
+            lastName: {
+              startsWith: lastName,
+              mode: "insensitive",
+            },
+          },
+          {
+            firstName: {
+              startsWith: lastName,
+              mode: "insensitive",
+            },
+            lastName: {
+              startsWith: firstName,
+              mode: "insensitive",
+            },
+          },
+        ];
+      }
+
+      if (params?.firstName) {
+        query.where["firstName"] = {
+          startsWith: params.firstName,
+          mode: "insensitive",
+        };
+      }
+      if (params?.lastName) {
+        query.where["lastName"] = {
+          startsWith: params.lastName,
+          mode: "insensitive",
+        };
+      }
+      if (params?.skills) {
         query.where["skills"] = {
           some: {
             skill: {
-              name: { in: params.skills },
+              name: { in: params.skills.split(",") },
             },
           },
         };
+      }
 
       return (await this.prisma.user.findMany(query)) as UserType[];
     } catch (error) {
+      console.error(error);
       throw new InternalServerErrorException("Error while fetching users");
     }
   }
@@ -142,7 +190,33 @@ export class UserService {
     }
   }
 
-  async update(id: string, updateUser: UserUpdateType): Promise<UserType> {
+  async update(
+    id: string,
+    updateUser: UserUpdateType,
+    user: UserType
+  ): Promise<UserType> {
+    if (typeof updateUser.salary !== "number") {
+      throw new UnprocessableEntityException("Salary must be a number");
+    }
+
+    if (
+      this.hasRight(user, [RolesValues.HR, RolesValues.COMMERCIAL]) === false
+    ) {
+      if (id !== user.id) {
+        throw new UnauthorizedException(
+          "You don't have the right to update this user"
+        );
+      }
+
+      if (updateUser.salary) {
+        throw new UnauthorizedException("You can't update your salary");
+      }
+
+      if (updateUser.experience) {
+        throw new UnauthorizedException("You can't update your experience");
+      }
+    }
+
     try {
       if (updateUser.password) {
         updateUser.password = await this.hashPassword(updateUser.password);

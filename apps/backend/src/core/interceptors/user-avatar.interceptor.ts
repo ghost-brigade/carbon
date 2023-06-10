@@ -7,6 +7,7 @@ import {
 import { map } from "rxjs/operators";
 import { FileService } from "../../file/file.service";
 import { UserType } from "@carbon/zod";
+import { FileType } from "@prisma/client";
 
 @Injectable()
 export class UserAvatarInterceptor implements NestInterceptor {
@@ -21,23 +22,39 @@ export class UserAvatarInterceptor implements NestInterceptor {
   private async formatAvatar(
     user: UserType | UserType[]
   ): Promise<UserType | UserType[]> {
-    if (Array.isArray(user)) {
-      return await Promise.all(
-        user.map(async (u) => {
-          if (u.avatar) {
-            u.avatar = await this.getSignedAvatarUrl(u.avatar);
-          }
+    try {
+      if (Array.isArray(user)) {
+        return await Promise.all(
+          user.map(async (u) => {
+            if (u.avatar) {
+              if (typeof u.avatar === "string") {
+                throw new Error("Avatar is not an object");
+              }
 
-          return u;
-        })
-      );
-    }
+              u.avatar = await this.getSignedAvatarUrl({
+                id: u.avatar.id,
+                path: u.avatar.path,
+              });
+            }
 
-    if (user.avatar) {
-      user.avatar = await this.getSignedAvatarUrl(user.avatar);
-    }
+            return u;
+          })
+        );
+      }
 
-    return user;
+      if (user.avatar) {
+        if (typeof user.avatar === "string") {
+          throw new Error("Avatar is not an object");
+        }
+
+        user.avatar = await this.getSignedAvatarUrl({
+          id: user.avatar.id,
+          path: user.avatar.path,
+        });
+      }
+
+      return user;
+    } catch (error) {}
   }
 
   private async getSignedAvatarUrl(avatar: {

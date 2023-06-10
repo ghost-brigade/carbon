@@ -1,0 +1,18 @@
+<ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
+  <li *ngFor="let user of users">
+    <div class="card-bordered card">
+      <figure>
+        <img
+          src="assets/svg/navbar/picture.jpg"
+          alt="{{ user.firstName }} {{ user.lastName }} profile picture" />
+      </figure>
+      <div class="card-body">
+        <a
+          class="card-title block overflow-hidden text-ellipsis"
+          routerLink="/profile/{{ user.id }}">
+          {{ user.firstName }} {{ user.lastName | uppercase }}
+        </a>
+      </div>
+    </div>
+  </li>
+</ul>

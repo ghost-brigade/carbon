@@ -1,20 +1,31 @@
-import { Component, computed, inject, signal } from "@angular/core";
+import { Component, OnInit, computed, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { appRoutes } from "../../../app.routes";
 import { AuthService } from "../../services/auth.service";
-import { NavigationEnd, Router, RouterModule } from "@angular/router";
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from "@angular/router";
+import { finalize, filter, map } from "rxjs";
+import { RequestService } from "../../../shared/services/request.service";
+import { LoaderService } from "../loader/loader.service";
+import { GetEndpoint } from "../../../constants/endpoints/get.constants";
 
 @Component({
   selector: "carbon-navbar",
   standalone: true,
   imports: [CommonModule, RouterModule],
   templateUrl: "./navbar.component.html",
-  styleUrls: ["./navbar.component.css"],
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   authService = inject(AuthService);
+  loaderService = inject(LoaderService);
+  requestService = inject(RequestService);
   $currentRoute = signal("search");
   $isLoggedIn = computed(() => this.authService.$isLoggedIn());
+  $hasAdmin = signal(false);
   tiles = computed(() => {
     if (!this.authService.$isLoggedIn()) {
       return [];
@@ -22,8 +33,8 @@ export class NavbarComponent {
       return appRoutes
         .filter(
           (route) =>
-            //this.authService.$roles().includes(route.data?.["role"]) &&
-            route.data?.["hidden"] === false
+            route.data?.["hidden"] === false &&
+            route.data?.["roles"].includes(this.authService.$role())
         )
         .sort((a, b) => {
           if (a.data?.["order"] && b.data?.["order"]) {
@@ -39,12 +50,39 @@ export class NavbarComponent {
     }
   });
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private route: ActivatedRoute) {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.$currentRoute.set(event.urlAfterRedirects.replace("/", ""));
       }
     });
+  }
+
+  ngOnInit(): void {
+    this.router.events
+      .pipe(
+        filter((event) => event instanceof NavigationEnd),
+        map(() => {
+          let currentRoute = this.route;
+          while (currentRoute.firstChild) {
+            currentRoute = currentRoute.firstChild;
+          }
+          return currentRoute;
+        }),
+        map((route) => route.snapshot.data)
+      )
+      .subscribe((data) => {
+        if (
+          data?.["roles"] &&
+          !data["roles"].includes(this.authService.$role())
+        ) {
+          this.router.navigate(["/" + this.tiles()[0].path]);
+        } else {
+          this.$hasAdmin.set(
+            data["hasAdmin"] && this.authService.$role() === "hr"
+          );
+        }
+      });
   }
 
   /**
@@ -69,5 +107,25 @@ export class NavbarComponent {
     }
 
     return size;
+  }
+
+  logout() {
+    this.loaderService.show();
+    this.requestService
+      .get({
+        endpoint: GetEndpoint.Logout,
+      })
+      .pipe(
+        finalize(() => {
+          this.authService.logout();
+          this.router.navigate(["/login"]);
+          this.loaderService.hide();
+        })
+      )
+      .subscribe({});
+  }
+
+  gotoAdmin() {
+    this.router.navigate(["/" + this.$currentRoute() + "/admin"]);
   }
 }

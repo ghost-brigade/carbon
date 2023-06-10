@@ -6,8 +6,8 @@ export const SchoolSchema = z
     id: z.string().uuid(),
     name: z.string(),
     description: z.string(),
-    dateStart: z.date(),
-    dateEnd: z.date(),
+    dateStart: z.string().or(z.date()),
+    dateEnd: z.string().or(z.date()).optional(),
     userId: z.string(),
   })
   .merge(TimestampSchema);

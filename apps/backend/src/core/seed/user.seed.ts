@@ -8,28 +8,61 @@ import { S3Client } from "@aws-sdk/client-s3";
 const prisma = new PrismaClient();
 
 export default async (S3: S3Client): Promise<UserType[]> => {
-  const users = [];
-  const domain = "carbon-it.fr";
+  const usersDataset = [
+    {
+      email: "julien@esgi.fr",
+      firstName: "Julien",
+      lastName: "Arbellinitoci",
+      avatar: "./avatar/julien.jpg",
+      role: RolesValues.USER,
+    },
+    {
+      email: "louis@esgi.fr",
+      firstName: "Louis",
+      lastName: "Mouline",
+      avatar: "./avatar/louis.jpg",
+      role: RolesValues.USER,
+    },
+    {
+      email: "anthony@esgi.fr",
+      firstName: "Anthony",
+      lastName: "Arjojo",
+      avatar: "./avatar/anthony.jpg",
+      role: RolesValues.USER,
+    },
+    {
+      email: "alexis@esgi.fr",
+      firstName: "Alexis",
+      lastName: "Loursbrun",
+      avatar: "./avatar/alexis.jpg",
+      role: RolesValues.USER,
+    },
+    {
+      email: "solene@carbon-it.fr",
+      firstName: "Solène",
+      lastName: "Ancel",
+      avatar: "./avatar/solene.jpg",
+      role: RolesValues.HR,
+    },
+    {
+      email: "christophe@carbon-it.fr",
+      firstName: "Christophe",
+      lastName: "Arrestier",
+      avatar: "./avatar/christophe.jpg",
+      role: RolesValues.COMMERCIAL,
+    },
+  ];
+  const users: UserType[] = [];
 
-  for (let i = 0; i < 10; i++) {
-        // push file to s3
+  for (const user of usersDataset) {
+    const 
 
-        const avatar = await prisma.file.create({
-          data: {
-            name: faker.system.fileName(),
-            description: faker.lorem.sentence(),
-            type: "avatar",
-            path: ""
-          },
-        });
-    
-    const user = await prisma.user.create({
+    const newUser = await prisma.user.create({
       data: {
-        avatarId: avatar.id,
-        email: `user${i}@${domain}`,
+        email: user.email,
         password: await bcrypt.hash("password", 10),
-        firstName: faker.person.firstName(),
-        lastName: faker.person.lastName(),
+        firstName: user.firstName,
+        lastName: user.lastName,
         birthDate: faker.date.past(),
         salary: [
           JSON.stringify({
@@ -37,15 +70,13 @@ export default async (S3: S3Client): Promise<UserType[]> => {
             date: faker.date.past(),
           }),
         ],
-        role: RolesValues[
-          Math.floor((Math.random() * Object.keys(RolesValues).length) / 2)
-        ],
+        role: user.role,
         entryDate: faker.date.past(),
         experience: faker.number.int({ min: 0, max: 100000 }),
       },
     });
 
-    users.push(user);
+    users.push(newUser as UserType);
   }
 
   return users;

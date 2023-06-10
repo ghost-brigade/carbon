@@ -1,4 +1,4 @@
-import { Injectable, WritableSignal, inject, signal } from "@angular/core";
+import { Injectable, inject, signal } from "@angular/core";
 import { Router } from "@angular/router";
 
 @Injectable({
@@ -7,7 +7,7 @@ import { Router } from "@angular/router";
 export class AuthService {
   router = inject(Router);
   $isLoggedIn = signal(false);
-  $roles: WritableSignal<string[]> = signal([]);
+  $role = signal("");
   $token = signal("");
 
   constructor() {
@@ -26,14 +26,21 @@ export class AuthService {
 
   isTokenValid() {
     if (this.$token()) {
-      const expirityDate = JSON.parse(atob(this.$token().split(".")[1])).exp;
-      if (!expirityDate) {
+      const { exp, role } = JSON.parse(atob(this.$token().split(".")[1]));
+      if (!exp) {
         return false;
-      } else if (Math.floor(new Date().getTime() / 1000) < expirityDate) {
+      } else if (Math.floor(new Date().getTime() / 1000) < exp) {
         this.$isLoggedIn.set(true);
+        this.$role.set(role);
         return true;
       }
     }
     return false;
+  }
+
+  logout() {
+    this.$token.set("");
+    this.$isLoggedIn.set(false);
+    localStorage.removeItem("carbon_token");
   }
 }

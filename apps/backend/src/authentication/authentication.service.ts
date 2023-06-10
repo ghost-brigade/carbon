@@ -24,9 +24,13 @@ export class AuthenticationService {
     private readonly userTokenService: UserTokenService
   ) {}
 
+  async logout(token: string): Promise<boolean> {
+    return await this.userTokenService.invalidateToken(token);
+  }
+
   async login(payload: LoginType): Promise<LoginResponseType> {
     if (!payload.email || !payload.password) {
-      new UnprocessableEntityException("Email and password are required");
+      throw new UnprocessableEntityException("Email and password are required");
     }
 
     try {
@@ -35,7 +39,7 @@ export class AuthenticationService {
       );
 
       if (!user) {
-        new UnauthorizedException("Email or password is incorrect");
+        throw new UnauthorizedException("Email or password is incorrect");
       }
 
       const isPasswordValid = await this.comparePassword(
@@ -44,18 +48,19 @@ export class AuthenticationService {
       );
 
       if (isPasswordValid === false) {
-        new UnauthorizedException("Email or password is incorrect");
+        throw new UnauthorizedException("Email or password is incorrect");
       }
 
       return {
         access_token: await this.jwtService.signAsync({
           email: user.email,
+          role: user.role,
           token: await this.userTokenService.createToken({ userId: user.id }),
           sub: user.id,
         }),
       };
     } catch (error) {
-      new UnauthorizedException("Email or password is incorrect");
+      throw new UnauthorizedException("Email or password is incorrect");
     }
   }
 
@@ -65,20 +70,23 @@ export class AuthenticationService {
         throw new Error();
       }
 
-      const data: JwtResponseType = await this.jwtService.verifyAsync(
-        access_token,
-        {
-          secret: JWT_SECRET,
-        }
-      );
-
-      // console.log(data);
+      const data = await this.decodeToken(access_token);
 
       if ((await this.userTokenService.validateToken(data.token)) === false) {
         throw new Error();
       }
 
       return await this.userService.findUserByEmail(data.email);
+    } catch {
+      throw new UnauthorizedException("Token is invalid or expired");
+    }
+  }
+
+  async decodeToken(access_token: string): Promise<JwtResponseType> {
+    try {
+      return await this.jwtService.verifyAsync(access_token, {
+        secret: JWT_SECRET,
+      });
     } catch {
       throw new UnauthorizedException("Token is invalid or expired");
     }

@@ -1,10 +1,20 @@
-import { UserType, NewsType } from "@carbon/zod";
+import {
+  SchoolType,
+  SkillType,
+  SocietyType,
+  UserType,
+  NewsType,
+} from "@carbon/zod";
 
 export const GetEndpoint = {
   Me: "/user/me",
   Leaderboard: "/leaderboard/:leaderboard",
   News: "/news",
-  // Ressources: "/ressources",
+  Logout: "/logout",
+  Skill: "/skill",
+  Society: "/society",
+  User: "/user",
+  School: "/school",
 } as const;
 
 export type GetEndpointMap = {
@@ -19,10 +29,26 @@ export type GetEndpointMap = {
     params: {
       leaderboard: "experience" | "seniority" | "mission";
     };
-    // "/ressources": {
-    //   response: {
-    //     RessourceType;
-    //   };
+  };
+  "/logout": {
+    response: undefined;
+  };
+  "/skill": {
+    response: SkillType[];
+  };
+  "/society": {
+    response: SocietyType[];
+  };
+  "/user": {
+    response: UserType[];
+    queryParams: {
+      skills?: string;
+      orderBy?: string;
+      search?: string;
+    };
+  };
+  "/school": {
+    response: SchoolType[];
   };
 };
 
