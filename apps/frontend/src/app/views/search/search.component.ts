@@ -8,11 +8,13 @@ import { SearchMenuService } from "../../shared/services/search-menu.service";
 import {
   debounceTime,
   distinctUntilChanged,
+  finalize,
   skip,
   switchMap,
 } from "rxjs/operators";
 import { UserParamsType, UserType } from "@carbon/zod";
 import { BehaviorSubject, combineLatest } from "rxjs";
+import { LoaderService } from "../../core/components/loader/loader.service";
 
 export interface QueryParams {
   search?: string;
@@ -35,18 +37,24 @@ export class SearchComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    public searchMenuService: SearchMenuService
+    public searchMenuService: SearchMenuService,
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit() {
+    this.loaderService.show();
+
     const queryParams = this.queryParams$.getValue();
 
-    this.userService.getUsers(queryParams).subscribe({
-      next: (users) => {
-        this.users = users;
-      },
-      error: console.error,
-    });
+    this.userService
+      .getUsers(queryParams)
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: (users) => {
+          this.users = users;
+        },
+        error: console.error,
+      });
 
     this.queryParams$
       .pipe(
@@ -63,9 +71,9 @@ export class SearchComponent implements OnInit {
       });
 
     combineLatest([
-      this.searchMenuService.selectedSkills$,
+      this.searchMenuService.selectedSkills$.pipe(debounceTime(1200)),
       this.searchMenuService.order$,
-      this.searchMenuService.search,
+      this.searchMenuService.search$,
     ]).subscribe({
       next: ([selectedSkills, orderBy, search]) => {
         this.queryParams$.next({
