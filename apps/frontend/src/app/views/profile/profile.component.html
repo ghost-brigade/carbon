@@ -1,7 +1,7 @@
 <section *ngIf="profile">
   <section class="flex w-full flex-col items-center justify-center">
     <img
-      src="{{ $profilePicture() }}"
+      src="{{ profile.avatar }}"
       class="mask mask-hexagon my-4 h-36 w-36 transition-all duration-300 hover:scale-105" />
     <h1 class="text-lg font-semibold">
       {{ profile.firstName }} {{ profile.lastName | uppercase }}
