@@ -5,6 +5,7 @@ import {
   UserParamsType,
   UserPreferenceCreateType,
   UserSkillCreateType,
+  UserTaskListCreateType,
   UserType,
   UserUpdateType,
 } from "@carbon/zod";
@@ -332,6 +333,80 @@ export class UserService {
         },
       },
       include: { UserPreference: true },
+    });
+
+    return updatedUser;
+  }
+
+  async removePreferenceFromUser(
+    id: string,
+    preferenceId: string
+  ): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { UserPreference: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const existingPreference = user.UserPreference.find(
+      (preference) => preference.id === preferenceId
+    );
+
+    if (!existingPreference) {
+      throw new NotFoundException("Preference not found");
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        UserPreference: {
+          delete: {
+            id: preferenceId,
+          },
+        },
+      },
+      include: { UserPreference: true },
+    });
+
+    return updatedUser;
+  }
+
+  async addTaskListToUser(
+    id: string,
+    createTaskList: UserTaskListCreateType
+  ): Promise<any> {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { taskLists: true },
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const { taskListId, status } = createTaskList;
+
+    const existingTaskList = user.taskLists.find(
+      (tasklist) => tasklist.taskListId === taskListId
+    );
+
+    if (existingTaskList) {
+      throw new UnprocessableEntityException(
+        "Tasklist already exists for the user"
+      );
+    }
+
+    const updatedUser = await this.prisma.user.update({
+      where: { id },
+      data: {
+        taskLists: {
+          create: { taskListId, status },
+        },
+      },
+      include: { taskLists: true },
     });
 
     return updatedUser;

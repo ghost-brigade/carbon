@@ -20,6 +20,8 @@ import {
   UserParamsType,
   UserSkillCreateType,
   UserPreferenceCreateType,
+  UserTaskListCreateType,
+  UserPreferenceCreateSchema,
   UserUpdateSchema,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
@@ -127,12 +129,28 @@ export class UserController {
     return await this.userService.addSkillToUser(id, createSkill);
   }
 
-  @Post(":id/preference")
+  @UseGuards(new ZodGuard("body", UserPreferenceCreateSchema))
+  @Post("preference")
   async addPreference(
-    @Param("id") id: string,
+    @UserContext() user: UserType,
+    // @Param("id") id: string,
     @Body() createPreference: UserPreferenceCreateType
   ): Promise<UserType> {
-    return await this.userService.addPreferenceToUser(id, createPreference);
+    return await this.userService.addPreferenceToUser(
+      user.id,
+      createPreference
+    );
+  }
+
+  @Delete("preference/:preferenceId")
+  async removePreference(
+    @UserContext() user: UserType,
+    @Param("preferenceId") preferenceId: string
+  ): Promise<UserType> {
+    return await this.userService.removePreferenceFromUser(
+      user.id,
+      preferenceId
+    );
   }
 
   // @Post(":id/achievement")
@@ -143,13 +161,13 @@ export class UserController {
   //   return await this.userService.addAchievementToUser(id, createAchievement);
   // }
 
-  // @Post(":id/tasklist")
-  // async addTaskList(
-  //   @Param("id") id: string,
-  //   @Body() createTaskList: UserTaskListCreateType
-  // ): Promise<UserType> {
-  //   return await this.userService.addTaskListToUser(id, createTaskList);
-  // }
+  @Post(":id/tasklist")
+  async addTaskList(
+    @Param("id") id: string,
+    @Body() createTaskList: UserTaskListCreateType
+  ): Promise<UserType> {
+    return await this.userService.addTaskListToUser(id, createTaskList);
+  }
 
   // @Post(":id/mission")
   // async addMission(
