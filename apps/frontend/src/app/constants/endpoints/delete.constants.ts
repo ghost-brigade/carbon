@@ -1,12 +1,12 @@
 export const DeleteEndpoint = {
-  Login: "/login",
+  UserPreference: "/user/preference/:id",
 } as const;
 
 export type DeleteEndpointMap = {
-  "/login": {
-    response: {
-      success: boolean;
-      token: string;
+  "/user/preference/:id": {
+    response: object;
+    params: {
+      id: string;
     };
   };
 };

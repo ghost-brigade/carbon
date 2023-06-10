@@ -46,12 +46,12 @@
     "method": "POST",
     "sortNum": 30000,
     "created": "2023-06-08T12:13:07.694Z",
-    "modified": "2023-06-08T12:14:00.521Z",
+    "modified": "2023-06-10T21:49:44.109Z",
     "headers": [],
     "params": [],
     "body": {
       "type": "json",
-      "raw": "{\n  \"email\":\"user1@carbon-it.fr\",\n  \"password\": \"password\"\n}",
+      "raw": "{\n  \"email\":\"julien@esgi.fr\",\n  \"password\": \"password\"\n}",
       "form": []
     },
     "tests": []
@@ -78,5 +78,40 @@
       "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGNhcmJvbi1pdC5mciIsInRva2VuIjoiZGFmYjVlOWUyNWQ5NGZjMjc5MWJiYjg0NDExNGYwOTNkNTAyNDQ0YSIsInN1YiI6Ijk0ODZlNzE3LWVlZjgtNGIzZS05MTJlLTVjYTMxOGYyMmM5ZSIsImlhdCI6MTY4NjIyNjQ0MCwiZXhwIjoxNjg2MzEyODQwfQ.ev-Jce8zgGXRitFh7kcc1HWItr_hruwBpbI728uxOWU"
     },
     "tests": []
+  },
+  {
+    "_id": "c7ac046a-e569-47e0-998d-9b8e156dae94",
+    "colId": "afb096c6-74bb-4ef5-a278-8e6f8d45332d",
+    "containerId": "",
+    "name": "add pref",
+    "url": "localhost:3000/user/preference",
+    "method": "POST",
+    "sortNum": 60000,
+    "created": "2023-06-10T21:48:40.763Z",
+    "modified": "2023-06-10T21:59:10.448Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"description\": \"Angqzduqzdzqdlqzdarr\",\n  \"isLiked\": false\n}",
+      "form": []
+    },
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bGllbkBlc2dpLmZyIiwicm9sZSI6InVzZXIiLCJ0b2tlbiI6IjlhYmI3NzkyNzhlMDlhZmNmZWI1OWE0MjUxZWVmMGVhYjg4YTJiYTUiLCJzdWIiOiJmMDdjYjM0NS0zY2VhLTRkNzAtYmEwYi1iNjA0ZmUyZTA3MDQiLCJpYXQiOjE2ODY0MzQzMzAsImV4cCI6MTY4NjUyMDczMH0.nrkAxQXUNVjvN6AoFi8rdDjGZVrYX_9zfnCvEUeTxNo"
+    },
+    "tests": []
+  },
+  {
+    "_id": "89f5538a-814b-4798-adc1-dbbce49b9736",
+    "colId": "afb096c6-74bb-4ef5-a278-8e6f8d45332d",
+    "containerId": "",
+    "name": "get users",
+    "url": "",
+    "method": "GET",
+    "sortNum": 70000,
+    "created": "2023-06-10T21:49:33.078Z",
+    "modified": "2023-06-10T21:49:33.078Z",
+    "headers": []
   }
 ]

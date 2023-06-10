@@ -12,6 +12,7 @@ import { finalize, filter, map } from "rxjs";
 import { RequestService } from "../../../shared/services/request.service";
 import { LoaderService } from "../loader/loader.service";
 import { GetEndpoint } from "../../../constants/endpoints/get.constants";
+import { ToastService } from "../toast/toast.service";
 
 @Component({
   selector: "carbon-navbar",
@@ -23,13 +24,33 @@ export class NavbarComponent implements OnInit {
   authService = inject(AuthService);
   loaderService = inject(LoaderService);
   requestService = inject(RequestService);
+  toastService = inject(ToastService);
   $currentRoute = signal("search");
   $isLoggedIn = computed(() => this.authService.$isLoggedIn());
+  $profilePicture = computed(() => this.authService.$userPicture());
   $hasAdmin = signal(false);
   tiles = computed(() => {
     if (!this.authService.$isLoggedIn()) {
       return [];
     } else {
+      this.requestService
+        .get({
+          endpoint: GetEndpoint.Me,
+        })
+        .pipe(finalize(() => this.loaderService.hide()))
+        .subscribe({
+          next: (res) => {
+            this.authService.$userPicture.set(
+              res.avatar || "assets/svg/navbar/picture.jpg"
+            );
+          },
+          error: () => {
+            this.toastService.show(
+              "ERROR",
+              "Erreur lors du chargement de votre profil"
+            );
+          },
+        });
       return appRoutes
         .filter(
           (route) =>
