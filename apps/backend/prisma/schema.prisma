@@ -13,7 +13,7 @@ model User {
   id              String            @id @default(uuid())
   email           String            @unique
   password        String
-  firstName        String?
+  firstName       String?
   lastName        String?
   birthDate       DateTime?
   entryDate       DateTime          @default(now())
@@ -164,7 +164,7 @@ model File {
   id          String   @id @default(uuid())
   name        String
   description String
-  tags        String[]
+  tags        String[] @default([])
   path        String
   type        FileType @default(resource)
   createdAt   DateTime @default(now())

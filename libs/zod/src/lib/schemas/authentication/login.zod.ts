@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const LoginSchema = z.object({
   email: z.string().email(),
@@ -19,7 +19,6 @@ export const JwtResponseSchema = z.object({
   iat: z.number(),
   exp: z.number(),
 });
-
 
 export type LoginType = z.infer<typeof LoginSchema>;
 export type JwtType = z.infer<typeof JwtSchema>;

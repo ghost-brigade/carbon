@@ -33,6 +33,18 @@ export default async (): Promise<UserType[]> => {
       role: RolesValues.USER,
     },
     {
+      email: "stanley@esgi.fr",
+      firstName: "Stanley",
+      lastName: "Cricoco",
+      role: RolesValues.USER,
+    },
+    {
+      email: "stanley@esgi.fr",
+      firstName: "Loudovic",
+      lastName: "Regex Harrison",
+      role: RolesValues.USER,
+    },
+    {
       email: "solene@carbon-it.fr",
       firstName: "Solène",
       lastName: "Ancel",

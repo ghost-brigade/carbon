@@ -30,7 +30,7 @@ export class AuthenticationService {
 
   async login(payload: LoginType): Promise<LoginResponseType> {
     if (!payload.email || !payload.password) {
-      new UnprocessableEntityException("Email and password are required");
+      throw new UnprocessableEntityException("Email and password are required");
     }
 
     try {
@@ -39,7 +39,7 @@ export class AuthenticationService {
       );
 
       if (!user) {
-        new UnauthorizedException("Email or password is incorrect");
+        throw new UnauthorizedException("Email or password is incorrect");
       }
 
       const isPasswordValid = await this.comparePassword(
@@ -48,18 +48,19 @@ export class AuthenticationService {
       );
 
       if (isPasswordValid === false) {
-        new UnauthorizedException("Email or password is incorrect");
+        throw new UnauthorizedException("Email or password is incorrect");
       }
 
       return {
         access_token: await this.jwtService.signAsync({
           email: user.email,
+          role: user.role,
           token: await this.userTokenService.createToken({ userId: user.id }),
           sub: user.id,
         }),
       };
     } catch (error) {
-      new UnauthorizedException("Email or password is incorrect");
+      throw new UnauthorizedException("Email or password is incorrect");
     }
   }
 

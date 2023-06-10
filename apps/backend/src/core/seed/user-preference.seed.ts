@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export default async (users: UserType[]): Promise<UserType[]> => {
   const usersPreferences: any[] = [];
 
-  for (let i = 0; i < 100; i++) {
+  for (let i = 0; i < 50; i++) {
     const userPreference = await prisma.userPreference.create({
       data: {
         userId: users[Math.floor(Math.random() * users.length)].id,

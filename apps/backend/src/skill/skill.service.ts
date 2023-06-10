@@ -22,7 +22,11 @@ export class SkillService {
 
   async findAll(): Promise<SkillType[]> {
     try {
-      return await this.prisma.skill.findMany();
+      return await this.prisma.skill.findMany({
+        orderBy: {
+          name: "asc",
+        },
+      });
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching skills");
     }
