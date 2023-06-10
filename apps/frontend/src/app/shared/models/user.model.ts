@@ -13,7 +13,7 @@ export type GetUserType = {
   skills: Skill[];
   avatar: null;
   taskLists: TaskList[];
-  missions: Mission[];
+  missions?: Mission[];
   UserPreference: UserPreference[];
   School: School[];
   UserAchievement: UserAchievement[];
