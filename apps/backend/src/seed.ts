@@ -7,7 +7,7 @@ import UserSkillSeed from "./core/seed/user-skill.seed";
 import MissionSeed from "./core/seed/mission.seed";
 import SocietiesSeed from "./core/seed/society.seed";
 import SchoolSeed from "./core/seed/school.seed";
-// import FileSeed from "./core/seed/file.seed";
+import FileSeed from "./core/seed/file.seed";
 // import TaskListSeed from "./core/seed/tasklist.seed";
 // import AchievementSeed from "./core/seed/achievement.seed";
 import UserAchievementSeed from "./core/seed/user-achievement.seed";
@@ -64,6 +64,7 @@ async function main() {
   const societies = await SocietiesSeed();
   const news = await newsSeed();
   // const achievements = await AchievementSeed();
+  const files = await FileSeed(S3);
 
   const usersAchievements = await UserAchievementSeed(users);
   const schools = await SchoolSeed(users);
