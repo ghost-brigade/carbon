@@ -27,6 +27,7 @@ import { UserPasswordInterceptor } from "../core/interceptors/user-password.inte
 import { UserContext } from "../core/decorators/user-context.decorator";
 import { UserSalaryInterceptor } from "../core/interceptors/user-salary.interceptor";
 import { UserAvatarInterceptor } from "../core/interceptors/user-avatar.interceptor";
+import getOrder from "../core/utils/getOrder";
 import { AuthorizationGuard } from "../core/guard/authorization.guard";
 import { RolesValues } from "@carbon/enum";
 
@@ -58,8 +59,12 @@ export class UserController {
   )
   @HttpCode(200)
   async findAll(@Query() params: UserParamsType): Promise<UserType[]> {
+    const { orderBy } = params;
+    const order = orderBy && getOrder(orderBy);
+
     return await this.userService.findAll({
       params,
+      order,
       include: {
         skills: {
           include: {

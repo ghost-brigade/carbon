@@ -1,4 +1,3 @@
-import { UserContext } from "./../core/decorators/user-context.decorator";
 import {
   Controller,
   Post,
@@ -22,6 +21,7 @@ import {
   FileParamsType,
 } from "libs/zod/src/lib/schemas/file/file.zod";
 import { UserContext } from "../core/decorators/user-context.decorator";
+import { UserType } from "@carbon/zod";
 
 @Controller("file")
 export class FileController {
@@ -73,7 +73,7 @@ export class FileController {
 
   @Delete(":id")
   @HttpCode(204)
-  async remove(@Param("id") id: string, @UserContext() user: UserContext) {
+  async remove(@Param("id") id: string, @UserContext() user: UserType) {
     return await this.fileService.remove(id, user);
   }
 }

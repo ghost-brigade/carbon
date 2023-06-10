@@ -66,29 +66,64 @@ export class UserService {
         take: limit,
       };
 
-      if (include) query["include"] = include;
-      if (params.firstName)
+      if (include) {
+        query["include"] = include;
+      }
+
+      if (params?.search) {
+        const { search } = params;
+        const names = search.split(/\s+/);
+        const [firstName, lastName] = names;
+
+        query.where["OR"] = [
+          {
+            firstName: {
+              startsWith: firstName,
+              mode: "insensitive",
+            },
+            lastName: {
+              startsWith: lastName,
+              mode: "insensitive",
+            },
+          },
+          {
+            firstName: {
+              startsWith: lastName,
+              mode: "insensitive",
+            },
+            lastName: {
+              startsWith: firstName,
+              mode: "insensitive",
+            },
+          },
+        ];
+      }
+
+      if (params?.firstName) {
         query.where["firstName"] = {
           startsWith: params.firstName,
           mode: "insensitive",
         };
-      if (params.lastName)
+      }
+      if (params?.lastName) {
         query.where["lastName"] = {
           startsWith: params.lastName,
           mode: "insensitive",
         };
-      if (params.skills)
+      }
+      if (params?.skills) {
         query.where["skills"] = {
           some: {
             skill: {
-              name: { in: params.skills },
+              name: { in: params.skills.split(",") },
             },
           },
-          mode: "insensitive",
         };
+      }
 
       return (await this.prisma.user.findMany(query)) as UserType[];
     } catch (error) {
+      console.error(error);
       throw new InternalServerErrorException("Error while fetching users");
     }
   }

@@ -1,0 +1,13 @@
+<div class="menu-title">Filtrer par</div>
+<carbon-search-menu-dropdown
+  [elements]="skills"
+  [selectedElements]="searchMenuService.selectedSkills$"
+  (elementChange)="searchMenuService.toggleSkill($event)">
+  Compétence
+</carbon-search-menu-dropdown>
+<!-- <carbon-search-menu-dropdown
+  [elements]="societies"
+  [selectedElements]="searchMenuService.selectedSocieties$"
+  [onChange]="searchMenuService.toggleSociety">
+  Société
+</carbon-search-menu-dropdown> -->

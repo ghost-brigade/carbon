@@ -36,11 +36,13 @@ export const UserSchema = z
   })
   .merge(TimestampSchema);
 
-export const UserParamsSchema = UserSchema.pick({
-  entryDate: true,
-  firstName: true,
-  lastName: true,
-  skills: true,
+export const UserParamsSchema = z.object({
+  entryDate: UserSchema.shape.entryDate.optional(),
+  firstName: UserSchema.shape.firstName.optional(),
+  lastName: UserSchema.shape.lastName.optional(),
+  skills: z.string().optional(),
+  orderBy: z.string().optional(),
+  search: z.string().optional(),
 });
 
 export const UserCreateSchema = UserSchema.pick({
