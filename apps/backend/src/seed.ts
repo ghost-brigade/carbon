@@ -14,11 +14,15 @@ import UserAchievementSeed from "./core/seed/user-achievement.seed";
 import tasklistSeed from "./core/seed/tasklist.seed";
 import userTasklistSeed from "./core/seed/user-tasklist.seed";
 import newsSeed from "./core/seed/news.seed";
+<<<<<<< HEAD
 import {
   S3Client,
   ListObjectsV2Command,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
+=======
+import eventSeed from "./core/seed/event.seed";
+>>>>>>> 6662268 (Backend de event)
 
 const prisma = new PrismaClient();
 
@@ -63,6 +67,7 @@ async function main() {
   const users = await UserSeed(S3);
   const societies = await SocietiesSeed();
   const news = await newsSeed();
+  const event = await eventSeed();
   // const achievements = await AchievementSeed();
   const files = await FileSeed(S3);
 

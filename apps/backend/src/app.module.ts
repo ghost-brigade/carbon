@@ -12,13 +12,18 @@ import { TaskListModule } from "./tasklist/tasklist.module";
 import { MissionModule } from "./mission/mission.module";
 import { LeaderboardModule } from "./leaderboard/leaderboard.module";
 import { NewsModule } from "./news/news.module";
+<<<<<<< HEAD
 import { UserPreferenceModule } from "./user-preference/user-preference.module";
+=======
+import { EventModule } from "./event/event.module";
+>>>>>>> 6662268 (Backend de event)
 
 @Module({
   imports: [
     UserModule,
     AuthenticationModule,
     SkillModule,
+    EventModule,
     FileModule,
     SocietyModule,
     SchoolModule,
