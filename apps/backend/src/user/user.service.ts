@@ -97,18 +97,30 @@ export class UserService {
         ];
       }
 
+      query.where["role"] = {
+        notIn: [RolesValues.COMMERCIAL, RolesValues.HR],
+      };
+
+      if (params?.roles) {
+        query.where["role"] = {
+          in: params.roles.split(","),
+        };
+      }
+
       if (params?.firstName) {
         query.where["firstName"] = {
           startsWith: params.firstName,
           mode: "insensitive",
         };
       }
+
       if (params?.lastName) {
         query.where["lastName"] = {
           startsWith: params.lastName,
           mode: "insensitive",
         };
       }
+
       if (params?.skills) {
         query.where["skills"] = {
           some: {
