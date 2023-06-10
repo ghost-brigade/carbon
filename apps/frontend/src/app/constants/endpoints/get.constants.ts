@@ -17,6 +17,7 @@ export const GetEndpoint = {
   User: "/user",
   School: "/school",
   UserProfile: "/user/:id",
+  SearchUserPreference: "/user-preference/search",
 } as const;
 
 export type GetEndpointMap = {
@@ -57,6 +58,12 @@ export type GetEndpointMap = {
     response: GetUserType;
     params: {
       id: string;
+    };
+  };
+  "/user-preference/search": {
+    response: string[];
+    queryParams: {
+      description: string;
     };
   };
 };

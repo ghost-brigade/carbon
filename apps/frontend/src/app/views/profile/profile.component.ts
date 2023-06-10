@@ -1,4 +1,4 @@
-import { Component, OnInit, computed, inject } from "@angular/core";
+import { Component, OnInit, computed, inject, signal } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RequestService } from "../../shared/services/request.service";
 import { GetEndpoint } from "../../constants/endpoints/get.constants";
@@ -13,11 +13,14 @@ import {
 } from "../../shared/models/user.model";
 import { AuthService } from "../../core/services/auth.service";
 import { ActivatedRoute } from "@angular/router";
+import { FormsModule } from "@angular/forms";
+import { DeleteEndpoint } from "../../constants/endpoints/delete.constants";
+import { ToastService } from "../../core/components/toast/toast.service";
 
 @Component({
   selector: "carbon-profile",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"],
 })
@@ -26,8 +29,19 @@ export class ProfileComponent implements OnInit {
   loaderService = inject(LoaderService);
   profileService = inject(ProfileService);
   authService = inject(AuthService);
+  toastService = inject(ToastService);
+  $isSelfProfile = signal(false);
   $profilePicture = computed(() => this.authService.$userPicture());
   profile: GetUserType | undefined;
+  newPreference = "";
+  preferenceTimeout = -1;
+  preferences: string[] = [
+    "Frontend",
+    "Backend",
+    "Banque",
+    "Assurance",
+    "Santé",
+  ];
   getFormattedTime = getFormattedTime;
   getRank = getRank;
   xp: XP = {
@@ -52,6 +66,7 @@ export class ProfileComponent implements OnInit {
           next: (res) => {
             this.profile = res;
             this.xp = this.profileService.calculateLevel(res.experience);
+            this.$isSelfProfile.set(true);
           },
         });
     } else {
@@ -106,5 +121,50 @@ export class ProfileComponent implements OnInit {
     const endDate = new Date(school.dateEnd);
 
     return `${startDate.getFullYear()} - ${endDate.getFullYear()}`;
+  }
+
+  deletePreference(id: string) {
+    this.requestService
+      .delete({
+        endpoint: DeleteEndpoint.UserPreference,
+        params: {
+          id,
+        },
+      })
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: () => {
+          this.profile?.UserPreference.splice(
+            this.profile.UserPreference.findIndex((p) => p.id === id),
+            1
+          );
+        },
+        error: () => {
+          this.toastService.show(
+            "ERROR",
+            "Une erreur est survenue lors de la suppression de la préférence"
+          );
+        },
+      });
+  }
+
+  searchPreference() {
+    clearTimeout(this.preferenceTimeout);
+    this.preferenceTimeout = window.setTimeout(() => {
+      this.requestService
+        .get({
+          endpoint: GetEndpoint.SearchUserPreference,
+          queryParams: {
+            description: this.newPreference,
+          },
+        })
+        .pipe(finalize(() => this.loaderService.hide()))
+        .subscribe({
+          next: (res) => {
+            console.log(res);
+            this.preferences = res;
+          },
+        });
+    }, 500);
   }
 }

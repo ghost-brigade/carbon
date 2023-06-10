@@ -9,9 +9,59 @@
     <div class="mt-2 flex flex-row flex-wrap items-center justify-center gap-2">
       <div
         class="badge {{ preference.isLiked ? 'badge-accent' : 'badge-error' }} "
-        *ngFor="let preference of profile?.UserPreference?.slice(0, 5)">
+        *ngFor="let preference of profile?.UserPreference">
         {{ preference.isLiked ? "👍 " : "👎 " }}
         {{ preference.description }}
+        <span
+          class="ml-2 cursor-pointer"
+          *ngIf="$isSelfProfile()"
+          (click)="deletePreference(preference.id)">
+          ×</span
+        >
+      </div>
+      <div *ngIf="$isSelfProfile()">
+        <dialog
+          id="add-preference"
+          class="modal text-neutral text-center">
+          <form
+            method="dialog"
+            class="modal-box">
+            <button
+              for="add-preference"
+              class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+              ✕
+            </button>
+            <h1>Ajouter une préference</h1>
+            <input
+              type="text"
+              list="preferences"
+              class="input input-bordered mt-10 w-full"
+              placeholder="Nouvelle préférence"
+              [(ngModel)]="newPreference"
+              (keydown)="searchPreference()"
+              [ngModelOptions]="{ standalone: true }" />
+            <datalist id="preferences">
+              <option
+                *ngFor="let preference of preferences"
+                [value]="preference"></option>
+            </datalist>
+
+            <div class="join mt-5">
+              <button class="btn btn-accent join-item">👍</button>
+              <button class="btn btn-error join-item">👎</button>
+            </div>
+          </form>
+          <form
+            method="dialog"
+            class="modal-backdrop">
+            <button>fermer</button>
+          </form>
+        </dialog>
+        <div
+          (click)="showModal('add-preference')"
+          class="badge badge-primary cursor-pointer">
+          +
+        </div>
       </div>
     </div>
     <p
