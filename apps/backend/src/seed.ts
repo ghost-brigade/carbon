@@ -14,15 +14,12 @@ import UserAchievementSeed from "./core/seed/user-achievement.seed";
 import tasklistSeed from "./core/seed/tasklist.seed";
 import userTasklistSeed from "./core/seed/user-tasklist.seed";
 import newsSeed from "./core/seed/news.seed";
-<<<<<<< HEAD
 import {
   S3Client,
   ListObjectsV2Command,
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
-=======
 import eventSeed from "./core/seed/event.seed";
->>>>>>> 6662268 (Backend de event)
 
 const prisma = new PrismaClient();
 
