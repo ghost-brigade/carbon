@@ -37,6 +37,14 @@ export const appRoutes: Route[] = [
     },
   },
   {
+    path: "event",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/event/event.component").then((m) => m.NewsComponent),
+    title: "Event",
+    data: { role: "ALL", icon: "event", order: 2, hidden: false },
+  },
+  {
     path: "search",
     canActivate: [AuthGuard],
     loadComponent: () =>
