@@ -58,6 +58,7 @@ export class MissionController {
     return await this.missionService.update(id, updateMission, user);
   }
 
+  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   @Delete(":id")
   async remove(@Param("id") id: string) {
     return await this.missionService.remove(id);
