@@ -34,16 +34,14 @@ export const getYear = (user: GetUserType): string => {
 export const getRank = (level: number): string => {
   switch (true) {
     case level <= 10:
-      return "🌱";
+      return "1";
     case level <= 20:
-      return "🌲";
+      return "2";
     case level <= 30:
-      return "🏆";
+      return "3";
     case level <= 40:
-      return "⭐️";
-    case level <= 50:
-      return "👑";
+      return "4";
     default:
-      return "💎";
+      return "5";
   }
 };

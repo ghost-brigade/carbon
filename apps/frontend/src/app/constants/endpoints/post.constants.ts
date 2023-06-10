@@ -1,12 +1,18 @@
-import { LoginType, JwtType } from "@carbon/zod";
+import { LoginType, JwtType, UserPreferenceCreateType } from "@carbon/zod";
+import { GetUserType } from "../../shared/models/user.model";
 export const PostEndpoint = {
   Login: "/login",
+  UserPreference: "/user/preference",
 } as const;
 
 export type PostEndpointMap = {
   "/login": {
     response: JwtType;
     body: LoginType;
+  };
+  "/user/preference": {
+    response: GetUserType;
+    body: UserPreferenceCreateType;
   };
 };
 
