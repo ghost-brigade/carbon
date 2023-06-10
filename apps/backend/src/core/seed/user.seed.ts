@@ -47,10 +47,10 @@ export default async (S3: S3Client): Promise<UserType[]> => {
       role: RolesValues.USER,
     },
     {
-      email: "stanley@esgi.fr",
+      email: "loudovic@esgi.fr",
       firstName: "Loudovic",
       lastName: "Regex Harrison",
-      avatar: "./avatar/Stanley.jpg",
+      avatar: "./avatar/Loudovic.jpg",
       role: RolesValues.USER,
     },
     {
