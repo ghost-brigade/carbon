@@ -1,12 +1,12 @@
 import { z } from "zod";
 import { TimestampSchema } from "../timestamp.zod";
 import { RolesValues } from "@carbon/enum";
-import { SkillSchema } from "../skill";
 import { TaskListSchema } from "../tasklist";
 import { MissionSchema } from "../mission";
 import { UserPreferenceSchema } from "./user-preference.zod";
 import { SchoolSchema } from "../school";
 import { FileSchema } from "../file";
+import { UserSkillSchema } from "./user-skill.zod";
 
 export const UserSchema = z
   .object({
@@ -27,11 +27,11 @@ export const UserSchema = z
     role: z.nativeEnum(RolesValues),
     entryDate: z.string().or(z.date()),
     experience: z.number(),
-    skills: z.array(SkillSchema).optional(),
+    skills: z.array(UserSkillSchema).optional(),
     taskLists: z.array(TaskListSchema).optional(),
     missions: z.array(MissionSchema).optional(),
     userPreferences: z.array(UserPreferenceSchema).optional(),
-    school: z.array(SchoolSchema).optional(),
+    School: z.array(SchoolSchema).optional(),
     avatar: z.string().or(FileSchema).optional(),
   })
   .merge(TimestampSchema);

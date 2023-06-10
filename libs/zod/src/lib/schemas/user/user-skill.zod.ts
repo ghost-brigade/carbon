@@ -8,8 +8,8 @@ export const UserSkillSchema = z
     userId: z.string(),
     skillId: z.string(),
     level: z.number().min(1).max(5),
-    user: UserSchema,
-    skill: SkillSchema,
+    //user: UserSchema,
+    //skill: SkillSchema,
   })
   .merge(TimestampSchema);
 

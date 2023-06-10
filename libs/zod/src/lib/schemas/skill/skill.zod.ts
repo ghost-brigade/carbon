@@ -6,6 +6,7 @@ export const SkillSchema = z
   .object({
     id: z.string().uuid(),
     name: z.string(),
+    level: z.number().optional(),
     language: z.string().optional().nullable().default(null),
     userSkills: z.any(),
     taskLists: TaskListSchema,
