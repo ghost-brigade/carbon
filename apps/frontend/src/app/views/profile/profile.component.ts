@@ -16,6 +16,7 @@ import { ActivatedRoute } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { DeleteEndpoint } from "../../constants/endpoints/delete.constants";
 import { ToastService } from "../../core/components/toast/toast.service";
+import { PostEndpoint } from "../../constants/endpoints/post.constants";
 
 @Component({
   selector: "carbon-profile",
@@ -32,16 +33,11 @@ export class ProfileComponent implements OnInit {
   toastService = inject(ToastService);
   $isSelfProfile = signal(false);
   $profilePicture = computed(() => this.authService.$userPicture());
+  $suggestionsActive = signal(false);
   profile: GetUserType | undefined;
   newPreference = "";
   preferenceTimeout = -1;
-  preferences: string[] = [
-    "Frontend",
-    "Backend",
-    "Banque",
-    "Assurance",
-    "Santé",
-  ];
+  preferences: string[] = [];
   getFormattedTime = getFormattedTime;
   getRank = getRank;
   xp: XP = {
@@ -149,6 +145,10 @@ export class ProfileComponent implements OnInit {
   }
 
   searchPreference() {
+    if (this.newPreference.length === 0) {
+      this.preferences = [];
+      return;
+    }
     clearTimeout(this.preferenceTimeout);
     this.preferenceTimeout = window.setTimeout(() => {
       this.requestService
@@ -161,10 +161,52 @@ export class ProfileComponent implements OnInit {
         .pipe(finalize(() => this.loaderService.hide()))
         .subscribe({
           next: (res) => {
-            console.log(res);
             this.preferences = res;
           },
         });
     }, 500);
+  }
+
+  addPreference(isLiked: boolean) {
+    this.requestService
+      .post({
+        endpoint: PostEndpoint.UserPreference,
+        body: {
+          description: this.newPreference,
+          isLiked,
+        },
+      })
+      .pipe(
+        finalize(() => ((this.newPreference = ""), (this.preferences = [])))
+      )
+      .subscribe({
+        next: (res) => {
+          if (this.profile?.UserPreference)
+            this.profile.UserPreference = res.UserPreference;
+        },
+        error: (err) => {
+          if (err.status === 400) {
+            this.toastService.show("ERROR", "Vous avez déjà cette préférence");
+          } else if (err.status === 422) {
+            this.toastService.show(
+              "ERROR",
+              "Nombre maximum de préférences atteint"
+            );
+          } else {
+            this.toastService.show("ERROR", "Une erreur est survenue");
+          }
+        },
+      });
+  }
+
+  setSuggestionsActive(active: boolean) {
+    // add a timeout to avoid the suggestions to be hidden when clicking on them
+    setTimeout(() => {
+      this.$suggestionsActive.set(active);
+    }, 100);
+  }
+
+  setPreference(preference: string) {
+    this.newPreference = preference;
   }
 }
