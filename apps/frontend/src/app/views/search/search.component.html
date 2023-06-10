@@ -21,6 +21,29 @@
     </button>
   </div>
   <carbon-search-buttons></carbon-search-buttons>
+  <ul class="flex flex-wrap gap-4">
+    <li *ngFor="let selectedSkill of searchMenuService.selectedSkills$ | async">
+      <button
+        class="badge badge-primary gap-2"
+        (click)="onRemoveSkill(selectedSkill)">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-6 w-6">
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        <span>
+          {{ selectedSkill }}
+        </span>
+      </button>
+    </li>
+  </ul>
   <carbon-users [users]="users"></carbon-users>
 </section>
 <carbon-search-menu (applyClick)="search()"></carbon-search-menu>

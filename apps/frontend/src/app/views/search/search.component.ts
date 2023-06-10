@@ -47,6 +47,12 @@ export class SearchComponent implements OnInit {
       });
   }
 
+  onRemoveSkill(skill: string) {
+    this.searchMenuService.toggleSkill(skill);
+
+    this.search();
+  }
+
   search() {
     this.loaderService.show();
 

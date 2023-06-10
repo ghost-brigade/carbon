@@ -17,6 +17,7 @@
           type="checkbox"
           [name]="element.name"
           [id]="element.id"
+          [checked]="selectedElements.includes(element.name)"
           (change)="toggleElement(element.name)" />
         <span>
           {{ element.name }}

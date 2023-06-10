@@ -2,7 +2,7 @@
 <carbon-search-menu-dropdown
   [elements]="skills"
   [isOpen]="true"
-  [selectedElements]="searchMenuService.selectedSkills$"
+  [selectedElements]="(searchMenuService.selectedSkills$ | async) ?? []"
   (elementChange)="searchMenuService.toggleSkill($event)">
   Compétence
 </carbon-search-menu-dropdown>
