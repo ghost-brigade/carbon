@@ -121,6 +121,7 @@ export class UserController {
     return await this.userService.remove(id);
   }
 
+  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   @Post(":id/skill")
   async addSkill(
     @Param("id") id: string,
@@ -162,6 +163,7 @@ export class UserController {
   // }
 
   @Post(":id/tasklist")
+  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   async addTaskList(
     @Param("id") id: string,
     @Body() createTaskList: UserTaskListCreateType

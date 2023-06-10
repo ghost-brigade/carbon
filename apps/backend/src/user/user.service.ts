@@ -10,6 +10,7 @@ import {
   UserUpdateType,
 } from "@carbon/zod";
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -339,6 +340,14 @@ export class UserService {
       throw new UnprocessableEntityException(
         `User already has 5 preferences with isLiked ${preferenceType}`
       );
+    }
+
+    const existingPreference = existingPreferences.find(
+      (preference) => preference.description === description
+    );
+
+    if (existingPreference) {
+      throw new BadRequestException("Preference already exists for the user");
     }
 
     const updatedUser = await this.prisma.user.update({
