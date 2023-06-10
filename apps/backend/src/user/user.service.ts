@@ -70,7 +70,7 @@ export class UserService {
         query["include"] = include;
       }
 
-      if (params.search) {
+      if (params?.search) {
         const { search } = params;
         const names = search.split(/\s+/);
         const [firstName, lastName] = names;
@@ -99,19 +99,19 @@ export class UserService {
         ];
       }
 
-      if (params.firstName) {
+      if (params?.firstName) {
         query.where["firstName"] = {
           startsWith: params.firstName,
           mode: "insensitive",
         };
       }
-      if (params.lastName) {
+      if (params?.lastName) {
         query.where["lastName"] = {
           startsWith: params.lastName,
           mode: "insensitive",
         };
       }
-      if (params.skills) {
+      if (params?.skills) {
         query.where["skills"] = {
           some: {
             skill: {
