@@ -14,7 +14,9 @@ module.exports = {
     "alert-success", 
     "alert-warning", 
     "alert-error", 
-    "alert-info"
+    "alert-info",
+    "lg:col-span-2",
+    "lg:col-span-1",
   ],
   theme: {
     extend: {},
