@@ -43,12 +43,14 @@ export default async (S3: S3Client): Promise<UserType[]> => {
       email: "stanley@esgi.fr",
       firstName: "Stanley",
       lastName: "Cricoco",
+      avatar: "./avatar/Stanley.jpg",
       role: RolesValues.USER,
     },
     {
       email: "stanley@esgi.fr",
       firstName: "Loudovic",
       lastName: "Regex Harrison",
+      avatar: "./avatar/Stanley.jpg",
       role: RolesValues.USER,
     },
     {
@@ -57,13 +59,6 @@ export default async (S3: S3Client): Promise<UserType[]> => {
       lastName: "Ancel",
       avatar: "./avatar/Solene.jpg",
       role: RolesValues.HR,
-    },
-    {
-      email: "stanley@esgi.fr",
-      firstName: "Stanley",
-      lastName: "Criquet",
-      avatar: "./avatar/Stanley.jpg",
-      role: RolesValues.USER,
     },
     {
       email: "christophe@carbon-it.fr",
