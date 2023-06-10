@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from "@angular/core";
+import { Component, OnInit, computed, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RequestService } from "../../shared/services/request.service";
 import { GetEndpoint } from "../../constants/endpoints/get.constants";
@@ -11,6 +11,8 @@ import {
   School,
   UserAchievement,
 } from "../../shared/models/user.model";
+import { AuthService } from "../../core/services/auth.service";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
   selector: "carbon-profile",
@@ -23,6 +25,8 @@ export class ProfileComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
   profileService = inject(ProfileService);
+  authService = inject(AuthService);
+  $profilePicture = computed(() => this.authService.$userPicture());
   profile: GetUserType | undefined;
   getFormattedTime = getFormattedTime;
   getRank = getRank;
@@ -32,21 +36,40 @@ export class ProfileComponent implements OnInit {
     totalXP: 0,
     xpUntilNextLevel: 0,
   };
+
+  constructor(private route: ActivatedRoute) {}
+
   ngOnInit(): void {
     this.loaderService.show();
-    this.requestService
-      .get({
-        endpoint: GetEndpoint.Me,
-      })
-      .pipe(finalize(() => this.loaderService.hide()))
-      .subscribe({
-        next: (res) => {
-          console.log(res);
-          this.profile = res;
-          this.xp = this.profileService.calculateLevel(res.experience);
-          console.log(this.xp);
-        },
-      });
+    const userId = this.route.snapshot.paramMap.get("id");
+    if (!userId) {
+      this.requestService
+        .get({
+          endpoint: GetEndpoint.Me,
+        })
+        .pipe(finalize(() => this.loaderService.hide()))
+        .subscribe({
+          next: (res) => {
+            this.profile = res;
+            this.xp = this.profileService.calculateLevel(res.experience);
+          },
+        });
+    } else {
+      this.requestService
+        .get({
+          endpoint: GetEndpoint.UserProfile,
+          params: {
+            id: userId,
+          },
+        })
+        .pipe(finalize(() => this.loaderService.hide()))
+        .subscribe({
+          next: (res) => {
+            this.profile = res;
+            this.xp = this.profileService.calculateLevel(res.experience);
+          },
+        });
+    }
   }
 
   uniqueBadges() {

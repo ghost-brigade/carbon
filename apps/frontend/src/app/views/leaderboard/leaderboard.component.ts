@@ -7,7 +7,6 @@ import {
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RequestService } from "../../shared/services/request.service";
-import { UserType } from "@carbon/zod";
 import { GetEndpoint } from "../../constants/endpoints/get.constants";
 import { ToastService } from "../../core/components/toast/toast.service";
 import { ProfileService } from "../profile/profile.service";
@@ -15,10 +14,11 @@ import { LoaderService } from "../../core/components/loader/loader.service";
 import { finalize } from "rxjs";
 import { getFormattedTime, getYear } from "../../shared/utils/format";
 import { GetUserType } from "../../shared/models/user.model";
+import { RouterModule } from "@angular/router";
 @Component({
   selector: "carbon-leaderboard",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: "./leaderboard.component.html",
   styleUrls: ["./leaderboard.component.css"],
 })

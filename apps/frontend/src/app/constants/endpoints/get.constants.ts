@@ -16,6 +16,7 @@ export const GetEndpoint = {
   Society: "/society",
   User: "/user",
   School: "/school",
+  UserProfile: "/user/:id",
 } as const;
 
 export type GetEndpointMap = {
@@ -50,6 +51,13 @@ export type GetEndpointMap = {
   };
   "/school": {
     response: SchoolType[];
+  };
+
+  "/user/:id": {
+    response: GetUserType;
+    params: {
+      id: string;
+    };
   };
 };
 
