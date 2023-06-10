@@ -10,14 +10,17 @@ export const MissionSchema = z
     dateEnd: z.string().or(z.date()).optional(),
     rating: z.number().optional(),
     feedback: z.string().optional(),
-    averageDailyRate: z.string().or(
-      z.array(
-        z.object({
-          amount: z.number(),
-          date: z.string().or(z.date()),
-        })
+    averageDailyRate: z
+      .string()
+      .or(
+        z.array(
+          z.object({
+            amount: z.number(),
+            date: z.string().or(z.date()),
+          })
+        )
       )
-    ),
+      .optional(),
     societyId: z.string().optional(),
     userId: z.string().optional(),
   })

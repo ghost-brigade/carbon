@@ -11,11 +11,10 @@ import { BehaviorSubject } from "rxjs";
 })
 export class SearchMenuDropdownComponent {
   @Input() elements: { id: string; name: string }[] = [];
-  @Input() selectedElements = new BehaviorSubject<string[]>([]);
+  @Input() selectedElements: string[] = [];
+  @Input() isOpen = false;
 
   @Output() elementChange = new EventEmitter<string>();
-
-  isOpen = false;
 
   toggle() {
     this.isOpen = !this.isOpen;

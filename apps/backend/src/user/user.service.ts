@@ -10,6 +10,7 @@ import {
   UserUpdateType,
 } from "@carbon/zod";
 import {
+  BadRequestException,
   Injectable,
   InternalServerErrorException,
   NotFoundException,
@@ -17,15 +18,12 @@ import {
   UnprocessableEntityException,
 } from "@nestjs/common";
 import { PrismaService } from "../prisma.service";
-import { Roles, RolesValues } from "@carbon/enum";
+import { RolesValues } from "@carbon/enum";
+import hasRight from "../core/utils/hasRight";
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
-
-  hasRight(user: UserType, roles: Roles[]): boolean {
-    return roles.some((role) => user.role === role);
-  }
 
   async create(createUser: UserCreateType): Promise<UserType> {
     try {
@@ -100,18 +98,30 @@ export class UserService {
         ];
       }
 
+      query.where["role"] = {
+        notIn: [RolesValues.COMMERCIAL, RolesValues.HR],
+      };
+
+      if (params?.roles) {
+        query.where["role"] = {
+          in: params.roles.split(","),
+        };
+      }
+
       if (params?.firstName) {
         query.where["firstName"] = {
           startsWith: params.firstName,
           mode: "insensitive",
         };
       }
+
       if (params?.lastName) {
         query.where["lastName"] = {
           startsWith: params.lastName,
           mode: "insensitive",
         };
       }
+
       if (params?.skills) {
         query.where["skills"] = {
           some: {
@@ -153,7 +163,19 @@ export class UserService {
             },
           },
           avatar: true,
-          taskLists: true,
+          taskLists: {
+            include: {
+              taskList: {
+                include: {
+                  skill: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+              },
+            },
+          },
           UserPreference: true,
           School: true,
           UserAchievement: true,
@@ -200,9 +222,7 @@ export class UserService {
       throw new UnprocessableEntityException("Salary must be a number");
     }
 
-    if (
-      this.hasRight(user, [RolesValues.HR, RolesValues.COMMERCIAL]) === false
-    ) {
+    if (hasRight(user, [RolesValues.HR, RolesValues.COMMERCIAL]) === false) {
       if (id !== user.id) {
         throw new UnauthorizedException(
           "You don't have the right to update this user"
@@ -320,6 +340,14 @@ export class UserService {
       throw new UnprocessableEntityException(
         `User already has 5 preferences with isLiked ${preferenceType}`
       );
+    }
+
+    const existingPreference = existingPreferences.find(
+      (preference) => preference.description === description
+    );
+
+    if (existingPreference) {
+      throw new BadRequestException("Preference already exists for the user");
     }
 
     const updatedUser = await this.prisma.user.update({

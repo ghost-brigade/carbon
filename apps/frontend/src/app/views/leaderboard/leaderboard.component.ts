@@ -7,17 +7,18 @@ import {
 } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RequestService } from "../../shared/services/request.service";
-import { UserType } from "@carbon/zod";
 import { GetEndpoint } from "../../constants/endpoints/get.constants";
 import { ToastService } from "../../core/components/toast/toast.service";
 import { ProfileService } from "../profile/profile.service";
 import { LoaderService } from "../../core/components/loader/loader.service";
 import { finalize } from "rxjs";
 import { getFormattedTime, getYear } from "../../shared/utils/format";
+import { GetUserType } from "../../shared/models/user.model";
+import { RouterModule } from "@angular/router";
 @Component({
   selector: "carbon-leaderboard",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   templateUrl: "./leaderboard.component.html",
   styleUrls: ["./leaderboard.component.css"],
 })
@@ -26,9 +27,9 @@ export class LeaderboardComponent implements OnInit {
   toastService = inject(ToastService);
   profileService = inject(ProfileService);
   loaderService = inject(LoaderService);
-  missionLeaderboard: WritableSignal<UserType[]> = signal([]);
-  seniorityLeaderboard: WritableSignal<UserType[]> = signal([]);
-  levelLeaderboard: WritableSignal<UserType[]> = signal([]);
+  missionLeaderboard: WritableSignal<GetUserType[]> = signal([]);
+  seniorityLeaderboard: WritableSignal<GetUserType[]> = signal([]);
+  levelLeaderboard: WritableSignal<GetUserType[]> = signal([]);
   selectTab: WritableSignal<"experience" | "seniority"> = signal("experience");
   getFormattedTime = getFormattedTime;
   getYear = getYear;
@@ -75,7 +76,7 @@ export class LeaderboardComponent implements OnInit {
       });
   }
 
-  getLevel(user: UserType) {
+  getLevel(user: GetUserType) {
     return this.profileService.calculateLevel(user.experience).level;
   }
 

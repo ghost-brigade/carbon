@@ -21,6 +21,7 @@ import {
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { UserService } from "../user/user.service";
 import { RolesValues } from "@carbon/enum";
+import hasRight from "../core/utils/hasRight";
 
 @Injectable()
 export class FileService {
@@ -221,12 +222,7 @@ export class FileService {
       throw new BadRequestException("File not found");
     }
 
-    if (
-      this.userService.hasRight(user, [
-        RolesValues.COMMERCIAL,
-        RolesValues.HR,
-      ]) === false
-    ) {
+    if (hasRight(user, [RolesValues.COMMERCIAL, RolesValues.HR]) === false) {
       if (typeof user.avatar === "string") {
         throw new BadRequestException("User has an avatar");
       }

@@ -1,7 +1,8 @@
 <div class="menu-title">Filtrer par</div>
 <carbon-search-menu-dropdown
   [elements]="skills"
-  [selectedElements]="searchMenuService.selectedSkills$"
+  [isOpen]="true"
+  [selectedElements]="(searchMenuService.selectedSkills$ | async) ?? []"
   (elementChange)="searchMenuService.toggleSkill($event)">
   Compétence
 </carbon-search-menu-dropdown>

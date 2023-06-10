@@ -8,6 +8,7 @@ export class AuthService {
   router = inject(Router);
   $isLoggedIn = signal(false);
   $role = signal("");
+  $userPicture = signal("");
   $token = signal("");
 
   constructor() {

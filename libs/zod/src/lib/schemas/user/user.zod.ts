@@ -43,6 +43,7 @@ export const UserParamsSchema = z.object({
   skills: z.string().optional(),
   orderBy: z.string().optional(),
   search: z.string().optional(),
+  roles: z.string().optional(),
 });
 
 export const UserCreateSchema = UserSchema.pick({

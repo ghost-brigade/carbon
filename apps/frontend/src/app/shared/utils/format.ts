@@ -1,11 +1,12 @@
 import { UserType } from "@carbon/zod";
+import { GetUserType } from "../models/user.model";
 
 /**
  * A formatted time string
  * @param user The user
  * @returns The formatted time string
  */
-export const getFormattedTime = (user: UserType): string => {
+export const getFormattedTime = (user: GetUserType): string => {
   const startDate = user.entryDate;
 
   const today = new Date();
@@ -24,7 +25,7 @@ export const getFormattedTime = (user: UserType): string => {
  * @param user The user
  * @returns The start year
  */
-export const getYear = (user: UserType): string => {
+export const getYear = (user: GetUserType): string => {
   const startDate = user.entryDate;
   const start = new Date(startDate);
   return start.getFullYear().toString();

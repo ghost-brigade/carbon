@@ -7,7 +7,7 @@ import { UserPreference, Prisma } from "@prisma/client";
 export class UserPreferenceService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async search(description): Promise<any[]> {
+  async search(description): Promise<string[]> {
     try {
       const userPreferences = await this.prisma.userPreference.findMany({
         where: {
@@ -20,7 +20,7 @@ export class UserPreferenceService {
         take: 10,
       });
 
-      return userPreferences.map(({ description }) => ({ description }));
+      return userPreferences.map(({ description }) => description);
     } catch (error) {
       throw new InternalServerErrorException("Error while search");
     }

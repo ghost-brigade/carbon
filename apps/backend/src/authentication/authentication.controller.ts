@@ -25,7 +25,6 @@ export class AuthenticationController {
   @Get("logout")
   @HttpCode(204)
   logout(@TokenContext() token: JwtResponseType) {
-    console.log(token);
     return this.authenticationService.logout(token.token);
   }
 }

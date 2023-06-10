@@ -163,7 +163,7 @@ enum FileType {
 model File {
   id          String   @id @default(uuid())
   name        String
-  description String
+  description String?
   tags        String[] @default([])
   path        String
   type        FileType @default(resource)

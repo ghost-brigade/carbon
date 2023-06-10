@@ -8,15 +8,13 @@ import { SearchMenuService } from "../../shared/services/search-menu.service";
 import {
   debounceTime,
   distinctUntilChanged,
+  finalize,
   skip,
-  switchMap,
 } from "rxjs/operators";
 import { UserParamsType, UserType } from "@carbon/zod";
-import { BehaviorSubject, combineLatest } from "rxjs";
+import { LoaderService } from "../../core/components/loader/loader.service";
 
-export interface QueryParams {
-  search?: string;
-}
+type QueryParams = Pick<UserParamsType, "skills" | "orderBy" | "search">;
 
 @Component({
   selector: "carbon-search",
@@ -31,51 +29,50 @@ export interface QueryParams {
 })
 export class SearchComponent implements OnInit {
   users: UserType[] = [];
-  queryParams$ = new BehaviorSubject<UserParamsType>({});
 
   constructor(
     private userService: UserService,
-    public searchMenuService: SearchMenuService
+    public searchMenuService: SearchMenuService,
+    private loaderService: LoaderService
   ) {}
 
   ngOnInit() {
-    const queryParams = this.queryParams$.getValue();
+    this.search();
 
-    this.userService.getUsers(queryParams).subscribe({
-      next: (users) => {
-        this.users = users;
-      },
-      error: console.error,
-    });
+    this.searchMenuService.search$
+      .pipe(skip(1), debounceTime(300), distinctUntilChanged())
+      .subscribe({
+        next: () => this.search(),
+        error: console.error,
+      });
+  }
 
-    this.queryParams$
-      .pipe(
-        skip(2),
-        debounceTime(300),
-        distinctUntilChanged(),
-        switchMap((queryParams) => this.userService.getUsers(queryParams))
-      )
+  onRemoveSkill(skill: string) {
+    this.searchMenuService.toggleSkill(skill);
+
+    this.search();
+  }
+
+  search() {
+    this.loaderService.show();
+
+    const selectedSkills = this.searchMenuService.selectedSkills$.value;
+    const orderBy = this.searchMenuService.order$.value;
+    const search = this.searchMenuService.search$.value;
+
+    const queryParams: QueryParams = {
+      ...(selectedSkills.length > 0 && { skills: selectedSkills.join(",") }),
+      ...(orderBy && { orderBy }),
+      ...(search && { search }),
+    };
+
+    this.userService
+      .getUsers(queryParams)
+      .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (users) => {
           this.users = users;
         },
-        error: console.error,
       });
-
-    combineLatest([
-      this.searchMenuService.selectedSkills$,
-      this.searchMenuService.order$,
-      this.searchMenuService.search,
-    ]).subscribe({
-      next: ([selectedSkills, orderBy, search]) => {
-        this.queryParams$.next({
-          ...(selectedSkills.length > 0 && {
-            skills: selectedSkills.join(","),
-          }),
-          ...(orderBy && { orderBy }),
-          ...(search && { search }),
-        });
-      },
-    });
   }
 }

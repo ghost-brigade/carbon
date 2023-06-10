@@ -13,9 +13,11 @@
         [for]="element.id"
         class="gap-4">
         <input
+          class="checkbox-primary checkbox checkbox-sm"
           type="checkbox"
           [name]="element.name"
           [id]="element.id"
+          [checked]="selectedElements.includes(element.name)"
           (change)="toggleElement(element.name)" />
         <span>
           {{ element.name }}
