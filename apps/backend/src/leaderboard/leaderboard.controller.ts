@@ -55,14 +55,18 @@ export class LeaderboardController {
   )
   @HttpCode(200)
   async mission(): Promise<UserType[]> {
-    return await this.userService.findAll({
+    const users = await this.userService.findAll({
       include: {
         avatar: true,
+        _count: {
+          select: { missions: true },
+        },
       },
       limit: 50,
-      order: {
-        mission: "desc",
-      },
+    });
+
+    return users.sort((a: any, b: any) => {
+      return b._count.missions - a._count.missions;
     });
   }
 }
