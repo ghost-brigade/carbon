@@ -1,9 +1,17 @@
-import { LoginType, JwtType, UserPreferenceCreateType } from "@carbon/zod";
+import {
+  LoginType,
+  JwtType,
+  UserPreferenceCreateType,
+  NewsType,
+  SocietyType,
+} from "@carbon/zod";
 import { GetUserType } from "../../shared/models/user.model";
 export const PostEndpoint = {
   Login: "/login",
   UserPreference: "/user/preference",
   TaskList: "/user/tasklist",
+  News: "/news",
+  Society: "/society",
 } as const;
 
 export type PostEndpointMap = {
@@ -21,6 +29,14 @@ export type PostEndpointMap = {
       taskListId: string;
       status: "pending";
     };
+  };
+  "/news": {
+    response: object;
+    body: Partial<NewsType>;
+  };
+  "/society": {
+    response: object;
+    body: Partial<SocietyType>;
   };
 };
 

@@ -6,23 +6,19 @@
       <thead>
         <tr>
           <th></th>
-          <th>Titre</th>
-          <th>Image</th>
-          <th>Contenu</th>
+          <th>Nom</th>
           <th>Modifier</th>
           <th>Supprimer</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let article of data; let i = index">
+        <tr *ngFor="let society of data; let i = index">
           <th>{{ i + 1 }}</th>
-          <td>{{ article.title }}</td>
-          <td>{{ article.src }}</td>
-          <td>{{ article.content.slice(0, 30) }}</td>
+          <td>{{ society.name }}</td>
           <td>
             <button
               class="btn btn-accent btn-sm"
-              (click)="showModal('edit-modal', article, 'edit')">
+              (click)="showModal('edit-modal', society, 'edit')">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -40,7 +36,7 @@
           <td>
             <button
               class="btn btn-error btn-sm"
-              (click)="deleteItemSubmit(article.id)">
+              (click)="deleteItemSubmit(society.id)">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -72,24 +68,13 @@
       ✕
     </button>
     <div class="flex flex-col items-center gap-2">
-      <h1 *ngIf="modalMode === 'add'">Ajouter un article</h1>
-      <h1 *ngIf="modalMode === 'edit'">Modifier un article</h1>
+      <h1 *ngIf="modalMode === 'add'">Ajouter une société</h1>
+      <h1 *ngIf="modalMode === 'edit'">Modifier une société</h1>
+
       <input
         type="text"
-        placeholder="Titre"
-        [(ngModel)]="editItem.title"
-        [ngModelOptions]="{ standalone: true }"
-        class="input input-bordered w-full max-w-xs" />
-      <input
-        type="text"
-        placeholder="Contenu"
-        [(ngModel)]="editItem.content"
-        [ngModelOptions]="{ standalone: true }"
-        class="input input-bordered w-full max-w-xs" />
-      <input
-        type="text"
-        placeholder="Image"
-        [(ngModel)]="editItem.src"
+        placeholder="Nom"
+        [(ngModel)]="editItem.name"
         [ngModelOptions]="{ standalone: true }"
         class="input input-bordered w-full max-w-xs" />
       <button

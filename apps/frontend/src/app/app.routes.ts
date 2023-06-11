@@ -111,6 +111,16 @@ export const appRoutes: Route[] = [
     data: { roles: ["hr"], icon: "leaderboard", order: 5, hidden: false },
   },
   {
+    path: "society/admin",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/society-admin/society-admin.component").then(
+        (m) => m.SocietyAdminComponent
+      ),
+    title: "Admin Sociétés",
+    data: { roles: ["hr"], icon: "society", order: 7, hidden: false },
+  },
+  {
     path: "missions/admin",
     canActivate: [AuthGuard],
     loadComponent: () =>

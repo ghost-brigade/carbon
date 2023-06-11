@@ -1,16 +1,23 @@
+import { NewsType, SocietyType } from "@carbon/zod";
+
 export const PatchEndpoint = {
-  Login: "/login",
+  News: "/news/:id",
+  Society: "/society/:id",
 } as const;
 
 export type PatchEndpointMap = {
-  "/login": {
-    response: {
-      success: boolean;
-      token: string;
+  "/news/:id": {
+    response: object;
+    body: Partial<NewsType>;
+    params: {
+      id: string;
     };
-    body: {
-      username: string;
-      password: string;
+  };
+  "/society/:id": {
+    response: object;
+    body: Partial<SocietyType>;
+    params: {
+      id: string;
     };
   };
 };

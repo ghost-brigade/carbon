@@ -1,44 +1,38 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { NewsType } from "@carbon/zod";
-import { RequestService } from "../../shared/services/request.service";
 import { GetEndpoint } from "../../constants/endpoints/get.constants";
-import { LoaderService } from "../../core/components/loader/loader.service";
 import { finalize } from "rxjs";
 import { DeleteEndpoint } from "../../constants/endpoints/delete.constants";
-import { FormsModule } from "@angular/forms";
-import { PostEndpoint } from "../../constants/endpoints/post.constants";
 import { PatchEndpoint } from "../../constants/endpoints/patch.constants";
+import { PostEndpoint } from "../../constants/endpoints/post.constants";
+import { SocietyType } from "@carbon/zod";
+import { LoaderService } from "../../core/components/loader/loader.service";
+import { RequestService } from "../../shared/services/request.service";
+import { FormsModule } from "@angular/forms";
 import { ToastService } from "../../core/components/toast/toast.service";
 
 @Component({
-  selector: "carbon-news-admin",
+  selector: "carbon-society-admin",
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: "./news-admin.component.html",
-  styleUrls: ["./news-admin.component.css"],
+  templateUrl: "./society-admin.component.html",
+  styleUrls: ["./society-admin.component.css"],
 })
-export class NewsAdminComponent implements OnInit {
+export class SocietyAdminComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
   toastService = inject(ToastService);
-  data: NewsType[] | undefined;
-  editItem: Partial<NewsType> = {
-    title: "",
-    content: "",
-    src: "",
-  };
+  data: SocietyType[] | undefined;
+  editItem: Partial<SocietyType> = {};
   modalMode: "add" | "edit" = "add";
-  emptyItem: Partial<NewsType> = {
-    title: "",
-    content: "",
-    src: "",
+  emptyItem: Partial<SocietyType> = {
+    name: "",
   };
 
   ngOnInit(): void {
     this.loaderService.show();
     this.requestService
-      .get({ endpoint: GetEndpoint.News })
+      .get({ endpoint: GetEndpoint.Society })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
@@ -54,7 +48,7 @@ export class NewsAdminComponent implements OnInit {
 
   showModal(
     selector: string,
-    article: Partial<NewsType>,
+    article: Partial<SocietyType>,
     mode: "add" | "edit"
   ) {
     this.editItem = article;
@@ -71,16 +65,15 @@ export class NewsAdminComponent implements OnInit {
     this.loaderService.show();
     this.requestService
       .post({
-        endpoint: PostEndpoint.News,
+        endpoint: PostEndpoint.Society,
         body: this.editItem,
       })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
           console.log(res);
-
-          this.toastService.show("SUCCESS", "Article créé");
           this.updateItems();
+          this.toastService.show("SUCCESS", "Société créée");
         },
       });
   }
@@ -89,7 +82,7 @@ export class NewsAdminComponent implements OnInit {
     this.loaderService.show();
     this.requestService
       .patch({
-        endpoint: PatchEndpoint.News,
+        endpoint: PatchEndpoint.Society,
         body: this.editItem,
         params: { id: this.editItem.id as string },
       })
@@ -97,9 +90,9 @@ export class NewsAdminComponent implements OnInit {
       .subscribe({
         next: (res) => {
           console.log(res);
-
-          this.toastService.show("SUCCESS", "Article modifié");
           this.updateItems();
+
+          this.toastService.show("SUCCESS", "Société modifiée");
         },
       });
   }
@@ -108,14 +101,14 @@ export class NewsAdminComponent implements OnInit {
     this.loaderService.show();
     this.requestService
       .delete({
-        endpoint: DeleteEndpoint.News,
+        endpoint: DeleteEndpoint.Society,
         params: { id },
       })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.toastService.show("SUCCESS", "Article supprimé");
+          this.toastService.show("SUCCESS", "Société supprimée");
           this.updateItems();
         },
       });
@@ -124,7 +117,7 @@ export class NewsAdminComponent implements OnInit {
   updateItems() {
     this.loaderService.show();
     this.requestService
-      .get({ endpoint: GetEndpoint.News })
+      .get({ endpoint: GetEndpoint.Society })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {

@@ -122,7 +122,7 @@ export class RequestService {
       .pipe(map((response) => response.body as PutResponse<Key>));
   }
 
-  patch<Key extends PutEndpointValue>(config: PatchConfig<Key>) {
+  patch<Key extends PatchEndpointValue>(config: PatchConfig<Key>) {
     const headers = this.setAuthHeader();
     if ("params" in config) {
       const params = config.params as Record<string, string>;
