@@ -183,7 +183,6 @@ export class FileService {
         })
       );
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException("Error while fetching files");
     }
   }

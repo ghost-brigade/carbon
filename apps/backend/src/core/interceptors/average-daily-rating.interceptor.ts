@@ -29,7 +29,6 @@ export class AverageDailyRatingInterceptor implements NestInterceptor {
     }
 
     if (typeof object === "object" && object !== null) {
-      console.log(object);
       for (const key in object) {
         if (key === "averageDailyRate") {
           delete object[key];

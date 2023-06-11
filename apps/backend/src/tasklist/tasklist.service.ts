@@ -40,7 +40,6 @@ export class TaskListService {
         },
       });
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException("Error while creating taskList");
     }
   }
