@@ -5,6 +5,7 @@ import {
   UserType,
   NewsType,
   MissionType,
+  EventType,
 } from "@carbon/zod";
 import { GetUserType } from "../../shared/models/user.model";
 
