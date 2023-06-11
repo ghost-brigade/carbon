@@ -18,6 +18,7 @@ export class ProfileService {
         status: taskList.status,
         name: taskList.taskList.name,
         description: taskList.taskList.description,
+        id: taskList.taskList.id,
         required: taskList.taskList.required,
         skill: taskList.taskList.skill.name,
         level: taskList.taskList.level,
@@ -34,13 +35,14 @@ export class ProfileService {
           status: string;
           name: string;
           description: string;
+          id: string;
           required: boolean;
         }[]
       >
     > = {};
 
     this.$mappedTaskList().forEach((task) => {
-      const { skill, level, status, name, description, required } = task;
+      const { skill, level, status, name, description, required, id } = task;
 
       if (!levelsPerSkill[skill]) {
         levelsPerSkill[skill] = {};
@@ -52,6 +54,7 @@ export class ProfileService {
       levelsPerSkill[skill][level].push({
         status,
         name,
+        id,
         description,
         required,
       });
