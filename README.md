@@ -2,10 +2,13 @@
 
 ## Taches
 
-| --- | ----- |
-| | |
-| Alexis LOURS | Profile utilisateur |
 | Nom | Tache |
+|-----|-------|
+| Alexis L. | Profile utilisateur |
+| Julien A. | Task 2 |
+| Louis M.  | Task 3 |
+| Anthony A. | Task 4 |
+| Stanley C. | Task 5 |
 
 ## Getting started
 
