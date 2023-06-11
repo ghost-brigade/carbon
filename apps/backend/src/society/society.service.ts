@@ -32,15 +32,15 @@ export class SocietyService {
       return await this.prisma.society.findUnique({
         where: { id },
       });
-      console.log(id);
-
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException("Error while fetching society");
     }
   }
 
-  async update(id: string, updateSociety: SocietyUpdateType): Promise<SocietyType> {
+  async update(
+    id: string,
+    updateSociety: SocietyUpdateType
+  ): Promise<SocietyType> {
     try {
       return (await this.prisma.society.update({
         where: { id },

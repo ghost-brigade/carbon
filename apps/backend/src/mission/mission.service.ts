@@ -15,7 +15,6 @@ import { PrismaService } from "../prisma.service";
 import { Mission } from "@prisma/client";
 import hasRight from "../core/utils/hasRight";
 import { RolesValues } from "@carbon/enum";
-import { type } from "os";
 
 @Injectable()
 export class MissionService {
@@ -67,7 +66,6 @@ export class MissionService {
 
       return missions;
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }

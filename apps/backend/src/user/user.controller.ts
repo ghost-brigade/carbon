@@ -33,6 +33,7 @@ import { UserAvatarInterceptor } from "../core/interceptors/user-avatar.intercep
 import getOrder from "../core/utils/getOrder";
 import { AuthorizationGuard } from "../core/guard/authorization.guard";
 import { RolesValues } from "@carbon/enum";
+import { AverageDailyRatingInterceptor } from "../core/interceptors/average-daily-rating.interceptor";
 
 @Controller("user")
 export class UserController {
@@ -58,7 +59,8 @@ export class UserController {
   @UseInterceptors(
     UserAvatarInterceptor,
     new UserPasswordInterceptor(),
-    new UserSalaryInterceptor()
+    new UserSalaryInterceptor(),
+    new AverageDailyRatingInterceptor()
   )
   @HttpCode(200)
   async findAll(@Query() params: UserParamsType): Promise<UserType[]> {
@@ -91,6 +93,7 @@ export class UserController {
   @Get(":id")
   @UseInterceptors(
     UserAvatarInterceptor,
+    new AverageDailyRatingInterceptor(),
     new UserPasswordInterceptor(),
     new UserSalaryInterceptor()
   )
@@ -103,7 +106,8 @@ export class UserController {
   @UseInterceptors(
     UserAvatarInterceptor,
     new UserPasswordInterceptor(),
-    new UserSalaryInterceptor()
+    new UserSalaryInterceptor(),
+    new AverageDailyRatingInterceptor()
   )
   @HttpCode(200)
   @UseGuards(new ZodGuard("body", UserUpdateSchema))
@@ -124,6 +128,11 @@ export class UserController {
 
   @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   @Post(":id/skill")
+  @UseInterceptors(
+    UserAvatarInterceptor,
+    new UserPasswordInterceptor(),
+    new UserSalaryInterceptor()
+  )
   async addSkill(
     @Param("id") id: string,
     @Body() createSkill: UserSkillCreateType
@@ -133,6 +142,11 @@ export class UserController {
 
   @UseGuards(new ZodGuard("body", UserPreferenceCreateSchema))
   @Post("preference")
+  @UseInterceptors(
+    UserAvatarInterceptor,
+    new UserPasswordInterceptor(),
+    new UserSalaryInterceptor()
+  )
   async addPreference(
     @UserContext() user: UserType,
     // @Param("id") id: string,

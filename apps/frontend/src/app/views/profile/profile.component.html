@@ -34,21 +34,46 @@
             <h1>Ajouter une préference</h1>
             <input
               type="text"
-              list="preferences"
               class="input input-bordered mt-10 w-full"
               placeholder="Nouvelle préférence"
+              (focusout)="setSuggestionsActive(false)"
+              (focusin)="setSuggestionsActive(true)"
               [(ngModel)]="newPreference"
-              (keydown)="searchPreference()"
+              (keyup)="searchPreference()"
+              (keydown.enter)="$event.preventDefault()"
               [ngModelOptions]="{ standalone: true }" />
-            <datalist id="preferences">
-              <option
-                *ngFor="let preference of preferences"
-                [value]="preference"></option>
-            </datalist>
+            <ul
+              *ngIf="
+                preferences.length &&
+                newPreference.length &&
+                $suggestionsActive()
+              "
+              class="bg-base-200 rounded-box fixed mt-2 flex w-[calc(91.666667%-1.5rem)] flex-col p-2">
+              <div
+                class=""
+                *ngFor="let preference of preferences; let i = index">
+                <li
+                  (click)="setPreference(preference)"
+                  class="hover:bg-accent cursor-pointer rounded-lg px-4 text-left transition-all duration-300">
+                  {{ preference }}
+                </li>
+                <div
+                  class="bg-base-100 my-2 h-[1px] w-full"
+                  *ngIf="i !== preferences.length - 1"></div>
+              </div>
+            </ul>
 
             <div class="join mt-5">
-              <button class="btn btn-accent join-item">👍</button>
-              <button class="btn btn-error join-item">👎</button>
+              <button
+                class="btn btn-accent join-item"
+                (click)="addPreference(true)">
+                👍
+              </button>
+              <button
+                class="btn btn-error join-item"
+                (click)="addPreference(false)">
+                👎
+              </button>
             </div>
           </form>
           <form
@@ -64,12 +89,11 @@
         </div>
       </div>
     </div>
-    <p
+    <img
       *ngIf="xp"
-      class="mt-8 text-5xl">
-      {{ getRank(xp.level) }}
-    </p>
-    <h2 class="mt-4">Niveau {{ xp.level }}</h2>
+      class="mt-8 h-16 text-5xl"
+      src="assets/svg/ranks/{{ getRank(xp.level) }}.svg" />
+    <h2 class="">Niveau {{ xp.level }}</h2>
     <div
       class="tooltip tooltip-bottom"
       [attr.data-tip]="'Prochain niveau: ' + xp.xpUntilNextLevel + 'XP'">
