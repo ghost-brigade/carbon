@@ -22,11 +22,14 @@ export class SkillService {
 
   async findAll(): Promise<SkillType[]> {
     try {
-      return await this.prisma.skill.findMany({
+      return (await this.prisma.skill.findMany({
+        include: {
+          taskLists: true,
+        },
         orderBy: {
           name: "asc",
         },
-      });
+      })) as SkillType[];
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching skills");
     }
@@ -34,9 +37,12 @@ export class SkillService {
 
   async findOne(id: string): Promise<SkillType> {
     try {
-      return await this.prisma.skill.findUnique({
+      return (await this.prisma.skill.findUnique({
         where: { id },
-      });
+        include: {
+          taskLists: true,
+        },
+      })) as SkillType;
     } catch (error) {
       throw new InternalServerErrorException("Error while fetching skill");
     }

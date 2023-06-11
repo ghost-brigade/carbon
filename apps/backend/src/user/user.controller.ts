@@ -23,6 +23,7 @@ import {
   UserTaskListCreateType,
   UserPreferenceCreateSchema,
   UserUpdateSchema,
+  UserTaskListCreateSchema,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { UserPasswordInterceptor } from "../core/interceptors/user-password.interceptor";
@@ -32,6 +33,7 @@ import { UserAvatarInterceptor } from "../core/interceptors/user-avatar.intercep
 import getOrder from "../core/utils/getOrder";
 import { AuthorizationGuard } from "../core/guard/authorization.guard";
 import { RolesValues } from "@carbon/enum";
+import { AverageDailyRatingInterceptor } from "../core/interceptors/average-daily-rating.interceptor";
 
 @Controller("user")
 export class UserController {
@@ -41,7 +43,7 @@ export class UserController {
   @UseInterceptors(new UserPasswordInterceptor(), new UserSalaryInterceptor())
   @HttpCode(200)
   async me(@UserContext() user: UserType): Promise<UserType> {
-    return await this.userService.findUserByEmail(user.email);
+    return await this.userService.findOne(user.id);
   }
 
   @UseGuards(new ZodGuard("body", UserCreateSchema))
@@ -57,7 +59,8 @@ export class UserController {
   @UseInterceptors(
     UserAvatarInterceptor,
     new UserPasswordInterceptor(),
-    new UserSalaryInterceptor()
+    new UserSalaryInterceptor(),
+    new AverageDailyRatingInterceptor()
   )
   @HttpCode(200)
   async findAll(@Query() params: UserParamsType): Promise<UserType[]> {
@@ -90,6 +93,7 @@ export class UserController {
   @Get(":id")
   @UseInterceptors(
     UserAvatarInterceptor,
+    new AverageDailyRatingInterceptor(),
     new UserPasswordInterceptor(),
     new UserSalaryInterceptor()
   )
@@ -102,7 +106,8 @@ export class UserController {
   @UseInterceptors(
     UserAvatarInterceptor,
     new UserPasswordInterceptor(),
-    new UserSalaryInterceptor()
+    new UserSalaryInterceptor(),
+    new AverageDailyRatingInterceptor()
   )
   @HttpCode(200)
   @UseGuards(new ZodGuard("body", UserUpdateSchema))
@@ -123,6 +128,11 @@ export class UserController {
 
   @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
   @Post(":id/skill")
+  @UseInterceptors(
+    UserAvatarInterceptor,
+    new UserPasswordInterceptor(),
+    new UserSalaryInterceptor()
+  )
   async addSkill(
     @Param("id") id: string,
     @Body() createSkill: UserSkillCreateType
@@ -132,6 +142,11 @@ export class UserController {
 
   @UseGuards(new ZodGuard("body", UserPreferenceCreateSchema))
   @Post("preference")
+  @UseInterceptors(
+    UserAvatarInterceptor,
+    new UserPasswordInterceptor(),
+    new UserSalaryInterceptor()
+  )
   async addPreference(
     @UserContext() user: UserType,
     // @Param("id") id: string,
@@ -162,13 +177,18 @@ export class UserController {
   //   return await this.userService.addAchievementToUser(id, createAchievement);
   // }
 
-  @Post(":id/tasklist")
-  @UseGuards(new AuthorizationGuard([RolesValues.COMMERCIAL, RolesValues.HR]))
+  @UseGuards(new ZodGuard("body", UserTaskListCreateSchema))
+  @UseInterceptors(
+    UserAvatarInterceptor,
+    new UserPasswordInterceptor(),
+    new UserSalaryInterceptor()
+  )
+  @Post("tasklist")
   async addTaskList(
-    @Param("id") id: string,
-    @Body() createTaskList: UserTaskListCreateType
+    @Body() createTaskList: UserTaskListCreateType,
+    @UserContext() user: UserType
   ): Promise<UserType> {
-    return await this.userService.addTaskListToUser(id, createTaskList);
+    return await this.userService.addTaskListToUser(user.id, createTaskList);
   }
 
   // @Post(":id/mission")

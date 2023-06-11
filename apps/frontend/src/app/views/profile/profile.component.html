@@ -1,4 +1,6 @@
-<section *ngIf="profile">
+<section
+  *ngIf="profile"
+  class="mb-10">
   <section class="flex w-full flex-col items-center justify-center">
     <img
       src="{{ profile.avatar }}"
@@ -34,21 +36,46 @@
             <h1>Ajouter une préference</h1>
             <input
               type="text"
-              list="preferences"
               class="input input-bordered mt-10 w-full"
               placeholder="Nouvelle préférence"
+              (focusout)="setSuggestionsActive(false)"
+              (focusin)="setSuggestionsActive(true)"
               [(ngModel)]="newPreference"
-              (keydown)="searchPreference()"
+              (keyup)="searchPreference()"
+              (keydown.enter)="$event.preventDefault()"
               [ngModelOptions]="{ standalone: true }" />
-            <datalist id="preferences">
-              <option
-                *ngFor="let preference of preferences"
-                [value]="preference"></option>
-            </datalist>
+            <ul
+              *ngIf="
+                preferences.length &&
+                newPreference.length &&
+                $suggestionsActive()
+              "
+              class="bg-base-200 rounded-box fixed mt-2 flex w-[calc(91.666667%-1.5rem)] flex-col p-2">
+              <div
+                class=""
+                *ngFor="let preference of preferences; let i = index">
+                <li
+                  (click)="setPreference(preference)"
+                  class="hover:bg-accent cursor-pointer rounded-lg px-4 text-left transition-all duration-300">
+                  {{ preference }}
+                </li>
+                <div
+                  class="bg-base-100 my-2 h-[1px] w-full"
+                  *ngIf="i !== preferences.length - 1"></div>
+              </div>
+            </ul>
 
             <div class="join mt-5">
-              <button class="btn btn-accent join-item">👍</button>
-              <button class="btn btn-error join-item">👎</button>
+              <button
+                class="btn btn-accent join-item"
+                (click)="addPreference(true)">
+                👍
+              </button>
+              <button
+                class="btn btn-error join-item"
+                (click)="addPreference(false)">
+                👎
+              </button>
             </div>
           </form>
           <form
@@ -64,12 +91,11 @@
         </div>
       </div>
     </div>
-    <p
+    <img
       *ngIf="xp"
-      class="mt-8 text-5xl">
-      {{ getRank(xp.level) }}
-    </p>
-    <h2 class="mt-4">Niveau {{ xp.level }}</h2>
+      class="mt-8 h-16 text-5xl"
+      src="assets/svg/ranks/{{ getRank(xp.level) }}.svg" />
+    <h2 class="">Niveau {{ xp.level }}</h2>
     <div
       class="tooltip tooltip-bottom"
       [attr.data-tip]="'Prochain niveau: ' + xp.xpUntilNextLevel + 'XP'">
@@ -129,6 +155,26 @@
     </div>
   </section>
 
+  <section
+    *ngIf="$role() === 'hr'"
+    class="mt-10 flex w-full flex-col items-center justify-center">
+    <h2 class="gap-4 text-lg font-semibold">Historique salaire</h2>
+    <carbon-chart
+      [chartData]="mapSalaryHistory()"
+      [chartOptions]="chartOptions"
+      [canvasOptions]="canvasOptions"></carbon-chart>
+  </section>
+
+  <section
+    *ngIf="$role() === 'hr'"
+    class="mt-10 flex w-full flex-col items-center justify-center">
+    <h2 class="gap-4 text-lg font-semibold">Historique TJM</h2>
+    <carbon-chart
+      [chartData]="mapSalaryHistory()"
+      [chartOptions]="chartOptions"
+      [canvasOptions]="canvasOptions"></carbon-chart>
+  </section>
+
   <section class="mt-10 flex w-full flex-col items-center justify-center">
     <h2 class="mb-4 text-lg font-semibold">Statistiques</h2>
     <div class="stats stats-vertical md:stats-horizontal bg-neutral-800 shadow">
@@ -157,12 +203,19 @@
     </div>
   </section>
 
-  <section class="mt-10 flex w-full flex-col items-center justify-center">
+  <section
+    class="mt-10 flex w-full flex-col items-center justify-center"
+    *ngIf="$isSelfProfile()">
     <h2
       class="mb-2 text-lg font-semibold"
       *ngIf="profile.taskLists">
       Progrès
     </h2>
+    <button
+      class="btn btn-accent"
+      [routerLink]="['/profile', 'me', 'tasks']">
+      Voir mon progrès
+    </button>
   </section>
 
   <section class="mt-10 flex w-full flex-col items-center justify-center gap-4">
@@ -212,7 +265,9 @@
       </svg>
       <div class="flex-3 flex flex-col">
         <h3 class="text-xl font-semibold">{{ mission.name.slice(0, 15) }}</h3>
-        <span class="text-xs"
+        <span
+          class="text-xs"
+          *ngIf="$role() === 'hr'"
           >TJM: {{ mission.averageDailyRate.toFixed(0) }}€
         </span>
         <span class="text-sm">{{ getYears(mission) }}</span>

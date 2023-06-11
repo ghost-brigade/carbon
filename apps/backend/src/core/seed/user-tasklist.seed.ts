@@ -4,11 +4,6 @@ import { UserType } from "@carbon/zod";
 
 const prisma = new PrismaClient();
 
-enum Status {
-  VALIDATED = "VALIDATED",
-  PENDING = "PENDING",
-}
-
 export default async (
   users: UserType[],
   taskList: TaskList[]
@@ -26,7 +21,12 @@ export default async (
         data: {
           userId: user.id,
           taskListId: sortedTasks[i].id,
-          status: TaskListStatusValues.ACCEPTED,
+          status:
+            Object.values(TaskListStatusValues)[
+              Math.floor(
+                Math.random() * Object.values(TaskListStatusValues).length
+              )
+            ],
         },
       });
 

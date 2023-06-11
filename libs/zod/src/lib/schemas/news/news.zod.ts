@@ -11,4 +11,20 @@ export const NewsSchema = z
   })
   .merge(TimestampSchema);
 
+export const NewsCreateSchema = NewsSchema.pick({
+  title: true,
+  src: true,
+  content: true,
+  size: true,
+});
+
+export const NewsUpdateSchema = NewsSchema.pick({
+  title: true,
+  src: true,
+  content: true,
+  size: true,
+});
+
 export type NewsType = z.infer<typeof NewsSchema>;
+export type NewsCreateType = z.infer<typeof NewsCreateSchema>;
+export type NewsUpdateType = z.infer<typeof NewsUpdateSchema>;

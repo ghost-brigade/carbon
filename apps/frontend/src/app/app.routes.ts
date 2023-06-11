@@ -20,7 +20,7 @@ export const appRoutes: Route[] = [
         (m) => m.ProfileComponent
       ),
     title: "Profil",
-    data: { roles: ["user"], hidden: true },
+    data: { roles: ["user", "hr"], hidden: true },
   },
   {
     path: "news",
@@ -139,6 +139,16 @@ export const appRoutes: Route[] = [
       ),
     title: "Admin Ressources",
     data: { roles: ["hr"], hasAdmin: true },
+  },
+  {
+    path: "profile/me/tasks",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/tasklist/tasklist.component").then(
+        (m) => m.TasklistComponent
+      ),
+    title: "Tasklist",
+    data: { roles: ["user"] },
   },
   {
     path: "**",
