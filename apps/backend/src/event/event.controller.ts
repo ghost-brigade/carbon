@@ -26,8 +26,6 @@ export class EventController {
   //   return this.eventService.create(createEvent);
   // }
 
-
-
   @Get()
   @HttpCode(200)
   async findAll(@Query() params: EventParamsType) {
