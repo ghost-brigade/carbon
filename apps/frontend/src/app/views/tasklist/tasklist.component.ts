@@ -46,7 +46,13 @@ export class TasklistComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.profileService.$selfTaskList.set(res.taskLists);
+          const selfTasksIds = res.taskLists.map(
+            (task) => task.taskList.skillId
+          );
           this.stackTasks = res.skills.map((skill) => skill.skillId);
+          this.stackTasks = [...this.stackTasks, ...selfTasksIds].filter(
+            (value, index, self) => self.indexOf(value) === index
+          );
           console.log(this.stackTasks);
           const skillRequests = res.skills.map((skill) =>
             this.requestService.get({
@@ -97,6 +103,13 @@ export class TasklistComponent implements OnInit {
                         task.level
                       ] = [];
                     }
+                    console.log(
+                      this.profileService
+                        .$taskList()
+                        [task.skill.name][task.level].find(
+                          (t) => t.id === task.id
+                        )
+                    );
                     if (
                       !this.profileService
                         .$taskList()
