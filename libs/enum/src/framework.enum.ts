@@ -1,15 +1,12 @@
 export const FrameworkValues = {
-  VUEJS: "Vue.js",
-  DJANGO: "Django",
-  LARAVEL: "Laravel",
-  SPRINGBOOT: "Spring Boot",
-  EXPRESSJS: "Express.js",
-  FLASK: "Flask",
   ANGULAR: "Angular",
-  ASPNETCORE: "ASP.NET Core",
-  RUBYONRAILS: "Ruby on Rails",
-  NEXTJS: "Next.js",
+  VUEJS: "Vue.js",
   SYMFONY: "Symfony",
+
+  LARAVEL: "Laravel",
+  NODEJS: "Node.js",
+  ASPNETCORE: "ASP.NET Core",
+  NEXTJS: "Next.js",
 };
 
 export type Framework = (typeof FrameworkValues)[keyof typeof FrameworkValues];
