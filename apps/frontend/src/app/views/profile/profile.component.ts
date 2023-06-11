@@ -8,6 +8,7 @@ import { ProfileService, XP } from "./profile.service";
 import { getFormattedTime, getRank } from "../../shared/utils/format";
 import {
   GetUserType,
+  Mission,
   School,
   UserAchievement,
 } from "../../shared/models/user.model";
@@ -24,6 +25,8 @@ import {
   DeepPartial,
   SeriesOptionsCommon,
 } from "lightweight-charts";
+import { MissionType } from "@carbon/zod";
+import { PatchEndpoint } from "../../constants/endpoints/patch.constants";
 
 @Component({
   selector: "carbon-profile",
@@ -38,6 +41,9 @@ export class ProfileComponent implements OnInit {
   profileService = inject(ProfileService);
   authService = inject(AuthService);
   toastService = inject(ToastService);
+  currentFeedback = "";
+  currentMission: Mission | undefined;
+  currentRating = 0;
   $isSelfProfile = signal(false);
   $profilePicture = computed(() => this.authService.$userPicture());
   $suggestionsActive = signal(false);
@@ -247,5 +253,47 @@ export class ProfileComponent implements OnInit {
           (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
         ) || []
     );
+  }
+
+  rateMission(mission: Mission, rating: number) {
+    console.log(mission, rating);
+    this.currentFeedback = mission.feedback || "";
+    this.currentRating = rating;
+    this.currentMission = mission;
+    this.showModal("rating");
+  }
+
+  sendRate() {
+    console.log(this.currentRating, this.currentFeedback, this.currentMission);
+    this.loaderService.show();
+    this.requestService
+      .patch({
+        endpoint: PatchEndpoint.Mission,
+        params: {
+          id: this.currentMission?.id || "",
+        },
+        body: {
+          rating: this.currentRating,
+          feedback: this.currentFeedback,
+        },
+      })
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: (res) => {
+          const mission = this.profile?.missions?.find((m) => m.id === res.id);
+          if (mission) {
+            mission.rating = res.rating || 0;
+            mission.feedback = res.feedback || "";
+          }
+          this.toastService.show("SUCCESS", "Votre avis a bien été envoyé");
+        },
+        error: () => {
+          this.toastService.show("ERROR", "Une erreur est survenue");
+        },
+      });
+  }
+
+  updateRating(rating: number) {
+    this.currentRating = rating;
   }
 }

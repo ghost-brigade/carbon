@@ -45,6 +45,11 @@ export const MissionUpdateSchema = MissionSchema.omit({
   updatedAt: true,
 });
 
+export const MissionPatchSchema = z.object({
+  name: z.string().optional(),
+  rating: z.number().optional(),
+});
+
 export type MissionType = z.infer<typeof MissionSchema>;
 export type MissionCreateType = z.infer<typeof MissionCreateSchema>;
 export type MissionUpdateType = z.infer<typeof MissionUpdateSchema>;
