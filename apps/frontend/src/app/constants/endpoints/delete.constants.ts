@@ -1,8 +1,11 @@
+import { MissionType } from "@carbon/zod";
+
 export const DeleteEndpoint = {
   UserPreference: "/user/preference/:id",
   News: "/news/:id",
   Society: "/society/:id",
   Skill: "/skill/:id",
+  Mission: "/mission/:id",
 } as const;
 
 export type DeleteEndpointMap = {
@@ -26,6 +29,12 @@ export type DeleteEndpointMap = {
   };
   "/skill/:id": {
     response: object;
+    params: {
+      id: string;
+    };
+  };
+  "/mission/:id": {
+    response: MissionType;
     params: {
       id: string;
     };

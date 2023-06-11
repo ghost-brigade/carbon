@@ -1,9 +1,10 @@
-import { NewsType, SocietyType } from "@carbon/zod";
+import { MissionType, NewsType, SocietyType } from "@carbon/zod";
 
 export const PatchEndpoint = {
   News: "/news/:id",
   Society: "/society/:id",
   Skill: "/skill/:id",
+  Mission: "/mission/:id",
 } as const;
 
 export type PatchEndpointMap = {
@@ -26,6 +27,13 @@ export type PatchEndpointMap = {
     body: {
       name: string;
     };
+    params: {
+      id: string;
+    };
+  };
+  "/mission/:id": {
+    response: MissionType;
+    body: Partial<MissionType>;
     params: {
       id: string;
     };

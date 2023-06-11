@@ -4,6 +4,7 @@ import {
   UserPreferenceCreateType,
   NewsType,
   SocietyType,
+  MissionType,
 } from "@carbon/zod";
 import { GetUserType } from "../../shared/models/user.model";
 export const PostEndpoint = {
@@ -13,6 +14,7 @@ export const PostEndpoint = {
   News: "/news",
   Society: "/society",
   Skill: "/skill",
+  Mission: "/mission",
 } as const;
 
 export type PostEndpointMap = {
@@ -44,6 +46,10 @@ export type PostEndpointMap = {
     body: {
       name: string;
     };
+  };
+  "/mission": {
+    response: MissionType;
+    body: Partial<MissionType>;
   };
 };
 

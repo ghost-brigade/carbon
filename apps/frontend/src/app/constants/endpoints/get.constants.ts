@@ -4,7 +4,7 @@ import {
   SocietyType,
   UserType,
   NewsType,
-  EventType,
+  MissionType,
 } from "@carbon/zod";
 import { GetUserType } from "../../shared/models/user.model";
 
@@ -21,6 +21,7 @@ export const GetEndpoint = {
   SearchUserPreference: "/user-preference/search",
   Event: "/event",
   SkillById: "/skill/:id",
+  Mission: "/mission",
 } as const;
 
 export type GetEndpointMap = {
@@ -92,6 +93,9 @@ export type GetEndpointMap = {
     params: {
       id: string;
     };
+  };
+  "/mission": {
+    response: MissionType[];
   };
 };
 
