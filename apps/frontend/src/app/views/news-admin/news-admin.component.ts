@@ -48,12 +48,8 @@ export class NewsAdminComponent implements OnInit {
       });
   }
 
-  showModal(
-    selector: string,
-    article: Partial<NewsType>,
-    mode: "add" | "edit"
-  ) {
-    this.editItem = article;
+  showModal(selector: string, item: Partial<NewsType>, mode: "add" | "edit") {
+    this.editItem = item;
     console.log(this.editItem);
     this.modalMode = mode;
     (

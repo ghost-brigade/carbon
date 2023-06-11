@@ -42,12 +42,8 @@ export class SkillsAdminComponent implements OnInit {
       });
   }
 
-  showModal(
-    selector: string,
-    article: Partial<SkillType>,
-    mode: "add" | "edit"
-  ) {
-    this.editItem = article;
+  showModal(selector: string, item: Partial<SkillType>, mode: "add" | "edit") {
+    this.editItem = item;
     console.log(this.editItem);
     this.modalMode = mode;
     (

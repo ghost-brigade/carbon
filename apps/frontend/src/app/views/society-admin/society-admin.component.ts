@@ -44,10 +44,10 @@ export class SocietyAdminComponent implements OnInit {
 
   showModal(
     selector: string,
-    article: Partial<SocietyType>,
+    item: Partial<SocietyType>,
     mode: "add" | "edit"
   ) {
-    this.editItem = article;
+    this.editItem = item;
     console.log(this.editItem);
     this.modalMode = mode;
     (
