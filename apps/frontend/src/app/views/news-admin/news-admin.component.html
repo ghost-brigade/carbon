@@ -1,1 +1,129 @@
-<p>news-admin works!</p>
+<section
+  *ngIf="data"
+  class="flex min-h-full flex-col items-center">
+  <div class="overflow-x-auto">
+    <table class="table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Titre</th>
+          <th>Image</th>
+          <th>Contenu</th>
+          <th>Modifier</th>
+          <th>Supprimer</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let article of data; let i = index">
+          <th>{{ i + 1 }}</th>
+          <td>{{ article.title }}</td>
+          <td>{{ article.src }}</td>
+          <td>{{ article.content.slice(0, 30) }}</td>
+          <td>
+            <button
+              class="btn btn-accent btn-sm"
+              (click)="showModal('edit-modal', article, 'edit')">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L6.832 19.82a4.5 4.5 0 01-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 011.13-1.897L16.863 4.487zm0 0L19.5 7.125" />
+              </svg>
+            </button>
+          </td>
+          <td>
+            <button class="btn btn-error btn-sm">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                class="h-6 w-6">
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+<dialog
+  id="edit-modal"
+  class="modal text-neutral text-center">
+  <form
+    method="dialog"
+    class="modal-box">
+    <button
+      for="edit-modal"
+      class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">
+      ✕
+    </button>
+    <div class="flex flex-col items-center gap-2">
+      <h1 *ngIf="modalMode === 'add'">Ajouter un article</h1>
+      <h1 *ngIf="modalMode === 'edit'">Modifier un article</h1>
+      <input
+        type="text"
+        placeholder="Titre"
+        [(ngModel)]="editItem.title"
+        [ngModelOptions]="{ standalone: true }"
+        class="input input-bordered w-full max-w-xs" />
+      <input
+        type="text"
+        placeholder="Contenu"
+        [(ngModel)]="editItem.content"
+        [ngModelOptions]="{ standalone: true }"
+        class="input input-bordered w-full max-w-xs" />
+      <input
+        type="text"
+        placeholder="Image"
+        [(ngModel)]="editItem.src"
+        [ngModelOptions]="{ standalone: true }"
+        class="input input-bordered w-full max-w-xs" />
+      <button
+        class="btn btn-primary"
+        *ngIf="modalMode === 'edit'"
+        (click)="showModal('edit-modal', emptyArticle, 'edit')">
+        Modifier
+      </button>
+      <button
+        class="btn btn-primary"
+        *ngIf="modalMode === 'add'"
+        (click)="showModal('edit-modal', emptyArticle, 'add')">
+        Ajouter
+      </button>
+    </div>
+  </form>
+  <form
+    method="dialog"
+    class="modal-backdrop">
+    <button>fermer</button>
+  </form>
+</dialog>
+
+<button
+  class="btn btn-primary fixed bottom-[calc(env(safe-area-inset-bottom)+0px)] right-0 mb-4 mr-4 h-14 w-14 rounded-full shadow-lg"
+  (click)="showModal('edit-modal', emptyArticle, 'add')">
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke-width="1.5"
+    stroke="currentColor"
+    class="h-6 w-6">
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M12 4.5v15m7.5-7.5h-15" />
+  </svg>
+</button>

@@ -28,7 +28,7 @@ export type GetEndpointMap = {
     response: GetUserType;
   };
   "/news": {
-    response: NewsType;
+    response: NewsType[];
   };
   "/event": {
     response: EventType[];

@@ -98,7 +98,7 @@ export const appRoutes: Route[] = [
         (m) => m.NewsAdminComponent
       ),
     title: "Admin News",
-    data: { roles: ["hr"], hasAdmin: true },
+    data: { roles: ["hr"] },
   },
   {
     path: "skills/admin",
