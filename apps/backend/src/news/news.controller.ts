@@ -33,13 +33,11 @@ export class NewsController {
     return this.newsService.create(createNews);
   }
 
-  @Public()
   @Get()
   async findAll() {
     return this.newsService.findAll();
   }
 
-  @Public()
   @Get(":id")
   async findOne(@Param("id") id: string) {
     return await this.newsService.findOne(id);
