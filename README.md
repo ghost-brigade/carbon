@@ -5,15 +5,15 @@
 | Nom | Tache |
 |-----|-------|
 | Louis M.  | Initialisation prisma |
-| Louis M.  | Schéma prisma de base |
-| Louis M.  | CRUD school, skill, society, tasklist, user-preference |
-| Louis M.  | Ajout/Suppression préference à un utilisateur |
-| Louis M.  | Ajout tasklist à un utilisateur |
-| Louis M.  | Ajout skill à un utilisateur |
-| Louis M.  | Travail sur les seed |
-| Louis M.  | Vérification des routes avec RoleGuard |
-| Louis M.  | Feedback sur mission |
-| Louis M. | Travail sur types Zod |
+|   | Schéma prisma de base |
+|   | CRUD school, skill, society, tasklist, user-preference |
+|   | Ajout/Suppression préference à un utilisateur |
+|   | Ajout tasklist à un utilisateur |
+|   | Ajout skill à un utilisateur |
+|   | Travail sur les seed |
+|   | Vérification des droits des routes |
+|   | Feedback sur mission |
+|  | Vérification des schémas |
 | Alexis L. | Profile utilisateur |
 | Anthony A. | xxx |
 | Julien A. | xxx |
