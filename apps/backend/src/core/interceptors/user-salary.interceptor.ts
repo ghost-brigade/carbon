@@ -13,7 +13,10 @@ export class UserSalaryInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler) {
     const request = _context.switchToHttp().getRequest();
 
-    if (request._user.role === RolesValues.HR) {
+    if (
+      request._user.role === RolesValues.HR ||
+      request._user.role === RolesValues.COMMERCIAL
+    ) {
       return next.handle().pipe(map((value) => this.formatSalary(value)));
     }
 
