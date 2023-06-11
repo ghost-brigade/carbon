@@ -179,6 +179,7 @@ export class UserService {
           UserPreference: true,
           School: true,
           UserAchievement: true,
+          missions: true,
         },
       })) as UserType;
     } catch (error) {
