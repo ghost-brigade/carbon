@@ -178,6 +178,11 @@ export class UserController {
   // }
 
   @UseGuards(new ZodGuard("body", UserTaskListCreateSchema))
+  @UseInterceptors(
+    UserAvatarInterceptor,
+    new UserPasswordInterceptor(),
+    new UserSalaryInterceptor()
+  )
   @Post("tasklist")
   async addTaskList(
     @Body() createTaskList: UserTaskListCreateType,

@@ -97,15 +97,23 @@ export class TasklistComponent implements OnInit {
                         task.level
                       ] = [];
                     }
-                    this.profileService
-                      .$taskList()
-                      [task.skill.name][task.level].push({
-                        status: task.status,
-                        name: task.name,
-                        id: task.id,
-                        description: task.description,
-                        required: task.required,
-                      });
+                    if (
+                      !this.profileService
+                        .$taskList()
+                        [task.skill.name][task.level].find(
+                          (t) => t.id === task.id
+                        )
+                    ) {
+                      this.profileService
+                        .$taskList()
+                        [task.skill.name][task.level].push({
+                          status: task.status,
+                          name: task.name,
+                          id: task.id,
+                          description: task.description,
+                          required: task.required,
+                        });
+                    }
                   });
                 });
                 console.log(this.profileService.$taskList());
@@ -123,7 +131,8 @@ export class TasklistComponent implements OnInit {
       id: string;
       required: boolean;
     },
-    level: number
+    level: number,
+    skill: string
   ) {
     if (task.status !== "todo") return;
     this.requestService
@@ -136,7 +145,7 @@ export class TasklistComponent implements OnInit {
       })
       .subscribe({
         next: () => {
-          this.profileService.$taskList()[task.name][level].forEach((t) => {
+          this.profileService.$taskList()[skill][level].forEach((t) => {
             if (t.id === task.id) {
               t.status = "pending";
             }

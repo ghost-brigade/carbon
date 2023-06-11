@@ -112,7 +112,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of seniorityLeaderboard(); let i = index">
+        <tr *ngFor="let user of missionLeaderboard(); let i = index">
           <td>{{ i + 1 }}</td>
           <td>
             <div class="flex items-center space-x-3">
@@ -130,7 +130,7 @@
               </div>
             </div>
           </td>
-          <td>{{ user.missions?.length || 0 }}</td>
+          <td>{{ user?._count?.missions || 0 }}</td>
         </tr>
       </tbody>
     </table>

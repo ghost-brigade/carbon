@@ -417,7 +417,7 @@ export class UserService {
 
     const { taskListId, status } = createTaskList;
 
-    const existingTaskList = user.taskLists.find(
+    /**const existingTaskList = user.taskLists.find(
       (tasklist) => tasklist.taskListId === taskListId
     );
 
@@ -425,7 +425,7 @@ export class UserService {
       throw new UnprocessableEntityException(
         "Tasklist already exists for the user"
       );
-    }
+    }**/
 
     const updatedUser = await this.prisma.user.update({
       where: { id },

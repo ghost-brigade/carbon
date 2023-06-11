@@ -27,7 +27,9 @@ export class LeaderboardComponent implements OnInit {
   toastService = inject(ToastService);
   profileService = inject(ProfileService);
   loaderService = inject(LoaderService);
-  missionLeaderboard: WritableSignal<GetUserType[]> = signal([]);
+  missionLeaderboard: WritableSignal<
+    (GetUserType & { _count: { missions: number } })[]
+  > = signal([]);
   seniorityLeaderboard: WritableSignal<GetUserType[]> = signal([]);
   levelLeaderboard: WritableSignal<GetUserType[]> = signal([]);
   selectTab: WritableSignal<"experience" | "seniority" | "missions"> =
@@ -67,6 +69,27 @@ export class LeaderboardComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.seniorityLeaderboard.set(res);
+        },
+        error: () => {
+          this.toastService.show(
+            "ERROR",
+            "Erreur lors du chargement du leaderboard"
+          );
+        },
+      });
+
+    this.requestService
+      .get({
+        endpoint: GetEndpoint.Leaderboard,
+        params: {
+          leaderboard: "mission",
+        },
+      })
+      .subscribe({
+        next: (res) => {
+          this.missionLeaderboard.set(
+            res as (GetUserType & { _count: { missions: number } })[]
+          );
         },
         error: () => {
           this.toastService.show(
