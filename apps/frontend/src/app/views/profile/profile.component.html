@@ -167,10 +167,11 @@
 
   <section
     *ngIf="$role() === 'hr'"
-    class="mt-10 flex w-full flex-col items-center justify-center">
+    class="my-10 flex w-full flex-col items-center justify-center">
     <h2 class="gap-4 text-lg font-semibold">Historique TJM</h2>
     <carbon-chart
-      [chartData]="mapSalaryHistory()"
+      class="min-h-96 h-96 max-h-96"
+      [chartData]="mapTjmHistory()"
       [chartOptions]="chartOptions"
       [canvasOptions]="canvasOptions"></carbon-chart>
   </section>
@@ -250,7 +251,7 @@
     <h2 class="text-lg font-semibold">Missions</h2>
     <div
       class="flex w-72 flex-1 flex-row items-center gap-4"
-      *ngFor="let mission of profile?.missions">
+      *ngFor="let mission of profile?.missions; let i = index">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -273,10 +274,12 @@
         </span>
         <span class="text-sm">{{ getYears(mission) }}</span>
 
-        <div class="rating">
+        <div
+          class="rating"
+          *ngIf="$isSelfProfile()">
           <input
             type="radio"
-            name="rating-1"
+            name="rating-{{ i }}"
             *ngFor="let index of [1, 2, 3, 4, 5]"
             (click)="rateMission(mission, index); updateRating(index)"
             [checked]="index <= mission.rating"

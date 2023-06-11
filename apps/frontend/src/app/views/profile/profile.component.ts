@@ -255,6 +255,21 @@ export class ProfileComponent implements OnInit {
     );
   }
 
+  mapTjmHistory() {
+    return (
+      this.profile?.missions
+        ?.map((mission) => {
+          return {
+            time: mission.dateStart.split("T")[0],
+            value: mission.averageDailyRate,
+          };
+        })
+        .sort(
+          (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+        ) || []
+    );
+  }
+
   rateMission(mission: Mission, rating: number) {
     console.log(mission, rating);
     this.currentFeedback = mission.feedback || "";
