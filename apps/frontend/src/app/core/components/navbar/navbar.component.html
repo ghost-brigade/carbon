@@ -47,7 +47,7 @@
 
       <img
         src="{{ $profilePicture() }}"
-        class="mask mask-hexagon h-10 w-10" />
+        class="mask mask-hexagon ml-2 h-10 w-10" />
     </nav>
     <ng-content></ng-content>
   </div>
@@ -80,11 +80,11 @@
           <img
             *ngIf="tile.data?.['icon'] !== 'profile'"
             src="assets/svg/navbar/{{ tile.data?.['icon'] }}.svg"
-            class="h-8 w-8" />
+            class="h-8" />
           <img
             *ngIf="tile.data?.['icon'] === 'profile'"
             src="{{ $profilePicture() }}"
-            class="mask mask-hexagon h-12 w-12" />
+            class="mask mask-hexagon h-12" />
           <span>{{ tile.title }}</span>
         </label>
       </div>

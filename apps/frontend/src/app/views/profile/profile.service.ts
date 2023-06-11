@@ -1,4 +1,5 @@
-import { Injectable } from "@angular/core";
+import { Injectable, WritableSignal, computed, signal } from "@angular/core";
+import { TaskList } from "../../shared/models/user.model";
 
 export type XP = {
   level: number;
@@ -10,6 +11,58 @@ export type XP = {
   providedIn: "root",
 })
 export class ProfileService {
+  $selfTaskList: WritableSignal<TaskList[]> = signal([]);
+  $mappedTaskList = computed(() => {
+    return this.$selfTaskList().map((taskList) => {
+      return {
+        status: taskList.status,
+        name: taskList.taskList.name,
+        description: taskList.taskList.description,
+        id: taskList.taskList.id,
+        required: taskList.taskList.required,
+        skill: taskList.taskList.skill.name,
+        level: taskList.taskList.level,
+      };
+    });
+  });
+
+  $taskList = computed(() => {
+    const levelsPerSkill: Record<
+      string,
+      Record<
+        number,
+        {
+          status: string;
+          name: string;
+          description: string;
+          id: string;
+          required: boolean;
+        }[]
+      >
+    > = {};
+
+    this.$mappedTaskList().forEach((task) => {
+      const { skill, level, status, name, description, required, id } = task;
+
+      if (!levelsPerSkill[skill]) {
+        levelsPerSkill[skill] = {};
+      }
+
+      if (!levelsPerSkill[skill][level]) {
+        levelsPerSkill[skill][level] = [];
+      }
+      levelsPerSkill[skill][level].push({
+        status,
+        name,
+        id,
+        description,
+        required,
+      });
+    });
+
+    return levelsPerSkill;
+  });
+
   calculateLevel(xp: number) {
     let level = 0;
     const multiplier = 20;

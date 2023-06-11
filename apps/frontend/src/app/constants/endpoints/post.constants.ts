@@ -3,6 +3,7 @@ import { GetUserType } from "../../shared/models/user.model";
 export const PostEndpoint = {
   Login: "/login",
   UserPreference: "/user/preference",
+  TaskList: "/user/tasklist",
 } as const;
 
 export type PostEndpointMap = {
@@ -13,6 +14,13 @@ export type PostEndpointMap = {
   "/user/preference": {
     response: GetUserType;
     body: UserPreferenceCreateType;
+  };
+  "/user/tasklist": {
+    response: GetUserType;
+    body: {
+      taskListId: string;
+      status: "pending";
+    };
   };
 };
 

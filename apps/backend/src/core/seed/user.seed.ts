@@ -98,12 +98,12 @@ export default async (S3: S3Client): Promise<UserType[]> => {
         firstName: user.firstName,
         lastName: user.lastName,
         birthDate: faker.date.past(),
-        salary: [
+        salary: [...Array(faker.number.int({ min: 4, max: 10 }))].map(() =>
           JSON.stringify({
             amount: faker.finance.amount(),
             date: faker.date.past(),
-          }),
-        ],
+          })
+        ),
         avatar: {
           connect: {
             id: avatarDb.id,
