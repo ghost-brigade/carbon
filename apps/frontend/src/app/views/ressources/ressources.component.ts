@@ -10,4 +10,27 @@ import { finalize } from "rxjs";
   templateUrl: "./ressources.component.html",
   styleUrls: ["./ressources.component.css"],
 })
-export class RessourcesComponent {}
+export class RessourcesComponent {
+  list = [
+    {
+      name: "Ressource 1",
+      description: "Description 1",
+      link: "https://www.google.com",
+    },
+    {
+      name: "Ressource 2",
+      description: "Description 2",
+      link: "https://www.google.com",
+    },
+    {
+      name: "Ressource 3",
+      description: "Description 3",
+      link: "https://www.google.com",
+    },
+    {
+      name: "Ressource 4",
+      description: "Description 4",
+      link: "https://www.google.com",
+    },
+];
+}
