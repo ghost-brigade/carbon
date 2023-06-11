@@ -5,19 +5,19 @@ import {
   Body,
   Param,
   Delete,
-  Put,
   UseInterceptors,
   UseGuards,
   Query,
+  Patch,
 } from "@nestjs/common";
 import { MissionService } from "./mission.service";
 import {
   MissionCreateType,
   MissionUpdateType,
   MissionCreateSchema,
-  MissionUpdateSchema,
   MissionParamsType,
   UserType,
+  MissionPatchSchema,
 } from "@carbon/zod";
 import { ZodGuard } from "../core/guard/zod/zod.guard";
 import { AuthorizationGuard } from "../core/guard/authorization.guard";
@@ -49,9 +49,9 @@ export class MissionController {
     return await this.missionService.findOne(id);
   }
 
-  @Put(":id")
+  @Patch(":id")
   @UseInterceptors(new AverageDailyRatingInterceptor())
-  @UseGuards(new ZodGuard("body", MissionUpdateSchema))
+  @UseGuards(new ZodGuard("body", MissionPatchSchema))
   async update(
     @Param("id") id: string,
     @Body() updateMission: MissionUpdateType,

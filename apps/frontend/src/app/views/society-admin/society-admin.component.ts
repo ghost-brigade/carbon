@@ -1,38 +1,38 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { finalize } from "rxjs";
 import { GetEndpoint } from "../../constants/endpoints/get.constants";
+import { finalize } from "rxjs";
 import { DeleteEndpoint } from "../../constants/endpoints/delete.constants";
 import { PatchEndpoint } from "../../constants/endpoints/patch.constants";
-import { SkillType } from "@carbon/zod";
-import { RequestService } from "../../shared/services/request.service";
-import { LoaderService } from "../../core/components/loader/loader.service";
-import { ToastService } from "../../core/components/toast/toast.service";
 import { PostEndpoint } from "../../constants/endpoints/post.constants";
+import { SocietyType } from "@carbon/zod";
+import { LoaderService } from "../../core/components/loader/loader.service";
+import { RequestService } from "../../shared/services/request.service";
 import { FormsModule } from "@angular/forms";
+import { ToastService } from "../../core/components/toast/toast.service";
 
 @Component({
-  selector: "carbon-skills-admin",
+  selector: "carbon-society-admin",
   standalone: true,
   imports: [CommonModule, FormsModule],
-  templateUrl: "./skills-admin.component.html",
-  styleUrls: ["./skills-admin.component.css"],
+  templateUrl: "./society-admin.component.html",
+  styleUrls: ["./society-admin.component.css"],
 })
-export class SkillsAdminComponent implements OnInit {
+export class SocietyAdminComponent implements OnInit {
   requestService = inject(RequestService);
   loaderService = inject(LoaderService);
   toastService = inject(ToastService);
-  data: SkillType[] | undefined;
-  editItem: Partial<SkillType> = {};
+  data: SocietyType[] | undefined;
+  editItem: Partial<SocietyType> = {};
   modalMode: "add" | "edit" = "add";
-  emptyItem: Partial<SkillType> = {
+  emptyItem: Partial<SocietyType> = {
     name: "",
   };
 
   ngOnInit(): void {
     this.loaderService.show();
     this.requestService
-      .get({ endpoint: GetEndpoint.Skill })
+      .get({ endpoint: GetEndpoint.Society })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
@@ -42,7 +42,11 @@ export class SkillsAdminComponent implements OnInit {
       });
   }
 
-  showModal(selector: string, item: Partial<SkillType>, mode: "add" | "edit") {
+  showModal(
+    selector: string,
+    item: Partial<SocietyType>,
+    mode: "add" | "edit"
+  ) {
     this.editItem = item;
     console.log(this.editItem);
     this.modalMode = mode;
@@ -57,15 +61,15 @@ export class SkillsAdminComponent implements OnInit {
     this.loaderService.show();
     this.requestService
       .post({
-        endpoint: PostEndpoint.Skill,
-        body: { name: this.editItem.name || "" },
+        endpoint: PostEndpoint.Society,
+        body: this.editItem,
       })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
           console.log(res);
           this.updateItems();
-          this.toastService.show("SUCCESS", "Skill créé");
+          this.toastService.show("SUCCESS", "Société créée");
         },
       });
   }
@@ -74,8 +78,8 @@ export class SkillsAdminComponent implements OnInit {
     this.loaderService.show();
     this.requestService
       .patch({
-        endpoint: PatchEndpoint.Skill,
-        body: this.editItem as { name: string },
+        endpoint: PatchEndpoint.Society,
+        body: this.editItem,
         params: { id: this.editItem.id as string },
       })
       .pipe(finalize(() => this.loaderService.hide()))
@@ -84,7 +88,7 @@ export class SkillsAdminComponent implements OnInit {
           console.log(res);
           this.updateItems();
 
-          this.toastService.show("SUCCESS", "Skill modifié");
+          this.toastService.show("SUCCESS", "Société modifiée");
         },
       });
   }
@@ -93,14 +97,14 @@ export class SkillsAdminComponent implements OnInit {
     this.loaderService.show();
     this.requestService
       .delete({
-        endpoint: DeleteEndpoint.Skill,
+        endpoint: DeleteEndpoint.Society,
         params: { id },
       })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {
           console.log(res);
-          this.toastService.show("SUCCESS", "Skill supprimé");
+          this.toastService.show("SUCCESS", "Société supprimée");
           this.updateItems();
         },
       });
@@ -109,7 +113,7 @@ export class SkillsAdminComponent implements OnInit {
   updateItems() {
     this.loaderService.show();
     this.requestService
-      .get({ endpoint: GetEndpoint.Skill })
+      .get({ endpoint: GetEndpoint.Society })
       .pipe(finalize(() => this.loaderService.hide()))
       .subscribe({
         next: (res) => {

@@ -98,7 +98,7 @@ export const appRoutes: Route[] = [
         (m) => m.NewsAdminComponent
       ),
     title: "Admin News",
-    data: { roles: ["hr"], hasAdmin: true },
+    data: { roles: ["hr"] },
   },
   {
     path: "skills/admin",
@@ -109,6 +109,16 @@ export const appRoutes: Route[] = [
       ),
     title: "Admin Skills",
     data: { roles: ["hr"], icon: "leaderboard", order: 5, hidden: false },
+  },
+  {
+    path: "society/admin",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/society-admin/society-admin.component").then(
+        (m) => m.SocietyAdminComponent
+      ),
+    title: "Admin Sociétés",
+    data: { roles: ["hr"], icon: "society", order: 7, hidden: false },
   },
   {
     path: "missions/admin",
