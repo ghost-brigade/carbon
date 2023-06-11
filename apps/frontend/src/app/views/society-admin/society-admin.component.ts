@@ -42,10 +42,6 @@ export class SocietyAdminComponent implements OnInit {
       });
   }
 
-  deleteItem(id: string) {
-    this.loaderService.show();
-  }
-
   showModal(
     selector: string,
     article: Partial<SocietyType>,

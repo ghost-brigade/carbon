@@ -2,6 +2,7 @@ export const DeleteEndpoint = {
   UserPreference: "/user/preference/:id",
   News: "/news/:id",
   Society: "/society/:id",
+  Skill: "/skill/:id",
 } as const;
 
 export type DeleteEndpointMap = {
@@ -18,6 +19,12 @@ export type DeleteEndpointMap = {
     };
   };
   "/society/:id": {
+    response: object;
+    params: {
+      id: string;
+    };
+  };
+  "/skill/:id": {
     response: object;
     params: {
       id: string;

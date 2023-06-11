@@ -48,10 +48,6 @@ export class NewsAdminComponent implements OnInit {
       });
   }
 
-  deleteItem(id: string) {
-    this.loaderService.show();
-  }
-
   showModal(
     selector: string,
     article: Partial<NewsType>,

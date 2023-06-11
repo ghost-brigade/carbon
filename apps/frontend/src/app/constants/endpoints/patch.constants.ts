@@ -3,6 +3,7 @@ import { NewsType, SocietyType } from "@carbon/zod";
 export const PatchEndpoint = {
   News: "/news/:id",
   Society: "/society/:id",
+  Skill: "/skill/:id",
 } as const;
 
 export type PatchEndpointMap = {
@@ -16,6 +17,15 @@ export type PatchEndpointMap = {
   "/society/:id": {
     response: object;
     body: Partial<SocietyType>;
+    params: {
+      id: string;
+    };
+  };
+  "/skill/:id": {
+    response: object;
+    body: {
+      name: string;
+    };
     params: {
       id: string;
     };

@@ -12,6 +12,7 @@ export const PostEndpoint = {
   TaskList: "/user/tasklist",
   News: "/news",
   Society: "/society",
+  Skill: "/skill",
 } as const;
 
 export type PostEndpointMap = {
@@ -37,6 +38,12 @@ export type PostEndpointMap = {
   "/society": {
     response: object;
     body: Partial<SocietyType>;
+  };
+  "/skill": {
+    response: object;
+    body: {
+      name: string;
+    };
   };
 };
 
