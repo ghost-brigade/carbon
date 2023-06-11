@@ -30,7 +30,8 @@ export class LeaderboardComponent implements OnInit {
   missionLeaderboard: WritableSignal<GetUserType[]> = signal([]);
   seniorityLeaderboard: WritableSignal<GetUserType[]> = signal([]);
   levelLeaderboard: WritableSignal<GetUserType[]> = signal([]);
-  selectTab: WritableSignal<"experience" | "seniority"> = signal("experience");
+  selectTab: WritableSignal<"experience" | "seniority" | "missions"> =
+    signal("experience");
   getFormattedTime = getFormattedTime;
   getYear = getYear;
 
@@ -80,7 +81,7 @@ export class LeaderboardComponent implements OnInit {
     return this.profileService.calculateLevel(user.experience).level;
   }
 
-  setTab(tab: "experience" | "seniority") {
+  setTab(tab: "experience" | "seniority" | "missions") {
     this.selectTab.set(tab);
   }
 }

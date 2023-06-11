@@ -15,7 +15,13 @@
       }}"
       >Séniorité</a
     >
-    <a class="tab tab-bordered flex-1 cursor-pointer">Missions</a>
+    <a
+      (click)="setTab('missions')"
+      class="tab tab-bordered flex-1 cursor-pointer {{
+        selectTab() === 'missions' ? 'tab-active' : ''
+      }}"
+      >Missions</a
+    >
   </div>
 
   <div
@@ -89,6 +95,42 @@
           </td>
           <td>{{ getYear(user) }}</td>
           <th>{{ getFormattedTime(user) }}</th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div
+    class="mt-4 max-w-[100vw] overflow-x-auto xl:max-w-3xl"
+    *ngIf="selectTab() === 'missions'">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Nom</th>
+          <th>Nombre de missions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of seniorityLeaderboard(); let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>
+            <div class="flex items-center space-x-3">
+              <div class="avatar">
+                <div class="mask mask-hexagon h-12 w-12">
+                  <img [src]="user.avatar" />
+                </div>
+              </div>
+              <div>
+                <div
+                  [routerLink]="['/profile', user.id]"
+                  class="cursor-pointer">
+                  {{ user.firstName }} {{ user.lastName | uppercase }}
+                </div>
+              </div>
+            </div>
+          </td>
+          <td>{{ user.missions?.length || 0 }}</td>
         </tr>
       </tbody>
     </table>

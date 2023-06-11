@@ -18,6 +18,7 @@ export const GetEndpoint = {
   School: "/school",
   UserProfile: "/user/:id",
   SearchUserPreference: "/user-preference/search",
+  SkillById: "/skill/:id",
 } as const;
 
 export type GetEndpointMap = {
@@ -64,6 +65,12 @@ export type GetEndpointMap = {
     response: string[];
     queryParams: {
       description: string;
+    };
+  };
+  "/skill/:id": {
+    response: SkillType;
+    params: {
+      id: string;
     };
   };
 };

@@ -43,7 +43,7 @@ export class UserController {
   @UseInterceptors(new UserPasswordInterceptor(), new UserSalaryInterceptor())
   @HttpCode(200)
   async me(@UserContext() user: UserType): Promise<UserType> {
-    return await this.userService.findUserByEmail(user.email);
+    return await this.userService.findOne(user.id);
   }
 
   @UseGuards(new ZodGuard("body", UserCreateSchema))
