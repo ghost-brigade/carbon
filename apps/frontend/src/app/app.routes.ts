@@ -20,7 +20,7 @@ export const appRoutes: Route[] = [
         (m) => m.ProfileComponent
       ),
     title: "Profil",
-    data: { roles: ["user"], hidden: true },
+    data: { roles: ["user", "hr"], hidden: true },
   },
   {
     path: "news",
@@ -31,6 +31,20 @@ export const appRoutes: Route[] = [
     data: {
       roles: ["user", "hr"],
       icon: "news",
+      order: 2,
+      hidden: false,
+      hasAdmin: true,
+    },
+  },
+  {
+    path: "event",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/event/event.component").then((m) => m.EventComponent),
+    title: "Event",
+    data: {
+      roles: ["user", "hr"],
+      icon: "event",
       order: 2,
       hidden: false,
       hasAdmin: true,
@@ -84,7 +98,7 @@ export const appRoutes: Route[] = [
         (m) => m.NewsAdminComponent
       ),
     title: "Admin News",
-    data: { roles: ["hr"], hasAdmin: true },
+    data: { roles: ["hr"] },
   },
   {
     path: "skills/admin",
@@ -95,6 +109,16 @@ export const appRoutes: Route[] = [
       ),
     title: "Admin Skills",
     data: { roles: ["hr"], icon: "leaderboard", order: 5, hidden: false },
+  },
+  {
+    path: "society/admin",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/society-admin/society-admin.component").then(
+        (m) => m.SocietyAdminComponent
+      ),
+    title: "Admin Sociétés",
+    data: { roles: ["hr"], icon: "society", order: 7, hidden: false },
   },
   {
     path: "missions/admin",
@@ -125,6 +149,16 @@ export const appRoutes: Route[] = [
       ),
     title: "Admin Ressources",
     data: { roles: ["hr"], hasAdmin: true },
+  },
+  {
+    path: "profile/me/tasks",
+    canActivate: [AuthGuard],
+    loadComponent: () =>
+      import("./views/tasklist/tasklist.component").then(
+        (m) => m.TasklistComponent
+      ),
+    title: "Tasklist",
+    data: { roles: ["user"] },
   },
   {
     path: "**",

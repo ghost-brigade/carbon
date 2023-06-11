@@ -1,10 +1,12 @@
-<ul class="grid grid-cols-2 gap-4 md:grid-cols-4">
+<ul class="grid gap-4 md:grid-cols-4">
   <li *ngFor="let user of users">
     <div class="card-bordered card">
       <figure>
-        <img
-          src="{{ user.avatar }}"
-          alt="Avatar de {{ user.firstName }} {{ user.lastName }}" />
+        <a routerLink="/profile/{{ user.id }}">
+          <img
+            src="{{ user.avatar }}"
+            alt="Avatar de {{ user.firstName }} {{ user.lastName }}" />
+        </a>
       </figure>
       <div class="card-body">
         <a

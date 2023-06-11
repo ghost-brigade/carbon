@@ -8,19 +8,30 @@ import { ProfileService, XP } from "./profile.service";
 import { getFormattedTime, getRank } from "../../shared/utils/format";
 import {
   GetUserType,
+  Mission,
   School,
   UserAchievement,
 } from "../../shared/models/user.model";
 import { AuthService } from "../../core/services/auth.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { DeleteEndpoint } from "../../constants/endpoints/delete.constants";
 import { ToastService } from "../../core/components/toast/toast.service";
+import { PostEndpoint } from "../../constants/endpoints/post.constants";
+import { ChartComponent } from "../../shared/components/chart/chart.component";
+import {
+  AreaStyleOptions,
+  ChartOptions,
+  DeepPartial,
+  SeriesOptionsCommon,
+} from "lightweight-charts";
+import { MissionType } from "@carbon/zod";
+import { PatchEndpoint } from "../../constants/endpoints/patch.constants";
 
 @Component({
   selector: "carbon-profile",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ChartComponent, RouterModule],
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"],
 })
@@ -30,18 +41,17 @@ export class ProfileComponent implements OnInit {
   profileService = inject(ProfileService);
   authService = inject(AuthService);
   toastService = inject(ToastService);
+  currentFeedback = "";
+  currentMission: Mission | undefined;
+  currentRating = 0;
   $isSelfProfile = signal(false);
   $profilePicture = computed(() => this.authService.$userPicture());
+  $suggestionsActive = signal(false);
+  $role = computed(() => this.authService.$role());
   profile: GetUserType | undefined;
   newPreference = "";
   preferenceTimeout = -1;
-  preferences: string[] = [
-    "Frontend",
-    "Backend",
-    "Banque",
-    "Assurance",
-    "Santé",
-  ];
+  preferences: string[] = [];
   getFormattedTime = getFormattedTime;
   getRank = getRank;
   xp: XP = {
@@ -49,6 +59,22 @@ export class ProfileComponent implements OnInit {
     level: 0,
     totalXP: 0,
     xpUntilNextLevel: 0,
+  };
+
+  chartOptions: DeepPartial<AreaStyleOptions & SeriesOptionsCommon> = {
+    baseLineColor: "#ffffff",
+    priceFormat: {
+      minMove: 1,
+    },
+  };
+
+  canvasOptions: DeepPartial<ChartOptions> = {
+    layout: {
+      background: {
+        color: "#282B2A",
+      },
+      textColor: "#ffffff",
+    },
   };
 
   constructor(private route: ActivatedRoute) {}
@@ -149,6 +175,10 @@ export class ProfileComponent implements OnInit {
   }
 
   searchPreference() {
+    if (this.newPreference.length === 0) {
+      this.preferences = [];
+      return;
+    }
     clearTimeout(this.preferenceTimeout);
     this.preferenceTimeout = window.setTimeout(() => {
       this.requestService
@@ -161,10 +191,109 @@ export class ProfileComponent implements OnInit {
         .pipe(finalize(() => this.loaderService.hide()))
         .subscribe({
           next: (res) => {
-            console.log(res);
             this.preferences = res;
           },
         });
     }, 500);
+  }
+
+  addPreference(isLiked: boolean) {
+    this.requestService
+      .post({
+        endpoint: PostEndpoint.UserPreference,
+        body: {
+          description: this.newPreference,
+          isLiked,
+        },
+      })
+      .pipe(
+        finalize(() => ((this.newPreference = ""), (this.preferences = [])))
+      )
+      .subscribe({
+        next: (res) => {
+          if (this.profile?.UserPreference)
+            this.profile.UserPreference = res.UserPreference;
+        },
+        error: (err) => {
+          if (err.status === 400) {
+            this.toastService.show("ERROR", "Vous avez déjà cette préférence");
+          } else if (err.status === 422) {
+            this.toastService.show(
+              "ERROR",
+              "Nombre maximum de préférences atteint"
+            );
+          } else {
+            this.toastService.show("ERROR", "Une erreur est survenue");
+          }
+        },
+      });
+  }
+
+  setSuggestionsActive(active: boolean) {
+    // add a timeout to avoid the suggestions to be hidden when clicking on them
+    setTimeout(() => {
+      this.$suggestionsActive.set(active);
+    }, 100);
+  }
+
+  setPreference(preference: string) {
+    this.newPreference = preference;
+  }
+
+  mapSalaryHistory() {
+    return (
+      this.profile?.salary
+        .map((salary) => {
+          return {
+            time: salary.date.split("T")[0],
+            value: salary.amount,
+          };
+        })
+        .sort(
+          (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+        ) || []
+    );
+  }
+
+  rateMission(mission: Mission, rating: number) {
+    console.log(mission, rating);
+    this.currentFeedback = mission.feedback || "";
+    this.currentRating = rating;
+    this.currentMission = mission;
+    this.showModal("rating");
+  }
+
+  sendRate() {
+    console.log(this.currentRating, this.currentFeedback, this.currentMission);
+    this.loaderService.show();
+    this.requestService
+      .patch({
+        endpoint: PatchEndpoint.Mission,
+        params: {
+          id: this.currentMission?.id || "",
+        },
+        body: {
+          rating: this.currentRating,
+          feedback: this.currentFeedback,
+        },
+      })
+      .pipe(finalize(() => this.loaderService.hide()))
+      .subscribe({
+        next: (res) => {
+          const mission = this.profile?.missions?.find((m) => m.id === res.id);
+          if (mission) {
+            mission.rating = res.rating || 0;
+            mission.feedback = res.feedback || "";
+          }
+          this.toastService.show("SUCCESS", "Votre avis a bien été envoyé");
+        },
+        error: () => {
+          this.toastService.show("ERROR", "Une erreur est survenue");
+        },
+      });
+  }
+
+  updateRating(rating: number) {
+    this.currentRating = rating;
   }
 }

@@ -1,0 +1,38 @@
+<div class="flex w-full justify-center">
+  <details class="dropdown dropdown-bottom mb-32">
+    <summary class="btn m-1">Type d'évènement</summary>
+    <ul
+      class="menu dropdown-content bg-base-100 rounded-box z-20 w-52 p-2 shadow">
+      <li><a (click)="loadEvents('')">Tout</a></li>
+      <li><a (click)="loadEvents('Conference')">Conférence</a></li>
+      <li><a (click)="loadEvents('Soiree')">Soirée</a></li>
+      <li><a (click)="loadEvents('Competition')">Compétition</a></li>
+    </ul>
+  </details>
+</div>
+
+<div class="flex w-full items-center justify-center">
+  <div class="grid w-[80%] grid-cols-1 lg:grid-cols-4">
+    <div
+      *ngFor="let item of event"
+      class="card mb-5 w-96 bg-[#262626]">
+      <figure class="px-10 pt-10">
+        <img
+          src="assets/img/news/{{ item.src }}"
+          alt="Shoes"
+          class="rounded-xl" />
+      </figure>
+      <div class="card-body items-center text-center">
+        <h2 class="card-title">{{ item.name }}</h2>
+        <p>{{ item.content }}</p>
+        <div class="card-actions justify-end">
+          <div class="badge badge-primary">{{ item.type }}</div>
+          <div class="badge badge-accent">{{ item.tag }}</div>
+        </div>
+        <div class="card-actions pt-5">
+          <button class="btn btn-primary">Participer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

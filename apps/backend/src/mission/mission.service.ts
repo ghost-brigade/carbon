@@ -15,7 +15,6 @@ import { PrismaService } from "../prisma.service";
 import { Mission } from "@prisma/client";
 import hasRight from "../core/utils/hasRight";
 import { RolesValues } from "@carbon/enum";
-import { type } from "os";
 
 @Injectable()
 export class MissionService {
@@ -67,7 +66,6 @@ export class MissionService {
 
       return missions;
     } catch (error) {
-      console.log(error);
       throw new InternalServerErrorException();
     }
   }
@@ -96,6 +94,7 @@ export class MissionService {
     user
   ): Promise<MissionType | null> {
     try {
+      console.log("updateMission", updateMission);
       // Update by HR or COMMERCIAL
       if (hasRight(user, [RolesValues.HR, RolesValues.COMMERCIAL]) === false) {
         const averageDailyRate = updateMission.averageDailyRate;
@@ -107,15 +106,8 @@ export class MissionService {
         const updatedMission = await this.prisma.mission.update({
           where: { id },
           data: {
-            name: updateMission.name,
-            description: updateMission.description,
-            societyId: updateMission.societyId,
-            userId: updateMission.userId,
-            dateStart: new Date(updateMission.dateStart),
-            dateEnd: new Date(updateMission.dateEnd),
             rating: updateMission.rating,
             feedback: updateMission.feedback,
-            averageDailyRate: [JSON.stringify(averageDailyRate)],
           },
         });
 
@@ -134,6 +126,7 @@ export class MissionService {
         return updatedMission as any;
       }
     } catch (error) {
+      console.log("error", error);
       throw new InternalServerErrorException();
     }
   }

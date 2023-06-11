@@ -1,0 +1,47 @@
+<section
+  class="mb-10 flex w-full flex-col items-center gap-2 px-4"
+  *ngIf="$tasklist()">
+  <div
+    class="collapse-plus bg-base-200 collapse max-w-[600px]"
+    *ngFor="let skill of $tasklist() | keyvalue; let i = index">
+    <input
+      type="radio"
+      name="my-accordion-3"
+      [checked]="i === 0" />
+    <div class="collapse-title text-xl font-medium">
+      {{ skill.key }}
+    </div>
+    <div class="collapse-content">
+      <span
+        class="mt-2 text-lg"
+        *ngFor="let level of skill.value | keyvalue">
+        Niveau {{ level.key }} :
+        <div
+          class="hover:bg-base-100 flex w-full flex-col rounded-lg px-4 py-2 text-base transition-all duration-300"
+          *ngFor="let task of level.value">
+          <div class="mb-2 flex w-full justify-between font-semibold">
+            <span>{{ task.name }}</span>
+            <input
+              type="checkbox"
+              [checked]="
+                ['accepted', 'pending', 'rejected'].includes(task.status)
+              "
+              (click)="
+                $event.preventDefault(); updateTask(task, +level.key, skill.key)
+              "
+              class="checkbox {{
+                task.status === 'accepted'
+                  ? 'checkbox-accent'
+                  : task.status === 'pending'
+                  ? 'checkbox-warning'
+                  : task.status === 'rejected'
+                  ? 'checkbox-error'
+                  : ''
+              }}" />
+          </div>
+          <div class="w-full text-sm">{{ task.description }}</div>
+        </div>
+      </span>
+    </div>
+  </div>
+</section>

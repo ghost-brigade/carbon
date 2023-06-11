@@ -40,5 +40,95 @@
       "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InVzZXIxQGNhcmJvbi1pdC5mciIsInRva2VuIjoiZGFmYjVlOWUyNWQ5NGZjMjc5MWJiYjg0NDExNGYwOTNkNTAyNDQ0YSIsInN1YiI6Ijk0ODZlNzE3LWVlZjgtNGIzZS05MTJlLTVjYTMxOGYyMmM5ZSIsImlhdCI6MTY4NjIyNjQ0MCwiZXhwIjoxNjg2MzEyODQwfQ.ev-Jce8zgGXRitFh7kcc1HWItr_hruwBpbI728uxOWU"
     },
     "tests": []
+  },
+  {
+    "_id": "4a09534f-e5c6-47c1-99ce-19dd4b7e6678",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/event",
+    "url": "http://localhost:3000/event?type=Conférence",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-10T23:24:03.506Z",
+    "modified": "2023-06-11T12:18:54.832Z",
+    "headers": [],
+    "params": [
+      {
+        "name": "type",
+        "value": "Conférence",
+        "isPath": false
+      }
+    ],
+    "auth": {
+      "type": "bearer",
+      "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imp1bGllbkBlc2dpLmZyIiwicm9sZSI6InVzZXIiLCJ0b2tlbiI6IjU2ZDJlOTJiNGUwYTIxNDg5NjNiMGE4ZWEwNjA5N2YwMzcyNmZjNTAiLCJzdWIiOiIxOTA1MzM1Yi04ZjI1LTQzYmItOTA2Mi0yYWNkMjk3ODI5MDIiLCJpYXQiOjE2ODY0ODU5MTQsImV4cCI6MTY4NjU3MjMxNH0.XwcJuGn8f14kcu2Kb55HDtX6OAEgZEX3ZM_aVgh_uIY"
+    },
+    "tests": []
+  },
+  {
+    "_id": "eca148b6-0d63-4619-aadf-422dd5439f3a",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/news",
+    "url": "http://localhost:3000/news",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-10T23:24:13.938Z",
+    "modified": "2023-06-10T23:24:13.938Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "7f180733-fc69-44ce-8f17-e3bef7c5b83f",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/events",
+    "url": "http://localhost:3000/events",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-10T23:24:29.641Z",
+    "modified": "2023-06-10T23:24:29.641Z",
+    "headers": [],
+    "params": [],
+    "tests": []
+  },
+  {
+    "_id": "41420ac6-f082-4040-bc10-9c357d3fe723",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/login",
+    "url": "http://localhost:3000/login",
+    "method": "GET",
+    "sortNum": 0,
+    "created": "2023-06-11T12:18:20.440Z",
+    "modified": "2023-06-11T12:18:28.116Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"email\":\"julien@esgi.fr\",\n  \"password\": \"password\"\n}",
+      "form": []
+    },
+    "tests": []
+  },
+  {
+    "_id": "1fcfdedf-0d5b-4e4b-a17f-f254d4e0177b",
+    "colId": "history",
+    "containerId": "",
+    "name": "http://localhost:3000/login",
+    "url": "http://localhost:3000/login",
+    "method": "POST",
+    "sortNum": 0,
+    "created": "2023-06-11T12:18:33.877Z",
+    "modified": "2023-06-11T12:18:33.877Z",
+    "headers": [],
+    "params": [],
+    "body": {
+      "type": "json",
+      "raw": "{\n  \"email\":\"julien@esgi.fr\",\n  \"password\": \"password\"\n}",
+      "form": []
+    },
+    "tests": []
   }
 ]

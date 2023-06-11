@@ -17,6 +17,12 @@ export type GetUserType = {
   UserPreference: UserPreference[];
   School: School[];
   UserAchievement: UserAchievement[];
+  salary: Salary[];
+};
+
+export type Salary = {
+  amount: number;
+  date: string;
 };
 
 export type School = {
@@ -84,6 +90,19 @@ export type TaskList = {
   status: Status;
   createdAt: string;
   updatedAt: string;
+  taskList: TaskListElement;
+};
+
+export type TaskListElement = {
+  id: string;
+  name: string;
+  level: number;
+  description: string;
+  skillId: string;
+  required: boolean;
+  createdAt: string;
+  updatedAt: string;
+  skill: SkillSkill;
 };
 
 export type Status = "accepted";

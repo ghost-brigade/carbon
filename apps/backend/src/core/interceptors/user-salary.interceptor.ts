@@ -13,7 +13,10 @@ export class UserSalaryInterceptor implements NestInterceptor {
   intercept(_context: ExecutionContext, next: CallHandler) {
     const request = _context.switchToHttp().getRequest();
 
-    if (request._user.role === RolesValues.HR) {
+    if (
+      request._user.role === RolesValues.HR ||
+      request._user.role === RolesValues.COMMERCIAL
+    ) {
       return next.handle().pipe(map((value) => this.formatSalary(value)));
     }
 
@@ -23,19 +26,25 @@ export class UserSalaryInterceptor implements NestInterceptor {
   private formatSalary(user: UserType | UserType[]): UserType | UserType[] {
     const transform = (salary) => {
       if (Array.isArray(salary)) {
-        return salary;
+        return salary.map((s) => {
+          const parsedSalary = JSON.parse(s);
+          parsedSalary.amount = Number(parsedSalary.amount);
+          return parsedSalary;
+        });
       }
-      return [salary];
+      const parsedSalary = JSON.parse(salary);
+      parsedSalary.amount = Number(parsedSalary.amount);
+      return [parsedSalary];
     };
 
     if (Array.isArray(user)) {
       return user.map((u) => {
-        u.salary = transform(JSON.parse(u.salary as string));
+        u.salary = transform(u.salary as string[]);
         return u;
       });
     }
 
-    user.salary = transform(JSON.parse(user.salary as string));
+    user.salary = transform(user.salary as string[]);
     return user;
   }
 
