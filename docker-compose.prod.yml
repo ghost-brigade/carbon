@@ -1,0 +1,34 @@
+version: "3"
+
+services:
+
+  api:
+    build:
+      context: .
+      target: build
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=production
+    networks:
+      - proxy
+    restart: unless-stopped
+    command: ["npx", "nx", "serve", "backend"]
+
+  database:
+    image: postgres:13.2-alpine
+    restart: unless-stopped
+    networks:
+      - proxy
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=carbon
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  postgres-data:
+
+networks:
+  proxy:
+    external: true
