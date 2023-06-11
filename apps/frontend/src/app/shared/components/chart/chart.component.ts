@@ -22,7 +22,7 @@ export class ChartComponent implements OnInit, OnChanges {
   @Input() chartOptions: DeepPartial<AreaStyleOptions & SeriesOptionsCommon> =
     {};
   @Input() chartData: (AreaData | WhitespaceData)[] = [];
-  @Input() canvaClass: string[] = [];
+  @Input() canvaClass: string[] = ["w-[90vw]", "max-w-[500px]", "h-96"];
   @Input() canvasOptions: DeepPartial<ChartOptions> = {};
   chart: IChartApi | null = null;
   areaSeries: ISeriesApi<"Area"> | null = null;

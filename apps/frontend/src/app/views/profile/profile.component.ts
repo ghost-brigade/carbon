@@ -12,16 +12,23 @@ import {
   UserAchievement,
 } from "../../shared/models/user.model";
 import { AuthService } from "../../core/services/auth.service";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router, RouterModule } from "@angular/router";
 import { FormsModule } from "@angular/forms";
 import { DeleteEndpoint } from "../../constants/endpoints/delete.constants";
 import { ToastService } from "../../core/components/toast/toast.service";
 import { PostEndpoint } from "../../constants/endpoints/post.constants";
+import { ChartComponent } from "../../shared/components/chart/chart.component";
+import {
+  AreaStyleOptions,
+  ChartOptions,
+  DeepPartial,
+  SeriesOptionsCommon,
+} from "lightweight-charts";
 
 @Component({
   selector: "carbon-profile",
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ChartComponent, RouterModule],
   templateUrl: "./profile.component.html",
   styleUrls: ["./profile.component.css"],
 })
@@ -34,6 +41,7 @@ export class ProfileComponent implements OnInit {
   $isSelfProfile = signal(false);
   $profilePicture = computed(() => this.authService.$userPicture());
   $suggestionsActive = signal(false);
+  $role = computed(() => this.authService.$role());
   profile: GetUserType | undefined;
   newPreference = "";
   preferenceTimeout = -1;
@@ -45,6 +53,22 @@ export class ProfileComponent implements OnInit {
     level: 0,
     totalXP: 0,
     xpUntilNextLevel: 0,
+  };
+
+  chartOptions: DeepPartial<AreaStyleOptions & SeriesOptionsCommon> = {
+    baseLineColor: "#ffffff",
+    priceFormat: {
+      minMove: 1,
+    },
+  };
+
+  canvasOptions: DeepPartial<ChartOptions> = {
+    layout: {
+      background: {
+        color: "#282B2A",
+      },
+      textColor: "#ffffff",
+    },
   };
 
   constructor(private route: ActivatedRoute) {}
@@ -208,5 +232,20 @@ export class ProfileComponent implements OnInit {
 
   setPreference(preference: string) {
     this.newPreference = preference;
+  }
+
+  mapSalaryHistory() {
+    return (
+      this.profile?.salary
+        .map((salary) => {
+          return {
+            time: salary.date.split("T")[0],
+            value: salary.amount,
+          };
+        })
+        .sort(
+          (a, b) => new Date(a.time).getTime() - new Date(b.time).getTime()
+        ) || []
+    );
   }
 }
